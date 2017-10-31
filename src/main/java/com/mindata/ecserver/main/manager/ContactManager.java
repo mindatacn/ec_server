@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.repository.EcContactRepository;
+import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.main.manager.ContactCountManager;
-import com.mindata.ecserver.main.model.EcAnalyContactCountEntity;
+import com.mindata.ecserver.main.model.secondary.EcAnalyContactCountEntity;
 import com.xiaoleilu.hutool.date.DateUnit;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Service;

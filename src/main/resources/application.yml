@@ -19,7 +19,6 @@ spring:
     active: dev
 ecServer:
   ecBaseUri: https://open.workec.com/
-  corpID: 3942732
 logging:
   file: ./logback.log
 logstash:

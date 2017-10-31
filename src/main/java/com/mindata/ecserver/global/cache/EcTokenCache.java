@@ -23,6 +23,7 @@ public class EcTokenCache {
     }
 
     public void setTokenByCorpId(String corpId, String token) {
+        //缓存2小时
         stringRedisTemplate.opsForValue().set(Constant.EC_TOKEN_KEY + "_" + corpId, token, USER_HEADER_TOKEN_EXPIE *
                 2, TimeUnit.SECONDS);
     }

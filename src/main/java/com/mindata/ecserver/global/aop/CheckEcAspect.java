@@ -7,7 +7,7 @@ import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.cache.EcTokenCache;
-import com.mindata.ecserver.main.model.PtCompany;
+import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.service.CompanyService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

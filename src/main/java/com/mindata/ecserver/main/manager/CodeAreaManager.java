@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.CodeAreaEntity;
-import com.mindata.ecserver.main.repository.CodeAreaRepository;
+import com.mindata.ecserver.main.model.primary.CodeAreaEntity;
+import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

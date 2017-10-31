@@ -3,6 +3,7 @@ package com.mindata.ecserver.global.druid;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
@@ -21,66 +22,98 @@ import java.sql.SQLException;
 public class DruidDBConfig {
     private Logger logger = LoggerFactory.getLogger(DruidDBConfig.class);
 
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
+    @Value("${spring.datasource.primary.url}")
+    private String dbUrl1;
 
-    @Value("${spring.datasource.username}")
-    private String username;
+    @Value("${spring.datasource.primary.username}")
+    private String username1;
 
-    @Value("${spring.datasource.password}")
-    private String password;
+    @Value("${spring.datasource.primary.password}")
+    private String password1;
 
-    @Value("${spring.datasource.driver-class-name}")
+    @Value("${spring.datasource.secondary.username}")
+    private String username2;
+
+    @Value("${spring.datasource.secondary.password}")
+    private String password2;
+
+    @Value("${spring.datasource.secondary.url}")
+    private String dbUrl2;
+
+    @Value("com.mysql.jdbc.Driver")
     private String driverClassName;
 
-    @Value("${spring.datasource.initialSize}")
+    @Value("5")
     private int initialSize;
 
-    @Value("${spring.datasource.minIdle}")
+    @Value("5")
     private int minIdle;
 
-    @Value("${spring.datasource.maxActive}")
+    @Value("20")
     private int maxActive;
 
-    @Value("${spring.datasource.maxWait}")
+    @Value("60000")
     private int maxWait;
 
-    @Value("${spring.datasource.timeBetweenEvictionRunsMillis}")
+    /**
+     * 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+     */
+    @Value("60000")
     private int timeBetweenEvictionRunsMillis;
-
-    @Value("${spring.datasource.minEvictableIdleTimeMillis}")
+    /**
+     * 配置一个连接在池中最小生存的时间，单位是毫秒
+     */
+    @Value("300000")
     private int minEvictableIdleTimeMillis;
 
-    @Value("${spring.datasource.validationQuery}")
+    @Value("SELECT 1 FROM DUAL")
     private String validationQuery;
 
-    @Value("${spring.datasource.testWhileIdle}")
+    @Value("true")
     private boolean testWhileIdle;
 
-    @Value("${spring.datasource.testOnBorrow}")
+    @Value("false")
     private boolean testOnBorrow;
 
-    @Value("${spring.datasource.testOnReturn}")
+    @Value("false")
     private boolean testOnReturn;
 
-    @Value("${spring.datasource.poolPreparedStatements}")
+    /**
+     * 打开PSCache，并且指定每个连接上PSCache的大小
+     */
+    @Value("true")
     private boolean poolPreparedStatements;
 
-    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
+    @Value("20")
     private int maxPoolPreparedStatementPerConnectionSize;
-
-    @Value("${spring.datasource.filters}")
+    /**
+     * 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+     */
+    @Value("stat,wall,log4j")
     private String filters;
-
-    @Value("{spring.datasource.connectionProperties}")
+    /**
+     * 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+     */
+    @Value("druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000")
     private String connectionProperties;
 
-    @Bean     //声明其为Bean实例
-    @Primary  //在同样的DataSource中，首先使用被标注的DataSource
+    @Bean(name = "primaryDataSource")
+    @Qualifier("primaryDataSource")
     public DataSource dataSource() {
+        return getDruidDataSource(username1, password1, dbUrl1);
+    }
+
+    @Bean(name = "secondaryDataSource")
+    @Qualifier("secondaryDataSource")
+    @Primary
+    public DataSource secondaryDataSource() {
+        return getDruidDataSource(username1, password1, dbUrl2);
+    }
+
+    private DruidDataSource getDruidDataSource(String username, String password, String url) {
         DruidDataSource datasource = new DruidDataSource();
 
-        datasource.setUrl(this.dbUrl);
+        datasource.setUrl(url);
         datasource.setUsername(username);
         datasource.setPassword(password);
         datasource.setDriverClassName(driverClassName);

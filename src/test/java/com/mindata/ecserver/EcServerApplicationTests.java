@@ -1,7 +1,7 @@
 package com.mindata.ecserver;
 
 import com.mindata.ecserver.main.manager.CodeAreaManager;
-import com.mindata.ecserver.main.repository.CodeAreaRepository;
+import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -2,8 +2,8 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CompanyUserBean;
 import com.mindata.ecserver.global.constant.Constant;
-import com.mindata.ecserver.main.model.PtUser;
-import com.mindata.ecserver.main.repository.PtUserRepository;
+import com.mindata.ecserver.main.model.secondary.PtUser;
+import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.stereotype.Service;
 

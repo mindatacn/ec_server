@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.repository.EcContactPushResultRepository;
+import com.mindata.ecserver.main.repository.secondary.EcContactPushResultRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

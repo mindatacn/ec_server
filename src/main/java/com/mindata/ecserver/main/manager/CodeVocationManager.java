@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.CodeVocationTagEntity;
-import com.mindata.ecserver.main.repository.CodeVocationTagRepository;
+import com.mindata.ecserver.main.model.primary.CodeVocationTagEntity;
+import com.mindata.ecserver.main.repository.primary.CodeVocationTagRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

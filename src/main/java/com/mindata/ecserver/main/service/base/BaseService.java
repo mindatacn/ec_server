@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.service.base;
 
-import com.mindata.ecserver.main.model.PtUser;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Service;
 

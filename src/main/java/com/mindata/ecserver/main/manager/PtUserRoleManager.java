@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.PtUserRole;
-import com.mindata.ecserver.main.repository.PtUserRoleRepository;
+import com.mindata.ecserver.main.model.secondary.PtUserRole;
+import com.mindata.ecserver.main.repository.secondary.PtUserRoleRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.stereotype.Service;
 

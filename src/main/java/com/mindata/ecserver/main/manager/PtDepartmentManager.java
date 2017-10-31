@@ -1,8 +1,8 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CompanyDeptBean;
-import com.mindata.ecserver.main.model.PtDepartment;
-import com.mindata.ecserver.main.repository.PtDepartmentRepository;
+import com.mindata.ecserver.main.model.secondary.PtDepartment;
+import com.mindata.ecserver.main.repository.secondary.PtDepartmentRepository;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.stereotype.Service;

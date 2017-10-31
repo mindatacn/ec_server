@@ -1,7 +1,7 @@
 package com.mindata.ecserver.global.shiro;
 
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.model.PtUser;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.service.UserService;
 import com.xiaoleilu.hutool.json.JSONUtil;
 import org.apache.shiro.authc.UsernamePasswordToken;

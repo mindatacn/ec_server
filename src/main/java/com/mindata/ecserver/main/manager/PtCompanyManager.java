@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.PtCompany;
-import com.mindata.ecserver.main.repository.PtCompanyRepository;
+import com.mindata.ecserver.main.model.secondary.PtCompany;
+import com.mindata.ecserver.main.repository.secondary.PtCompanyRepository;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.beans.BeanUtils;

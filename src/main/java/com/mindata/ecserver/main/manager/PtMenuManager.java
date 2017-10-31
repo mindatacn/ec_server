@@ -1,10 +1,10 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.PtMenu;
-import com.mindata.ecserver.main.model.PtMenuRole;
-import com.mindata.ecserver.main.model.PtRole;
-import com.mindata.ecserver.main.repository.PtMenuRepository;
-import com.mindata.ecserver.main.repository.PtMenuRoleRepository;
+import com.mindata.ecserver.main.model.secondary.PtMenu;
+import com.mindata.ecserver.main.model.secondary.PtMenuRole;
+import com.mindata.ecserver.main.model.secondary.PtRole;
+import com.mindata.ecserver.main.repository.secondary.PtMenuRepository;
+import com.mindata.ecserver.main.repository.secondary.PtMenuRoleRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

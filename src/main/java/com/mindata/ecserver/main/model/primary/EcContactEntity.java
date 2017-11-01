@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * @author wuweifeng wrote on 2017/10/24.
+ * 爬虫爬取的企业信息
  */
 @Entity
 @Table(name = "ec_contact_no_push")
@@ -22,6 +23,9 @@ public class EcContactEntity {
      * 是否是企业法人
      */
     private Boolean legal;
+    /**
+     * 客户性别0无/1/男/2女
+     */
     private Integer gender;
     private String mobile;
     private String phone;
@@ -34,7 +38,13 @@ public class EcContactEntity {
     private String wechat;
     private String address;
     private String vocation;
+    /**
+     * 官网
+     */
     private String url;
+    /**
+     * 备注字段
+     */
     private String memo;
     /**
      * 行业标签
@@ -53,9 +63,9 @@ public class EcContactEntity {
      */
     private Integer websiteId;
     /**
-     * 是否已推送
+     * 推送的状态（0未推送，1成功，2失败）
      */
-    private Boolean pushed;
+    private Integer state;
 
     private Date createTime;
 
@@ -291,12 +301,12 @@ public class EcContactEntity {
     }
 
     @Basic
-    @Column(name = "pushed")
-    public Boolean getPushed() {
-        return pushed;
+    @Column(name = "state")
+    public Integer getState() {
+        return state;
     }
 
-    public void setPushed(Boolean pushed) {
-        this.pushed = pushed;
+    public void setState(Integer pushed) {
+        this.state = state;
     }
 }

@@ -49,7 +49,7 @@ public class PtUser extends BaseEntity {
     /**
      * 在EC的userId
      */
-    private Integer ecUserId;
+    private Long ecUserId;
     /**
      * 手机
      */
@@ -71,11 +71,11 @@ public class PtUser extends BaseEntity {
         this.title = title;
     }
 
-    public Integer getEcUserId() {
+    public Long getEcUserId() {
         return ecUserId;
     }
 
-    public void setEcUserId(Integer ecUserId) {
+    public void setEcUserId(Long ecUserId) {
         this.ecUserId = ecUserId;
     }
 

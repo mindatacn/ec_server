@@ -4,7 +4,7 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
-import com.mindata.ecserver.main.manager.CodeAreaManager;
+import com.mindata.ecserver.main.manager.EcCodeAreaManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
@@ -25,7 +25,7 @@ public class ContactService {
     @Resource
     private EcContactRepository contactRepository;
     @Resource
-    private CodeAreaManager codeAreaManager;
+    private EcCodeAreaManager ecCodeAreaManager;
 
     public EcContactEntity findById(int id) {
         return contactRepository.findOne(id);
@@ -65,7 +65,7 @@ public class ContactService {
                 //如果勾了某省，但是没勾它对应的市，则默认选中它所有的市
                 for (String province : contactRequestBody.getProvinces()) {
                     if (!checkCityInProvice(cities, province)) {
-                        cities.addAll(codeAreaManager.findCitiesByProvince(province));
+                        cities.addAll(ecCodeAreaManager.findCitiesByProvince(province));
                     }
                 }
                 criteria.add(Restrictions.in("city", contactRequestBody.getCities(), true));

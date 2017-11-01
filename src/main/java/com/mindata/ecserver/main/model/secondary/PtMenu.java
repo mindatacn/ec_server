@@ -43,6 +43,18 @@ public class PtMenu extends BaseEntity {
      * 排序
      */
     private int orderNum;
+    /**
+     * 是否隐藏
+     */
+    private boolean hide;
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
 
     public String getPermission() {
         return permission;

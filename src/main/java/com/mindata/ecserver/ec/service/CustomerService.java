@@ -1,7 +1,7 @@
 package com.mindata.ecserver.ec.service;
 
-import com.mindata.ecserver.ec.model.request.AppId;
-import com.mindata.ecserver.ec.model.response.AccessData;
+import com.mindata.ecserver.ec.model.request.CustomerCreateRequest;
+import com.mindata.ecserver.ec.model.response.CustomerCreateData;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -15,6 +15,6 @@ public interface CustomerService {
      *
      * @return token
      */
-    @POST("auth/accesstoken")
-    Call<AccessData> accessToken(@Body AppId appId);
+    @POST("customer/create")
+    Call<CustomerCreateData> batchCreate(@Body CustomerCreateRequest customerCreateRequest);
 }

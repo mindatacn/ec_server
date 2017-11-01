@@ -7,6 +7,18 @@ import java.util.List;
  */
 public class PushBody {
     private List<Integer> ids;
+    /**
+     * 跟进人id
+     */
+    private Long followUserId;
+
+    public Long getFollowUserId() {
+        return followUserId;
+    }
+
+    public void setFollowUserId(Long followUserId) {
+        this.followUserId = followUserId;
+    }
 
     public List<Integer> getIds() {
         return ids;

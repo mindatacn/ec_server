@@ -15,6 +15,10 @@ import java.io.IOException;
 public class CallManager {
     private final static int SUCCESS = 200;
     /**
+     * 部分成功
+     */
+    private final static int PART_SUCCESS = 201;
+    /**
      * 没有token
      */
     private final static int NO_AUTH = 2002;
@@ -35,7 +39,7 @@ public class CallManager {
 
         BaseEcData baseEcData = (BaseEcData) response.body();
         int errCode = baseEcData.getErrCode();
-        if (SUCCESS == errCode) {
+        if (SUCCESS == errCode || PART_SUCCESS == errCode) {
             return (T) response.body();
         }
 

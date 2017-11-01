@@ -25,6 +25,10 @@ public class PtDepartmentManager extends BaseService {
         return departmentRepository.findByEcDeptId(ecDeptId);
     }
 
+    public PtDepartment findByDeptId(Integer id) {
+        return departmentRepository.findOne(id);
+    }
+
     /**
      * 根据Ec的部门数据同步到本地
      *

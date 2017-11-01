@@ -2,7 +2,7 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.model.secondary.EcAnalyContactCountEntity;
+import com.mindata.ecserver.main.model.secondary.PtAnalyContactCount;
 import com.mindata.ecserver.main.service.AnalyContactCountService;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +38,7 @@ public class AnalyContactCountController {
         if (DateUtil.parseDate(begin).after(DateUtil.parseDate(end))) {
             return ResultGenerator.genFailResult("开始时间大于结束时间");
         }
-        List<EcAnalyContactCountEntity> entities = analyContactCountService.findByDateBetween(begin, end);
+        List<PtAnalyContactCount> entities = analyContactCountService.findByDateBetween(begin, end);
         return ResultGenerator.genSuccessResult(entities);
     }
 }

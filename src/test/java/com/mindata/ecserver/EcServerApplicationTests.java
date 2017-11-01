@@ -1,6 +1,6 @@
 package com.mindata.ecserver;
 
-import com.mindata.ecserver.main.manager.CodeAreaManager;
+import com.mindata.ecserver.main.manager.EcCodeAreaManager;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class EcServerApplicationTests {
     @Resource
-    private CodeAreaManager codeAreaManager;
+    private EcCodeAreaManager ecCodeAreaManager;
     @Resource
     private CodeAreaRepository codeAreaRepository;
 

@@ -6,11 +6,11 @@ import com.mindata.ecserver.ec.model.response.CompanyUserBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CompanyInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
-import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import org.springframework.stereotype.Service;
@@ -71,8 +71,7 @@ public class CompanyService extends BaseService {
      * @return Company
      */
     public PtCompany findNowCompany() {
-        PtUser ptUser = getCurrentUser();
-        Integer companyId = ptUser.getCompanyId();
+        Integer companyId = ShiroKit.getCurrentUser().getCompanyId();
         return ptCompanyManager.findOne(companyId);
     }
 
@@ -90,7 +89,7 @@ public class CompanyService extends BaseService {
         //根据CompanyData往本地Company插值
         List<CompanyDeptBean> deptBeanList = companyData.getData().getDepts();
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
-        Integer companyId = getCurrentUser().getCompanyId();
+        Integer companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId);
         ptUserManager.addUsers(userBeanList, companyId);
 

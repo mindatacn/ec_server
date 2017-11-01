@@ -71,6 +71,7 @@ public class PtUserManager {
         ptUser.setName(companyUserBean.getUserName());
         ptUser.setAccount(companyManager.findOne(companyId).getPrefix() + "_" + companyUserBean.getAccount());
         ptUser.setPassword(CommonUtil.password("123456"));
+        ptUser.setMobile(companyUserBean.getAccount());
 
         ptUser = userRepository.save(ptUser);
         //添加role信息

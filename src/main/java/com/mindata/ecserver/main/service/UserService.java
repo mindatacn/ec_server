@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.mindata.ecserver.global.shiro.ShiroKit.getCurrentUser;
+
 /**
  * @author wuweifeng wrote on 2017/10/27.
  */

@@ -38,7 +38,7 @@ public class Constant {
     /**
      * 用户访问任何接口header里带的token
      */
-    public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "authorization";
     /**
      * token的key名，key为token
      */

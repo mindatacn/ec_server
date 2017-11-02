@@ -28,6 +28,10 @@ public class PtDepartment extends BaseEntity {
      */
     private Integer parentId;
     /**
+     * 部门leader（id1，id2）
+     */
+    private String leaders;
+    /**
      * 在EC的父部门id
      */
     private Integer ecParentDeptId;
@@ -58,6 +62,14 @@ public class PtDepartment extends BaseEntity {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getLeaders() {
+        return leaders;
+    }
+
+    public void setLeaders(String leaders) {
+        this.leaders = leaders;
     }
 
     public Integer getSort() {

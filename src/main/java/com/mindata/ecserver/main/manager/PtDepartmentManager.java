@@ -5,6 +5,9 @@ import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.repository.secondary.PtDepartmentRepository;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +30,32 @@ public class PtDepartmentManager extends BaseService {
 
     public PtDepartment findByDeptId(Integer id) {
         return departmentRepository.findOne(id);
+    }
+
+    /**
+     * 根据名字查询
+     *
+     * @param name
+     *         部门名称
+     * @return 集合
+     */
+    public Page<PtDepartment> findByName(String name, Integer companyId, Integer state, Pageable pageable) {
+        Page<PtDepartment> departments;
+        if (StrUtil.isEmpty(name)) {
+            if (companyId == 0) {
+                departments = departmentRepository.findByState(0, pageable);
+            } else {
+                departments = departmentRepository.findByCompanyIdAndState(companyId, 0, pageable);
+            }
+        } else {
+            if (companyId == 0) {
+                departments = departmentRepository.findByNameLikeAndState("%" + name + "%", state, pageable);
+            } else {
+                departments = departmentRepository.findByCompanyIdAndNameLikeAndState(companyId, "%" + name + "%",
+                        state, pageable);
+            }
+        }
+        return departments;
     }
 
     /**

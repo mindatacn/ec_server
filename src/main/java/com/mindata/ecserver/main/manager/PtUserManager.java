@@ -114,4 +114,15 @@ public class PtUserManager {
     public PtUser update(PtUser ptUser) {
         return userRepository.save(ptUser);
     }
+
+    /**
+     * 统计某个部门的人员数量
+     *
+     * @param deparmentId
+     *         部门id
+     * @return 数量
+     */
+    public Integer countByDepartmentId(Integer deparmentId) {
+        return userRepository.countByDepartmentIdAndState(deparmentId, 0);
+    }
 }

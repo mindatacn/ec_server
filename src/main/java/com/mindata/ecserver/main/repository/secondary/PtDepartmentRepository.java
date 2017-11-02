@@ -1,6 +1,8 @@
 package com.mindata.ecserver.main.repository.secondary;
 
 import com.mindata.ecserver.main.model.secondary.PtDepartment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -15,4 +17,13 @@ public interface PtDepartmentRepository extends JpaRepository<PtDepartment, Inte
      * @return Department
      */
     PtDepartment findByEcDeptId(Integer deptId);
+
+    Page<PtDepartment> findByCompanyIdAndNameLikeAndState(Integer companyId, String name, Integer state, Pageable
+            pageable);
+
+    Page<PtDepartment> findByNameLikeAndState(String name, Integer state, Pageable pageable);
+
+    Page<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state, Pageable pageable);
+
+    Page<PtDepartment> findByState(Integer state, Pageable pageable);
 }

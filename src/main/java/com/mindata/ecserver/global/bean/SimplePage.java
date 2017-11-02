@@ -9,20 +9,20 @@ import java.util.List;
  */
 public class SimplePage<T> {
     private int totalPage;
-    private int totalCount;
+    private long totalCount;
     private List<T> list;
 
     public SimplePage() {
     }
 
-    public SimplePage(int totalPage, int totalCount, List<T> list) {
+    public SimplePage(int totalPage, long totalCount, List<T> list) {
         this.totalPage = totalPage;
         this.totalCount = totalCount;
         this.list = list;
     }
 
     public SimplePage(Page<T> page) {
-        this.totalCount = (int) page.getTotalElements();
+        this.totalCount = page.getTotalElements();
         this.totalPage = page.getTotalPages();
         this.list = page.getContent();
     }
@@ -35,11 +35,11 @@ public class SimplePage<T> {
         this.totalPage = totalPage;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 

@@ -1,10 +1,14 @@
 spring:
   datasource:
     primary:
-      url: jdbc:mysql://localhost:3306/company?autoReconnect=true&useUnicode=true&characterEncoding=utf8
-      username: root
-      password: root
+      url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/company?autoReconnect=true&useUnicode=true
+      username: md
+      password: maida6868
     secondary:
-      url: jdbc:mysql://localhost:3306/ec_server?autoReconnect=true&useUnicode=true&characterEncoding=utf8
-      username: root
-      password: root
+      url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/ec_server?autoReconnect=true&useUnicode=true
+      username: md
+      password: maida6868
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}

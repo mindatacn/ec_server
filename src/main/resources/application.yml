@@ -6,17 +6,8 @@ spring:
       ddl-auto: update
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy #命名策略，加分隔线"_"
-  redis:
-    host: localhost
-    port: 6379
-    password:
-    pool:
-      max-active: 8
-      max-idle: 8
-      min-idle: 0
-      max-wait: 10000
   profiles:
-    active: dev
+    active: prod
 ecServer:
   ecBaseUri: https://open.workec.com/
 logging:

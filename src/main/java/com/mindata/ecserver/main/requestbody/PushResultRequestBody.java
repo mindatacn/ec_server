@@ -38,7 +38,7 @@ public class PushResultRequestBody {
     /**
      * 行业集合
      */
-    private List<Integer> vocationTags;
+    private List<Integer> vocations;
     /**
      * 来源
      */
@@ -116,12 +116,12 @@ public class PushResultRequestBody {
         this.cities = cities;
     }
 
-    public List<Integer> getVocationTags() {
-        return vocationTags;
+    public List<Integer> getVocations() {
+        return vocations;
     }
 
-    public void setVocationTags(List<Integer> vocationTags) {
-        this.vocationTags = vocationTags;
+    public void setVocations(List<Integer> vocations) {
+        this.vocations = vocations;
     }
 
     public List<Integer> getWebsiteIds() {

@@ -26,13 +26,9 @@ public class PtPushSuccessResult extends BaseEntity {
      */
     private String mobile;
     /**
-     * 1级行业
+     * 行业
      */
-    private Integer vocation1;
-    /**
-     * 2级行业
-     */
-    private Integer vocation2;
+    private Integer vocation;
     /**
      * 沟通结果
      */
@@ -94,20 +90,12 @@ public class PtPushSuccessResult extends BaseEntity {
         this.mobile = mobile;
     }
 
-    public Integer getVocation1() {
-        return vocation1;
+    public Integer getVocation() {
+        return vocation;
     }
 
-    public void setVocation1(Integer vocation1) {
-        this.vocation1 = vocation1;
-    }
-
-    public Integer getVocation2() {
-        return vocation2;
-    }
-
-    public void setVocation2(Integer vocation2) {
-        this.vocation2 = vocation2;
+    public void setVocation(Integer vocation) {
+        this.vocation = vocation;
     }
 
     public Integer getSaleState() {
@@ -188,8 +176,7 @@ public class PtPushSuccessResult extends BaseEntity {
                 "contactId=" + contactId +
                 ", companyName='" + companyName + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", vocation1=" + vocation1 +
-                ", vocation2=" + vocation2 +
+                ", vocation=" + vocation +
                 ", saleState=" + saleState +
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +

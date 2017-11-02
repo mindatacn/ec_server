@@ -36,6 +36,7 @@ public class PushSuccessResultService extends BaseService {
         return ptPushResultManager.findOneSuccess(id);
     }
 
+    @SuppressWarnings("Duplicates")
     public SimplePage<PushSuccessResultVO> findByConditions(PushResultRequestBody
                                                                     contactRequestBody) {
         Criteria<PtPushSuccessResult> criteria = new Criteria<>();
@@ -65,8 +66,8 @@ public class PushSuccessResultService extends BaseService {
             criteria.add(Restrictions.in("websiteId", contactRequestBody.getWebsiteIds(), true));
         }
         //行业
-        if (!CollectionUtil.isEmpty(contactRequestBody.getVocationTags())) {
-            criteria.add(Restrictions.in("vocationTag", contactRequestBody.getVocationTags(), true));
+        if (!CollectionUtil.isEmpty(contactRequestBody.getVocations())) {
+            criteria.add(Restrictions.in("vocation", getVocations(contactRequestBody.getVocations()), true));
         }
         //区域
         if (!CollectionUtil.isEmpty(contactRequestBody.getProvinces())) {

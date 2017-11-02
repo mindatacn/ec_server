@@ -6,6 +6,8 @@ import com.mindata.ecserver.main.service.UserService;
 import com.xiaoleilu.hutool.json.JSONUtil;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,6 +28,7 @@ import static com.mindata.ecserver.global.constant.Constant.AUTHORIZATION;
 public class StatelessAccessControlFilter extends FormAuthenticationFilter {
     @Resource
     private UserService userService;
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     /**
      * onAccessDenied：表示当访问拒绝时是否已经处理了；如果返回true表示需要继续处理；
@@ -44,6 +47,8 @@ public class StatelessAccessControlFilter extends FormAuthenticationFilter {
         }
         //校验header
         String token = request.getHeader(AUTHORIZATION);
+        logger.info("token为：" + token);
+        logger.info("content-type为：" + request.getHeader("content-type"));
         if (token == null) {
             gotoLogin(response);
             return false;

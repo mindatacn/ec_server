@@ -4,16 +4,22 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
-import com.mindata.ecserver.main.manager.EcCodeAreaManager;
+import com.mindata.ecserver.main.manager.EcCodeVocationTagManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
+import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.ContactVO;
+import com.xiaoleilu.hutool.util.CollectionUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,20 +27,20 @@ import java.util.List;
  * 条件查询联系人数据（未推送的）
  */
 @Service
-public class ContactService {
+public class ContactService extends BaseService {
     @Resource
     private EcContactRepository contactRepository;
     @Resource
-    private EcCodeAreaManager ecCodeAreaManager;
+    private EcCodeVocationTagManager ecCodeVocationTagManager;
 
     public EcContactEntity findById(int id) {
         return contactRepository.findOne(id);
     }
 
-    public SimplePage<EcContactEntity> findByPushedAndConditions(boolean pushed, ContactRequestBody
+    public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody
             contactRequestBody) {
         Criteria<EcContactEntity> criteria = new Criteria<>();
-        criteria.add(Restrictions.eq("pushed", pushed, true));
+        criteria.add(Restrictions.eq("state", state, true));
         //有手机号
         if (contactRequestBody.getHasMobile() != null && contactRequestBody.getHasMobile()) {
             criteria.add(Restrictions.ne("mobile", "", true));
@@ -44,31 +50,26 @@ public class ContactService {
             criteria.add(Restrictions.eq("needSale", true, true));
         }
         //来源
-        if (contactRequestBody.getWebsiteIds() != null) {
+        if (!CollectionUtil.isEmpty(contactRequestBody.getWebsiteIds())) {
             criteria.add(Restrictions.in("websiteId", contactRequestBody.getWebsiteIds(), true));
         }
         //规模
-        if (contactRequestBody.getMemberSizeTags() != null) {
+        if (!CollectionUtil.isEmpty(contactRequestBody.getMemberSizeTags())) {
             criteria.add(Restrictions.in("memberSizeTag", contactRequestBody.getMemberSizeTags(), true));
         }
         //行业
-        if (contactRequestBody.getVocationTags() != null) {
-            criteria.add(Restrictions.in("vocationTag", contactRequestBody.getVocationTags(), true));
+        if (!CollectionUtil.isEmpty(contactRequestBody.getVocations())) {
+            criteria.add(Restrictions.in("vocation", getVocations(contactRequestBody.getVocations()), true));
         }
         //区域
-        if (contactRequestBody.getProvinces() != null) {
+        if (!CollectionUtil.isEmpty(contactRequestBody.getProvinces())) {
             criteria.add(Restrictions.in("province", contactRequestBody.getProvinces(), true));
             List<String> cities = contactRequestBody.getCities();
 
             //如果勾了多个市，则用in
-            if (cities != null) {
-                //如果勾了某省，但是没勾它对应的市，则默认选中它所有的市
-                for (String province : contactRequestBody.getProvinces()) {
-                    if (!checkCityInProvice(cities, province)) {
-                        cities.addAll(ecCodeAreaManager.findCitiesByProvince(province));
-                    }
-                }
-                criteria.add(Restrictions.in("city", contactRequestBody.getCities(), true));
+            if (!CollectionUtil.isEmpty(cities)) {
+                cities = getCities(contactRequestBody.getProvinces(), cities);
+                criteria.add(Restrictions.in("city", cities, true));
             }
         }
 
@@ -85,30 +86,23 @@ public class ContactService {
             direction = Sort.Direction.ASC;
         }
         String orderBy = "createTime";
-        if (contactRequestBody.getOrderBy() != null) {
+        if (!StrUtil.isEmpty(contactRequestBody.getOrderBy())) {
             orderBy = contactRequestBody.getOrderBy();
         }
         Pageable pageable = new PageRequest(page, size, direction, orderBy);
-        return new SimplePage<>(contactRepository.findAll(criteria, pageable));
-    }
-
-
-    /**
-     * 判断城市列表里是否包含该省
-     *
-     * @param cities
-     *         城市集合
-     * @param province
-     *         省
-     * @return 是否包含
-     */
-    private boolean checkCityInProvice(List<String> cities, String province) {
-        String provinceHead = province.substring(0, 2);
-        for (String city : cities) {
-            if (city.substring(0, 2).equals(provinceHead)) {
-                return true;
-            }
+        Page<EcContactEntity> ecContactEntities = contactRepository.findAll(criteria, pageable);
+        List<ContactVO> contactVOS = new ArrayList<>(ecContactEntities.getContent().size());
+        for (EcContactEntity ecContactEntity : ecContactEntities) {
+            ContactVO vo = new ContactVO();
+            vo.setCompany(ecContactEntity.getCompany());
+            vo.setId(ecContactEntity.getId());
+            vo.setMobile(ecContactEntity.getMobile());
+            vo.setName(ecContactEntity.getName());
+            vo.setVocation(ecCodeVocationTagManager.findNameByCode(ecContactEntity.getVocationTag()));
+            vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));
+            contactVOS.add(vo);
         }
-        return false;
+        return new SimplePage<>(ecContactEntities.getTotalPages(), ecContactEntities.getTotalElements(), contactVOS);
     }
+
 }

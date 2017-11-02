@@ -17,7 +17,7 @@ public class ContactRequestBody {
     /**
      * 行业集合
      */
-    private List<Integer> vocationTags;
+    private List<Integer> vocations;
     /**
      * 人员数量
      */
@@ -99,12 +99,12 @@ public class ContactRequestBody {
         this.cities = cities;
     }
 
-    public List<Integer> getVocationTags() {
-        return vocationTags;
+    public List<Integer> getVocations() {
+        return vocations;
     }
 
-    public void setVocationTags(List<Integer> vocationTags) {
-        this.vocationTags = vocationTags;
+    public void setVocations(List<Integer> vocations) {
+        this.vocations = vocations;
     }
 
     public List<Integer> getMemberSizeTags() {
@@ -144,7 +144,7 @@ public class ContactRequestBody {
         return "ContactRequestBody{" +
                 "provinces=" + provinces +
                 ", cities=" + cities +
-                ", vocationTags=" + vocationTags +
+                ", vocations=" + vocations +
                 ", memberSizeTags=" + memberSizeTags +
                 ", websiteIds=" + websiteIds +
                 ", hasMobile=" + hasMobile +

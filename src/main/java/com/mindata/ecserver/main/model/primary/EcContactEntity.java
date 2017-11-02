@@ -37,7 +37,10 @@ public class EcContactEntity {
     private String qq;
     private String wechat;
     private String address;
-    private String vocation;
+    /**
+     * 行业编码
+     */
+    private Integer vocation;
     /**
      * 官网
      */
@@ -222,11 +225,11 @@ public class EcContactEntity {
 
     @Basic
     @Column(name = "vocation")
-    public String getVocation() {
+    public Integer getVocation() {
         return vocation;
     }
 
-    public void setVocation(String vocation) {
+    public void setVocation(Integer vocation) {
         this.vocation = vocation;
     }
 

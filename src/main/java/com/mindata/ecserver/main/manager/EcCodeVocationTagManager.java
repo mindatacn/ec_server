@@ -18,4 +18,8 @@ public class EcCodeVocationTagManager {
     public List<CodeVocationTagEntity> findAll() {
         return repository.findAll();
     }
+
+    public String findNameByCode(int code) {
+        return repository.findOne(code).getName();
+    }
 }

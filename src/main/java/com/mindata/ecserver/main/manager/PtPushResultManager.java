@@ -14,6 +14,9 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -143,5 +146,20 @@ public class PtPushResultManager {
 
     public int countSuccessByDate(Date begin, Date end) {
         return ptPushSuccessResultRepository.countByCreateTimeBetween(begin, end);
+    }
+
+    /**
+     * 查询一条推送成功的详细记录
+     *
+     * @param id
+     *         id
+     * @return 记录
+     */
+    public PtPushSuccessResult findOneSuccess(int id) {
+        return ptPushSuccessResultRepository.findOne(id);
+    }
+
+    public Page<PtPushSuccessResult> findAll(Specification<PtPushSuccessResult> var1, Pageable var2) {
+        return ptPushSuccessResultRepository.findAll(var1, var2);
     }
 }

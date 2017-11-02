@@ -25,7 +25,7 @@ public class ContactController {
      */
     @PostMapping({"", "/"})
     public BaseData queryContactData(@RequestBody ContactRequestBody contactRequestBody) {
-        return ResultGenerator.genSuccessResult(contactService.findByPushedAndConditions(false, contactRequestBody));
+        return ResultGenerator.genSuccessResult(contactService.findByStateAndConditions(0, contactRequestBody));
     }
 
     @GetMapping("/{id}")

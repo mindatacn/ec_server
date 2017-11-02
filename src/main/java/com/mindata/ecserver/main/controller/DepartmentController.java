@@ -9,9 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -27,8 +25,8 @@ public class DepartmentController {
     /**
      * 根据名称查找部门
      *
-     * @param pageable
      * @param name
+     * 部门名
      * @return
      */
     @GetMapping("")
@@ -37,4 +35,6 @@ public class DepartmentController {
                          String name) {
         return ResultGenerator.genSuccessResult(departmentService.findByName(name, pageable));
     }
+
+
 }

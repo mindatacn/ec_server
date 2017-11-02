@@ -47,6 +47,10 @@ public class PtDepartment extends BaseEntity {
      * 备注
      */
     private String memo;
+    /**
+     * 状态，（0正常，1被删除）
+     */
+    private Integer state;
 
     public Integer getParentId() {
         return parentId;
@@ -62,6 +66,14 @@ public class PtDepartment extends BaseEntity {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Integer getEcDeptId() {

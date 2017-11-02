@@ -51,6 +51,7 @@ public class PtDepartmentManager extends BaseService {
         ptDepartment.setSort(companyDeptBean.getSort());
         ptDepartment.setCreateTime(CommonUtil.getNow());
         ptDepartment.setUpdateTime(CommonUtil.getNow());
+        ptDepartment.setState(0);
         ptDepartment.setMemo("");
         return departmentRepository.save(ptDepartment);
     }

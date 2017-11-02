@@ -62,6 +62,10 @@ public class PtUser extends BaseEntity {
      * 备注
      */
     private String memo;
+    /**
+     * 状态，（0正常，1被删除）
+     */
+    private Integer state;
 
     public String getTitle() {
         return title;
@@ -69,6 +73,14 @@ public class PtUser extends BaseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Long getEcUserId() {

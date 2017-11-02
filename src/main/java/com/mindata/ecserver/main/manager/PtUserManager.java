@@ -41,6 +41,7 @@ public class PtUserManager {
         ptUser.setAccount(account);
         ptUser.setPassword(CommonUtil.password(password));
         ptUser.setCompanyId(companyId);
+        ptUser.setState(0);
         ptUser.setName("公司管理员");
         ptUser.setTitle("公司管理员");
         ptUser = userRepository.save(ptUser);
@@ -65,6 +66,7 @@ public class PtUserManager {
         ptUser.setCreateTime(CommonUtil.getNow());
         ptUser.setUpdateTime(CommonUtil.getNow());
         ptUser.setCompanyId(companyId);
+        ptUser.setState(0);
         ptUser.setEcUserId(companyUserBean.getUserId());
         ptUser.setTitle(companyUserBean.getTitle());
         ptUser.setDepartmentId(departmentManager.findByEcDeptId(companyUserBean.getDeptId()).getId());

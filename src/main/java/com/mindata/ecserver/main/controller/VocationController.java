@@ -2,7 +2,7 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.manager.EcCodeVocationManager;
+import com.mindata.ecserver.main.manager.EcCodeVocationTagManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 public class VocationController {
 
     @Resource
-    private EcCodeVocationManager ecCodeVocationManager;
+    private EcCodeVocationTagManager ecCodeVocationTagManager;
 
     /**
      * 查询所有的行业
@@ -26,6 +26,6 @@ public class VocationController {
      */
     @GetMapping({"", "/"})
     public BaseData find() {
-        return ResultGenerator.genSuccessResult(ecCodeVocationManager.findAll());
+        return ResultGenerator.genSuccessResult(ecCodeVocationTagManager.findAll());
     }
 }

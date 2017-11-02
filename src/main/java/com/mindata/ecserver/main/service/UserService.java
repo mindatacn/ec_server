@@ -100,6 +100,22 @@ public class UserService extends BaseService {
         return new TokenExpire(token, userTokenCache.getExpire(userId));
     }
 
+    /**
+     * 修改密码
+     */
+    public int modifyPassword(String oldPassword, String newPassword) {
+        oldPassword = CommonUtil.password(oldPassword);
+        PtUser ptUser = getCurrentUser();
+        //原密码输入错误
+        if (!oldPassword.equals(ptUser.getPassword())) {
+            return -1;
+        }
+        newPassword = CommonUtil.password(newPassword);
+        ptUser.setPassword(newPassword);
+        userManager.update(ptUser);
+        return 0;
+    }
+
 
     /**
      * 退出登录清除token信息

@@ -1,8 +1,8 @@
 package com.mindata.ecserver.main.controller;
 
-import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.model.request.AppId;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
+import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultCode;
@@ -10,6 +10,7 @@ import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.exception.NoLoginException;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 
 import static com.mindata.ecserver.global.bean.ResultCode.ACCOUNT_ERROR;
+import static com.mindata.ecserver.global.bean.ResultCode.PARAMETER_ERROR;
 
 /**
  * @author wuweifeng wrote on 2017/10/23.
@@ -74,6 +76,9 @@ public class AuthController {
      */
     @PostMapping("/login")
     public BaseData login(String account, String password) {
+        if (StrUtil.isEmpty(password) || password.length() < 6) {
+            return ResultGenerator.genFailResult(PARAMETER_ERROR, "参数错误");
+        }
         UsernamePasswordToken token = new UsernamePasswordToken(account, CommonUtil.password(password));
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();

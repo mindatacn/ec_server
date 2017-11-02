@@ -110,4 +110,8 @@ public class PtUserManager {
     public PtUser findByUserId(Integer id) {
         return userRepository.findOne(id);
     }
+
+    public PtUser update(PtUser ptUser) {
+        return userRepository.save(ptUser);
+    }
 }

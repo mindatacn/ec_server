@@ -67,7 +67,7 @@ public class PushController {
 
     @CheckEcAnnotation
     @RequestMapping("/push")
-    public Object push() throws IOException {
+    public Object push() throws IOException, InterruptedException {
         int beginId = 218302;
         int endId = 223301;
 
@@ -86,6 +86,7 @@ public class PushController {
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);
                 pushService.push(pushBody);
+                Thread.sleep(300);
                 ids.clear();
                 logger.info("已推送50个");
             }
@@ -104,6 +105,7 @@ public class PushController {
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);
                 pushService.push(pushBody);
+                Thread.sleep(300);
                 ids.clear();
                 logger.info("已推送50个");
             }

@@ -9,8 +9,8 @@ import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.mindata.ecserver.global.constant.Constant.SHIRO_PASS_COUNT_EXPIE;
-import static com.mindata.ecserver.global.constant.Constant.SHIRO_PASS_COUNT_KEY;
+import static com.mindata.ecserver.global.constant.CacheConstant.CACHE_SHIRO_PASS_COUNT_EXPIE;
+import static com.mindata.ecserver.global.constant.CacheConstant.CACHE_SHIRO_PASS_COUNT_KEY;
 
 /**
  * @author wuweifeng wrote on 2017/10/27.
@@ -32,7 +32,7 @@ public class MyMatcher extends PasswordMatcher {
         String username = (String) token.getPrincipal();
         int count = 0;
         //获取用户登录的次数
-        Object retryCount = valueOperations.get(SHIRO_PASS_COUNT_KEY + "_" + username);
+        Object retryCount = valueOperations.get(CACHE_SHIRO_PASS_COUNT_KEY + "_" + username);
         //如果用户未登陆过
         if (retryCount != null) {
             count = Integer.valueOf(retryCount.toString());
@@ -44,14 +44,15 @@ public class MyMatcher extends PasswordMatcher {
             //抛出用户锁定异常类
             throw new ExcessiveAttemptsException();
         }
-        valueOperations.set(SHIRO_PASS_COUNT_KEY + "_" + username, count + "", SHIRO_PASS_COUNT_EXPIE, TimeUnit
+        valueOperations.set(CACHE_SHIRO_PASS_COUNT_KEY + "_" + username, count + "", CACHE_SHIRO_PASS_COUNT_EXPIE,
+                TimeUnit
                 .MINUTES);
 
         //判断用户是否可用，即是否为正确的账号密码
         boolean matches = new String((char[]) token.getCredentials()).equals(info.getCredentials());
         if (matches) {
             //移除缓存中用户的登录次数
-            redisTemplate.delete(SHIRO_PASS_COUNT_KEY + "_" + username);
+            redisTemplate.delete(CACHE_SHIRO_PASS_COUNT_KEY + "_" + username);
         }
 
         return matches;

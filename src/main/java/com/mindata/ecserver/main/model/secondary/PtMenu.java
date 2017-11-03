@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @Table(name = "pt_menu", indexes = {@Index(name = "parent_id", columnList =
         "parentId")})
 public class PtMenu extends BaseEntity {
-
     /**
      * 菜单名
      */
@@ -40,7 +39,7 @@ public class PtMenu extends BaseEntity {
      */
     private String icon;
     /**
-     * 排序
+     * 排序（从小到大显示）
      */
     private int orderNum;
     /**

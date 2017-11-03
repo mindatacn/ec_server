@@ -1,26 +1,23 @@
 package com.mindata.ecserver.global.cache;
 
-import com.mindata.ecserver.global.constant.Constant;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
+
+import static com.mindata.ecserver.global.constant.CacheConstant.*;
 
 /**
  * @author wuweifeng wrote on 2017/10/30.
  * 用户登录token的缓存管理
  */
 @Component
-public class UserTokenCache {
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+public class UserTokenCache extends BaseCache {
 
     public void setBothTokenByUserId(String token, Integer userId) {
-        stringRedisTemplate.opsForValue().set(keyOfUserId(userId), token, Constant
-                .USER_HEADER_TOKEN_EXPIE, TimeUnit.SECONDS);
-        stringRedisTemplate.opsForValue().set(keyOfToken(token), userId + "", Constant
-                .USER_HEADER_TOKEN_EXPIE, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(keyOfUserId(userId), token, CACHE_USER_HEADER_TOKEN_EXPIE, TimeUnit
+                .SECONDS);
+        stringRedisTemplate.opsForValue().set(keyOfToken(token), userId + "", CACHE_USER_HEADER_TOKEN_EXPIE, TimeUnit
+                .SECONDS);
     }
 
     public String getTokenByUserId(Integer userId) {
@@ -41,10 +38,10 @@ public class UserTokenCache {
     }
 
     private String keyOfUserId(Integer userId) {
-        return Constant.USER_TOKEN_ID_KEY + "_" + userId;
+        return CACHE_USER_TOKEN_ID_KEY + "_" + userId;
     }
 
     private String keyOfToken(String token) {
-        return Constant.USER_TOKEN_KEY + "_" + token;
+        return CACHE_USER_TOKEN_KEY + "_" + token;
     }
 }

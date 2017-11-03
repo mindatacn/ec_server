@@ -22,4 +22,12 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      */
     int countByCreateTimeBetween(Date begin, Date end);
 
+    /**
+     * 根据crmId查询结果
+     *
+     * @param crmId
+     *         crmId
+     * @return 结果
+     */
+    PtPushSuccessResult findByCrmId(Integer crmId);
 }

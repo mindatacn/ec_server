@@ -1,34 +1,29 @@
 package com.mindata.ecserver.global.cache;
 
-import com.mindata.ecserver.global.constant.Constant;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.mindata.ecserver.global.constant.Constant.USER_HEADER_TOKEN_EXPIE;
+import static com.mindata.ecserver.global.constant.CacheConstant.CACHE_EC_TOKEN_KEY;
+import static com.mindata.ecserver.global.constant.CacheConstant.CACHE_USER_HEADER_TOKEN_EXPIE;
 
 /**
  * @author wuweifeng wrote on 2017/10/30.
  */
 @Component
-public class EcTokenCache {
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+public class EcTokenCache extends BaseCache {
 
     public String getTokenByCorpId(String corpId) {
-        return stringRedisTemplate.opsForValue().get(Constant.EC_TOKEN_KEY + "_" + corpId);
+        return stringRedisTemplate.opsForValue().get(CACHE_EC_TOKEN_KEY + "_" + corpId);
     }
 
     public void setTokenByCorpId(String corpId, String token) {
         //缓存2小时
-        stringRedisTemplate.opsForValue().set(Constant.EC_TOKEN_KEY + "_" + corpId, token, USER_HEADER_TOKEN_EXPIE *
+        stringRedisTemplate.opsForValue().set(CACHE_EC_TOKEN_KEY + "_" + corpId, token, CACHE_USER_HEADER_TOKEN_EXPIE *
                 2, TimeUnit.SECONDS);
     }
 
     public Long getExpire(String corpId) {
-        return stringRedisTemplate.getExpire(Constant.EC_TOKEN_KEY + "_" + corpId);
+        return stringRedisTemplate.getExpire(CACHE_EC_TOKEN_KEY + "_" + corpId);
     }
 }

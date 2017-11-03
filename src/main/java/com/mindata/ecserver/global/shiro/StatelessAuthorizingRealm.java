@@ -1,5 +1,6 @@
 package com.mindata.ecserver.global.shiro;
 
+import com.mindata.ecserver.global.cache.AuthorizationCache;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;

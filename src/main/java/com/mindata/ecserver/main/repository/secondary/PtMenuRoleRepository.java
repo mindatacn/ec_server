@@ -9,5 +9,12 @@ import java.util.List;
  * @author wuweifeng wrote on 2017/10/26.
  */
 public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Integer> {
+    /**
+     * 根据role查询所有的菜单
+     *
+     * @param roleId
+     *         role
+     * @return 集合
+     */
     List<PtMenuRole> findByRoleId(Integer roleId);
 }

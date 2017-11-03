@@ -36,4 +36,8 @@ public class PtRoleManager {
     public Integer findIdByName(String name) {
         return ptRoleRepository.findByName(name).getId();
     }
+
+    public List<PtRole> findAll() {
+        return ptRoleRepository.findAll();
+    }
 }

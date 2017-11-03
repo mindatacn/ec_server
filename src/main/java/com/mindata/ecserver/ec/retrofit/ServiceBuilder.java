@@ -3,6 +3,7 @@ package com.mindata.ecserver.ec.retrofit;
 import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.service.CompanyInfoService;
 import com.mindata.ecserver.ec.service.CustomerService;
+import com.mindata.ecserver.ec.service.PhoneHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,5 +25,9 @@ public class ServiceBuilder {
 
     public CustomerService getCustomerService() {
         return retrofitBuilder.getRetrofit().create(CustomerService.class);
+    }
+
+    public PhoneHistoryService getPhoneHistoryService() {
+        return retrofitBuilder.getRetrofit().create(PhoneHistoryService.class);
     }
 }

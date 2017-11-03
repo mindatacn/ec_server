@@ -161,4 +161,15 @@ public class PtPushResultManager {
     public Page<PtPushSuccessResult> findAll(Specification<PtPushSuccessResult> var1, Pageable var2) {
         return ptPushSuccessResultRepository.findAll(var1, var2);
     }
+
+    /**
+     * 查看该crmId是否是我们推送的
+     *
+     * @param crmId
+     *         crmId
+     * @return 结果
+     */
+    public boolean existCrmId(Integer crmId) {
+        return ptPushSuccessResultRepository.findByCrmId(crmId) != null;
+    }
 }

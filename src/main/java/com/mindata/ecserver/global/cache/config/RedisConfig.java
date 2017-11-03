@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.cache;
+package com.mindata.ecserver.global.cache.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

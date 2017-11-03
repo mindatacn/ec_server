@@ -2,19 +2,16 @@ package com.mindata.ecserver.main.model.secondary;
 
 import com.mindata.ecserver.main.model.base.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
  * 个人单日通话历史统计表
  */
-@Entity
-@Table(name = "pt_phone_history_dept", indexes = {@Index(name = "ec_user_id", columnList =
-        "ecUserId"), @Index(name = "start_time", columnList =
-        "startTime")})
+//@Entity
+//@Table(name = "pt_phone_history_dept", indexes = {@Index(name = "ec_user_id", columnList =
+//        "ecUserId"), @Index(name = "start_time", columnList =
+//        "startTime")})
 public class PtPhoneHistoryDept extends BaseEntity {
     /**
      * 部门id

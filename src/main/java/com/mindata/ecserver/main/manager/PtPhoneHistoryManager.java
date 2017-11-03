@@ -45,7 +45,7 @@ public class PtPhoneHistoryManager {
     public List<Object[]> findTotalByEcUserIdAndOneDay(Long ecUserId, Date oneDay) throws IOException {
         Date tempBegin = DateUtil.beginOfDay(oneDay);
         Date tempEnd = DateUtil.endOfDay(oneDay);
-        List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealFalseAndCallTimeBetween
+        List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealRecodeFalseAndCallTimeBetween
                 (ecUserId, tempBegin, tempEnd);
         //如果该天的是假数据，就直接返回回去
         if (histories.size() > 0) {
@@ -67,7 +67,7 @@ public class PtPhoneHistoryManager {
                 PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
                 ptPhoneHistory.setEcUserId(ecUserId);
                 ptPhoneHistory.setStartTime(oneDay);
-                ptPhoneHistory.setReal(false);
+                ptPhoneHistory.setRealRecode(false);
                 ptPhoneHistory.setCreateTime(CommonUtil.getNow());
                 ptPhoneHistory.setUpdateTime(CommonUtil.getNow());
                 save(ptPhoneHistory);
@@ -108,7 +108,7 @@ public class PtPhoneHistoryManager {
             ptPhoneHistory.setMd5(bean.getMd5());
             ptPhoneHistory.setPath(bean.getPath());
             ptPhoneHistory.setStartTime(bean.getStarttime());
-            ptPhoneHistory.setReal(true);
+            ptPhoneHistory.setRealRecode(true);
             ptPhoneHistory.setCreateTime(CommonUtil.getNow());
             ptPhoneHistory.setUpdateTime(CommonUtil.getNow());
 

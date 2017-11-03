@@ -64,7 +64,7 @@ public class PtPhoneHistory extends BaseEntity {
     /**
      * 是真实打电话的，还是为空时我插的值
      */
-    private boolean real;
+    private Boolean realRecode;
 
     public Long getEcUserId() {
         return ecUserId;
@@ -114,12 +114,12 @@ public class PtPhoneHistory extends BaseEntity {
         this.type = type;
     }
 
-    public boolean isReal() {
-        return real;
+    public Boolean getRealRecode() {
+        return realRecode;
     }
 
-    public void setReal(boolean real) {
-        this.real = real;
+    public void setRealRecode(Boolean realRecode) {
+        this.realRecode = realRecode;
     }
 
     public String getPath() {

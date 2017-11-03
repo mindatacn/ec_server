@@ -35,5 +35,5 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      *         某天的结束
      * @return 集合
      */
-    List<PtPhoneHistory> findByEcUserIdAndRealFalseAndCallTimeBetween(Long ecUserId, Date begin, Date end);
+    List<PtPhoneHistory> findByEcUserIdAndRealRecodeFalseAndCallTimeBetween(Long ecUserId, Date begin, Date end);
 }

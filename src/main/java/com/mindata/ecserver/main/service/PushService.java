@@ -52,8 +52,12 @@ public class PushService extends BaseService {
     public PushResultCountVO push(PushBody pushBody) throws IOException {
         List<EcContactEntity> contactEntities = ecContactManager.findByIds(pushBody.getIds());
         CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
-        //设置操作人id
-        customerCreateRequest.setOptUserId(ShiroKit.getCurrentUser().getEcUserId());
+        if (pushBody.getOptUserId() == null) {
+            //设置操作人id
+            customerCreateRequest.setOptUserId(ShiroKit.getCurrentUser().getEcUserId());
+        } else {
+            customerCreateRequest.setOptUserId(pushBody.getOptUserId());
+        }
         //设置跟进人id
         customerCreateRequest.setFollowUserId(ptUserManager.findByUserId(pushBody.getFollowUserId().intValue())
                 .getEcUserId());

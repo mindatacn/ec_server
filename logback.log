@@ -5286,3 +5286,10 @@ Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have a
 2017-11-03 18:08:39.166  INFO 38695 --- [http-nio-8080-exec-1] c.mindata.ecserver.global.aop.LogAspect  : 方法的返回值 : com.mindata.ecserver.global.bean.BaseData@57ca58c3
 2017-11-03 18:08:39.167  INFO 38695 --- [http-nio-8080-exec-1] c.mindata.ecserver.global.aop.LogAspect  : 共耗时：149毫秒
 2017-11-03 18:08:39.167  INFO 38695 --- [http-nio-8080-exec-1] c.mindata.ecserver.global.aop.LogAspect  : ------------------请求结束------------------
+2017-11-03 18:15:44.935  INFO 38695 --- [Thread-43] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2c1b9e4b: startup date [Fri Nov 03 18:07:21 CST 2017]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@b9b00e0
+2017-11-03 18:15:45.020  INFO 38695 --- [Thread-43] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2017-11-03 18:15:45.023  INFO 38695 --- [Thread-43] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans
+2017-11-03 18:15:45.054  INFO 38695 --- [Thread-43] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'primaryPersistenceUnit'
+2017-11-03 18:15:45.089  INFO 38695 --- [Thread-43] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} closed
+2017-11-03 18:15:45.091  INFO 38695 --- [Thread-43] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'secondaryPersistenceUnit'
+2017-11-03 18:15:45.103  INFO 38695 --- [Thread-43] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

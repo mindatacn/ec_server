@@ -12,6 +12,16 @@ public class PushBody {
      */
     private Long followUserId;
 
+    private Long optUserId;
+
+    public Long getOptUserId() {
+        return optUserId;
+    }
+
+    public void setOptUserId(Long optUserId) {
+        this.optUserId = optUserId;
+    }
+
     public Long getFollowUserId() {
         return followUserId;
     }

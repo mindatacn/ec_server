@@ -38,7 +38,7 @@ public class TestController {
         int beginId = 218302;
         int endId = 223301;
 
-        int optUserId = 5799794;//侯学明
+        long optUserId = 5799794;//侯学明
         long qizhi = 3957783;
         long zhao = 4225729;
 
@@ -46,6 +46,7 @@ public class TestController {
         List<Integer> ids = new ArrayList<>();
 
         PushBody pushBody = new PushBody();
+        pushBody.setOptUserId(optUserId);
         pushBody.setFollowUserId(qizhi);
         for (int i = beginId; i <= 220802; i++) {
             ids.add(i);

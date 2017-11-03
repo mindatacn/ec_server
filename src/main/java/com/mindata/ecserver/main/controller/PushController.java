@@ -70,7 +70,6 @@ public class PushController {
     public Object push() throws IOException, InterruptedException {
         int beginId = 218302;
         int endId = 223301;
-
         long optUserId = 4;//侯学明
         long qizhi = 46;
         long zhao = 47;

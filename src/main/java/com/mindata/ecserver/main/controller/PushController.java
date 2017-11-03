@@ -75,7 +75,7 @@ public class PushController {
         long qizhi = 46;
         long zhao = 47;
 
-        int count = 0;
+        int count = 1;
         List<Integer> ids = new ArrayList<>();
 
         PushBody pushBody = new PushBody();
@@ -97,7 +97,7 @@ public class PushController {
         }
 
         ids.clear();
-        count = 0;
+        count = 1;
         pushBody.setFollowUserId(zhao);
         for (int i = 220803; i <= endId; i++) {
             ids.add(i);

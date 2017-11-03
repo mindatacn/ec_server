@@ -39,8 +39,8 @@ public class TestController {
         int endId = 223301;
 
         long optUserId = 5799794;//侯学明
-        long qizhi = 3957783;
-        long zhao = 4225729;
+        long qizhi = 46;
+        long zhao = 47;
 
         int count = 0;
         List<Integer> ids = new ArrayList<>();

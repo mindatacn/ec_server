@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.controller.base;
 
+import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.ContactService;
@@ -33,12 +34,13 @@ public class TestController {
         return ecVocationCodeManager.findAll();
     }
 
+    @CheckEcAnnotation
     @RequestMapping("/push")
     public Object push() throws IOException {
         int beginId = 218302;
         int endId = 223301;
 
-        long optUserId = 5799794;//侯学明
+        long optUserId = 4;//侯学明
         long qizhi = 46;
         long zhao = 47;
 

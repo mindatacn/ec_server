@@ -87,18 +87,23 @@ public class PtPhoneHistoryManager {
         List<PtPhoneHistory> ptPhoneHistories = ptPhoneHistoryRepository.findByEcUserIdAndStartTimeBetween(ecUserId,
                 tempBegin, tempEnd);
         int pushCount = 0;
+        int validCount = 0;
         for (PtPhoneHistory history : ptPhoneHistories) {
             //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
             boolean crmExist = ptPushResultManager.existCrmId(history.getCrmId());
             if (crmExist) {
                 pushCount++;
             }
+            if (history.getCallTime() > 0) {
+                validCount++;
+            }
         }
-        Object[] objects = new Object[4];
+        Object[] objects = new Object[5];
         objects[0] = tempObjects[0];
         objects[1] = tempObjects[1];
         objects[2] = tempObjects[2];
         objects[3] = pushCount;
+        objects[4] = validCount;
         list.clear();
         list.add(objects);
         return list;
@@ -109,12 +114,12 @@ public class PtPhoneHistoryManager {
      */
     private List<Object[]> intoDB() {
         List<Object[]> list = new ArrayList<>();
-        Object[] objects = new Object[4];
+        Object[] objects = new Object[5];
         objects[0] = historyDataBeans.size();
         //排除重复的联系人
         Set<String> customerSet = new HashSet<>();
         int totalCallTime = 0;
-        int pushCount = 0;
+        int pushCount = 0, validCount = 0;
 
         for (PhoneHistoryDataBean bean : historyDataBeans) {
             PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
@@ -138,6 +143,9 @@ public class PtPhoneHistoryManager {
             if (crmExist) {
                 pushCount++;
             }
+            if (ptPhoneHistory.getCallTime() > 0) {
+                validCount++;
+            }
 
             customerSet.add(bean.getCalltono());
             save(ptPhoneHistory);
@@ -146,6 +154,7 @@ public class PtPhoneHistoryManager {
         objects[1] = totalCallTime;
         objects[2] = customerSet.size();
         objects[3] = pushCount;
+        objects[4] = validCount;
         list.add(objects);
         return list;
     }
@@ -177,7 +186,7 @@ public class PtPhoneHistoryManager {
 
     private List<Object[]> generEmptyList() {
         List<Object[]> list = new ArrayList<>();
-        Object[] objects = new Object[]{0, 0, 0, 0};
+        Object[] objects = new Object[]{0, 0, 0, 0, 0};
         list.add(objects);
         return list;
     }

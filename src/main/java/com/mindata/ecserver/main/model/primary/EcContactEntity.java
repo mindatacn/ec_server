@@ -69,6 +69,10 @@ public class EcContactEntity {
      * 推送的状态（0未推送，1成功，2失败）
      */
     private Integer state;
+    /**
+     * 对应爬虫的公司id
+     */
+    private Integer compId;
 
     private Date createTime;
 
@@ -81,6 +85,16 @@ public class EcContactEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "comp_id")
+    public Integer getCompId() {
+        return compId;
+    }
+
+    public void setCompId(Integer compId) {
+        this.compId = compId;
     }
 
     @Basic

@@ -33,7 +33,7 @@ public interface PtPhoneHistoryDeptRepository extends JpaRepository<PtPhoneHisto
     /**
      * 统计某段时间、多个部门总的打电话次数
      */
-    @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount) " +
+    @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
             " from PtPhoneHistoryDept where deptId in ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(List<Integer> deptIds, Date begin, Date end);
 

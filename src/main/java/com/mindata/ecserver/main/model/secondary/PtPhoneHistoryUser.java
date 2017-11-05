@@ -40,6 +40,10 @@ public class PtPhoneHistoryUser extends BaseEntity {
      * 总联系人中有哪些是我们推送的客户
      */
     private Long pushCount;
+    /**
+     * 沟通时间大于0的数量
+     */
+    private Long validCount;
 
     public Integer getUserId() {
         return userId;
@@ -55,6 +59,14 @@ public class PtPhoneHistoryUser extends BaseEntity {
 
     public void setPushCount(Long pushCount) {
         this.pushCount = pushCount;
+    }
+
+    public Long getValidCount() {
+        return validCount;
+    }
+
+    public void setValidCount(Long validCount) {
+        this.validCount = validCount;
     }
 
     public Date getStartTime() {

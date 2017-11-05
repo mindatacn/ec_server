@@ -31,8 +31,6 @@ public class PhoneHistoryController {
     /**
      * 根据传来的参数进行查询，如果什么都不传，就是查公司级的，传
      *
-     * @param id
-     *         公司id
      * @return 公司级数据
      */
     @RequiresRoles(Constant.ROLE_MANAGER)

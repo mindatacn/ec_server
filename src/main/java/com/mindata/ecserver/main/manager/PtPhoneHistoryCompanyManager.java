@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryCompanyRepository;
 import com.mindata.ecserver.util.CommonUtil;
@@ -30,7 +29,7 @@ public class PtPhoneHistoryCompanyManager {
     /**
      * 查询某段时间内某公司的通话统计信息
      *
-     * @param corpId
+     * @param companyId
      *         公司id
      * @param begin
      *         开始时间
@@ -40,7 +39,8 @@ public class PtPhoneHistoryCompanyManager {
      *         分页
      * @return 分页结果
      */
-    public SimplePage findHistoryByDate(Integer companyId, Date begin, Date end, Pageable pageable) throws IOException {
+    public Page<PtPhoneHistoryCompany> findHistoryByDate(Integer companyId, Date begin, Date end, Pageable pageable)
+            throws IOException {
         Date tempBegin = DateUtil.beginOfDay(begin);
         Date tempEnd = DateUtil.endOfDay(end);
         //查看间隔多少天
@@ -50,11 +50,10 @@ public class PtPhoneHistoryCompanyManager {
                 tempEnd);
         //间隔数量应该=数据库数量-1，譬如开始和结束都是今天，数据会有一条数据
         if (count == betweenDay + 1) {
-            Page<PtPhoneHistoryCompany> page = ptPhoneHistoryCompanyRepository.findByCompanyIdAndStartTimeBetween
+            //数量正确，说明每天都有值，那么就返回数据库数据
+            return ptPhoneHistoryCompanyRepository.findByCompanyIdAndStartTimeBetween
                     (companyId,
                     begin, end, pageable);
-            //数量正确，说明每天都有值，那么就返回数据库数据
-            return new SimplePage<>(page);
         }
         //如果数量对不上，就要去看哪天缺失，并且补上
         for (; tempBegin.before(tempEnd); tempBegin = DateUtil.offsetDay(tempBegin, 1)) {
@@ -74,15 +73,14 @@ public class PtPhoneHistoryCompanyManager {
                 historyCompany.setTotalCallCount(CommonUtil.parseObject(objects[1]));
                 historyCompany.setTotalCustomer(CommonUtil.parseObject(objects[2]));
                 historyCompany.setPushCount(CommonUtil.parseObject(objects[3]));
+                historyCompany.setValidCount(CommonUtil.parseObject(objects[4]));
                 historyCompany.setCreateTime(CommonUtil.getNow());
                 historyCompany.setUpdateTime(CommonUtil.getNow());
                 ptPhoneHistoryCompanyRepository.save(historyCompany);
             }
         }
 
-        Page<PtPhoneHistoryCompany> page = ptPhoneHistoryCompanyRepository.findByCompanyIdAndStartTimeBetween(companyId,
+        return ptPhoneHistoryCompanyRepository.findByCompanyIdAndStartTimeBetween(companyId,
                 begin, end, pageable);
-
-        return new SimplePage<>(page);
     }
 }

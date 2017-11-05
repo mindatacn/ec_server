@@ -78,10 +78,10 @@ public class PtPhoneHistoryUserManager {
             historyUser.setUpdateTime(CommonUtil.getNow());
             historyUser.setUserId(userId);
             historyUser.setStartTime(tempBegin);
-            historyUser.setTotalCallCount((Long) objects[0]);
-            historyUser.setTotalCallTime((Long) objects[1]);
-            historyUser.setTotalCustomer((Long) objects[2]);
-            historyUser.setPushCount((Long) objects[3]);
+            historyUser.setTotalCallCount(CommonUtil.parseObject(objects[0]));
+            historyUser.setTotalCallTime(CommonUtil.parseObject(objects[1]));
+            historyUser.setTotalCustomer(CommonUtil.parseObject(objects[2]));
+            historyUser.setPushCount(CommonUtil.parseObject(objects[3]));
             return ptPhoneHistoryUserRepository.save(historyUser);
         }
         return list.get(0);

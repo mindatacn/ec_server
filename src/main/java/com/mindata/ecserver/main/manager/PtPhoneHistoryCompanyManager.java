@@ -70,10 +70,10 @@ public class PtPhoneHistoryCompanyManager {
                 PtPhoneHistoryCompany historyCompany = new PtPhoneHistoryCompany();
                 historyCompany.setCompanyId(companyId);
                 historyCompany.setStartTime(tempBegin);
-                historyCompany.setTotalCallTime((Long) objects[0]);
-                historyCompany.setTotalCallCount((Long) objects[1]);
-                historyCompany.setTotalCustomer((Long) objects[2]);
-                historyCompany.setPushCount((Long) objects[3]);
+                historyCompany.setTotalCallTime(CommonUtil.parseObject(objects[0]));
+                historyCompany.setTotalCallCount(CommonUtil.parseObject(objects[1]));
+                historyCompany.setTotalCustomer(CommonUtil.parseObject(objects[2]));
+                historyCompany.setPushCount(CommonUtil.parseObject(objects[3]));
                 historyCompany.setCreateTime(CommonUtil.getNow());
                 historyCompany.setUpdateTime(CommonUtil.getNow());
                 ptPhoneHistoryCompanyRepository.save(historyCompany);

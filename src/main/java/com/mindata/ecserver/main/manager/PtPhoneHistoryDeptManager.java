@@ -51,10 +51,10 @@ public class PtPhoneHistoryDeptManager {
                 PtPhoneHistoryDept historyDept = new PtPhoneHistoryDept();
                 historyDept.setDeptId(deptId);
                 historyDept.setStartTime(begin);
-                historyDept.setTotalCallTime((Long) objects[0]);
-                historyDept.setTotalCallCount((Long) objects[1]);
-                historyDept.setTotalCustomer((Long) objects[2]);
-                historyDept.setPushCount((Long) objects[3]);
+                historyDept.setTotalCallTime(CommonUtil.parseObject(objects[0]));
+                historyDept.setTotalCallCount(CommonUtil.parseObject(objects[1]));
+                historyDept.setTotalCustomer(CommonUtil.parseObject(objects[2]));
+                historyDept.setPushCount(CommonUtil.parseObject(objects[3]));
                 historyDept.setCreateTime(CommonUtil.getNow());
                 historyDept.setUpdateTime(CommonUtil.getNow());
                 ptPhoneHistoryDeptRepository.save(historyDept);

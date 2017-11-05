@@ -34,6 +34,16 @@ public class CommonUtil {
         return simpleHash.toString();
     }
 
+    public static Long parseObject(Object object) {
+        if (object instanceof Integer) {
+            return ((Integer) object).longValue();
+        }
+        if (object instanceof Long) {
+            return (Long) object;
+        }
+        return 0L;
+    }
+
     public static void main(String[] args) {
         System.out.println(password("admin"));
     }

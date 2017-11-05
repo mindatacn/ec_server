@@ -35,6 +35,17 @@ public class PtCompanyManager {
         return companyRepository.save(ptCompany);
     }
 
+    /**
+     * 根据corpId查询公司
+     *
+     * @param corpId
+     *         corpId
+     * @return 公司
+     */
+    public PtCompany findByEcCorpId(Integer corpId) {
+        return companyRepository.findByCorpId(corpId);
+    }
+
     public PtCompany findOne(Integer id) {
         return companyRepository.findOne(id);
     }

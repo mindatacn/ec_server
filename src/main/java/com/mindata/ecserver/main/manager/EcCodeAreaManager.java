@@ -37,6 +37,10 @@ public class EcCodeAreaManager {
      * @return 城市名
      */
     public String findById(String id) {
-        return codeAreaRepository.findOne(id).getName();
+        CodeAreaEntity codeAreaEntity = codeAreaRepository.findOne(id);
+        if (codeAreaEntity == null) {
+            return "";
+        }
+        return codeAreaEntity.getName();
     }
 }

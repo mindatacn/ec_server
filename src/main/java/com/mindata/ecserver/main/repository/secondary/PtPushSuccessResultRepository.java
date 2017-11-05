@@ -29,5 +29,5 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      *         crmId
      * @return 结果
      */
-    PtPushSuccessResult findByCrmId(Integer crmId);
+    PtPushSuccessResult findByCrmId(Long crmId);
 }

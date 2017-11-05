@@ -48,7 +48,7 @@ public class PtPushSuccessResult extends BaseEntity {
     /**
      * 在EC的客户id
      */
-    private Integer crmId;
+    private Long crmId;
     /**
      * 跟进人的公司id
      */
@@ -130,11 +130,11 @@ public class PtPushSuccessResult extends BaseEntity {
         this.websiteId = websiteId;
     }
 
-    public Integer getCrmId() {
+    public Long getCrmId() {
         return crmId;
     }
 
-    public void setCrmId(Integer crmId) {
+    public void setCrmId(Long crmId) {
         this.crmId = crmId;
     }
 

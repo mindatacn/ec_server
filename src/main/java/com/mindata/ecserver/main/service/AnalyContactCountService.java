@@ -48,9 +48,10 @@ public class AnalyContactCountService {
         contactCountEntityList.clear();
         //如果有缺失，获取begin到end间的所有天，每一天去count表查一次，把缺失的一天数据给补上
         for (; tempBegin.before(tempEnd); tempBegin = DateUtil.offsetDay(tempBegin, 1)) {
+            Date oneDayEnd = DateUtil.endOfDay(tempBegin);
             //每一天的
             List<PtAnalyContactCount> tempList = ptContactCountManager.findByDateBetween(tempBegin,
-                    tempEnd);
+                    oneDayEnd);
             if (tempList.size() > 0) {
                 contactCountEntityList.addAll(tempList);
                 continue;

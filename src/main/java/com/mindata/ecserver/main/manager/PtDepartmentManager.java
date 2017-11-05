@@ -32,6 +32,10 @@ public class PtDepartmentManager extends BaseService {
         return departmentRepository.findOne(id);
     }
 
+    public List<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state) {
+        return departmentRepository.findByCompanyIdAndState(companyId, state);
+    }
+
     /**
      * 根据名字查询
      *

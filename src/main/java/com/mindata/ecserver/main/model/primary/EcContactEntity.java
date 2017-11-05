@@ -309,7 +309,7 @@ public class EcContactEntity {
         return state;
     }
 
-    public void setState(Integer pushed) {
+    public void setState(Integer state) {
         this.state = state;
     }
 }

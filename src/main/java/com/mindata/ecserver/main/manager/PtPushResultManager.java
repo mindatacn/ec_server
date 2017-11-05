@@ -101,7 +101,6 @@ public class PtPushResultManager {
         Integer followUserId = pushResultVO.getPushBody().getFollowUserId().intValue();
         successCrmIds.forEach((key, value) -> {
             Integer index = Integer.valueOf(key);
-            Integer crmId = value.intValue();
             EcContactEntity contactEntity = ecContactManager.findOne(contactIds.get(index));
             PtPushSuccessResult result = new PtPushSuccessResult();
             result.setCreateTime(CommonUtil.getNow());
@@ -110,7 +109,7 @@ public class PtPushResultManager {
             result.setCompanyId(ShiroKit.getCurrentUser().getCompanyId());
             result.setCompanyName(contactEntity.getCompany());
             result.setContactId(contactEntity.getId());
-            result.setCrmId(crmId);
+            result.setCrmId(value);
             result.setDepartmentId(ShiroKit.getCurrentUser().getDepartmentId());
             result.setFollowUserId(followUserId);
             result.setMobile(contactEntity.getMobile());
@@ -169,7 +168,7 @@ public class PtPushResultManager {
      *         crmId
      * @return 结果
      */
-    public boolean existCrmId(Integer crmId) {
+    public boolean existCrmId(Long crmId) {
         return ptPushSuccessResultRepository.findByCrmId(crmId) != null;
     }
 }

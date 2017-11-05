@@ -24,6 +24,8 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
             " from PtPhoneHistory where ecUserId = ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(Long ecUserId, Date begin, Date end);
 
+    List<PtPhoneHistory> findByEcUserIdAndStartTimeBetween(Long ecUserId, Date begin, Date end);
+
     /**
      * 查询某天虚假的电话记录
      *
@@ -35,5 +37,5 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      *         某天的结束
      * @return 集合
      */
-    List<PtPhoneHistory> findByEcUserIdAndRealRecodeFalseAndCallTimeBetween(Long ecUserId, Date begin, Date end);
+    List<PtPhoneHistory> findByEcUserIdAndRealRecodeFalseAndStartTimeBetween(Long ecUserId, Date begin, Date end);
 }

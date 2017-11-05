@@ -22,7 +22,7 @@ public class PhoneHistoryDataBean {
     /**
      * 客户id
      */
-    private Integer crmId;
+    private Long crmId;
     /**
      * 通话时长
      */
@@ -84,11 +84,11 @@ public class PhoneHistoryDataBean {
         this.calltono = calltono;
     }
 
-    public Integer getCrmId() {
+    public Long getCrmId() {
         return crmId;
     }
 
-    public void setCrmId(Integer crmId) {
+    public void setCrmId(Long crmId) {
         this.crmId = crmId;
     }
 

@@ -18,7 +18,7 @@ import java.util.Date;
         "crmId")})
 public class PtPhoneHistory extends BaseEntity {
     /**
-     * EC员工id
+     * ecUserId
      */
     private Long ecUserId;
     /**
@@ -32,11 +32,11 @@ public class PtPhoneHistory extends BaseEntity {
     /**
      * 客户id
      */
-    private Integer crmId;
+    private Long crmId;
     /**
      * 通话时长
      */
-    private String callTime;
+    private Integer callTime;
     /**
      * 通话方式：
      * 1 电话
@@ -90,19 +90,19 @@ public class PtPhoneHistory extends BaseEntity {
         this.callToNo = callToNo;
     }
 
-    public Integer getCrmId() {
+    public Long getCrmId() {
         return crmId;
     }
 
-    public void setCrmId(Integer crmId) {
+    public void setCrmId(Long crmId) {
         this.crmId = crmId;
     }
 
-    public String getCallTime() {
+    public Integer getCallTime() {
         return callTime;
     }
 
-    public void setCallTime(String callTime) {
+    public void setCallTime(Integer callTime) {
         this.callTime = callTime;
     }
 

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wuweifeng wrote on 2017/10/26.
  */
 public interface PtCompanyRepository extends JpaRepository<PtCompany, Integer> {
+    PtCompany findByCorpId(Integer cropId);
 }

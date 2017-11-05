@@ -30,22 +30,23 @@ public class PtPhoneHistoryManager {
     private CallManager callManager;
     @Resource
     private PtPushResultManager ptPushResultManager;
+    @Resource
+    private PtUserManager ptUserManager;
 
     private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
     private int nowPageNo;
     private int maxPageNo;
 
     /**
-     * @param ecUserId
+     * 查询某用户某天的通话统计信息
+     * @param userId
      *         userId
-     * @param oneDay
-     *         哪一天
      * @return
      */
-    public List<Object[]> findTotalByEcUserIdAndOneDay(Long ecUserId, Date oneDay) throws IOException {
-        Date tempBegin = DateUtil.beginOfDay(oneDay);
-        Date tempEnd = DateUtil.endOfDay(oneDay);
-        List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealRecodeFalseAndCallTimeBetween
+    public List<Object[]> findTotalByUserIdAndOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
+        Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
+
+        List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealRecodeFalseAndStartTimeBetween
                 (ecUserId, tempBegin, tempEnd);
         //如果该天的是假数据，就直接返回回去
         if (histories.size() > 0) {
@@ -60,13 +61,13 @@ public class PtPhoneHistoryManager {
             historyDataBeans.clear();
             nowPageNo = 1;
             maxPageNo = 10000;
-            getFromEc(ecUserId, oneDay);
+            getFromEc(ecUserId, tempBegin);
 
             //如果EC也没该用户的数据，我们就造一条
             if (CollectionUtil.isEmpty(historyDataBeans)) {
                 PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
                 ptPhoneHistory.setEcUserId(ecUserId);
-                ptPhoneHistory.setStartTime(oneDay);
+                ptPhoneHistory.setStartTime(tempBegin);
                 ptPhoneHistory.setRealRecode(false);
                 ptPhoneHistory.setCreateTime(CommonUtil.getNow());
                 ptPhoneHistory.setUpdateTime(CommonUtil.getNow());
@@ -79,9 +80,28 @@ public class PtPhoneHistoryManager {
             //将从EC取得的数据导入数据库
             return intoDB();
 
-        } else {
-            return list;
         }
+        //只有3个字段
+        Object[] tempObjects = list.get(0);
+        //如果该天有真实数据
+        List<PtPhoneHistory> ptPhoneHistories = ptPhoneHistoryRepository.findByEcUserIdAndStartTimeBetween(ecUserId,
+                tempBegin, tempEnd);
+        int pushCount = 0;
+        for (PtPhoneHistory history : ptPhoneHistories) {
+            //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
+            boolean crmExist = ptPushResultManager.existCrmId(history.getCrmId());
+            if (crmExist) {
+                pushCount++;
+            }
+        }
+        Object[] objects = new Object[4];
+        objects[0] = tempObjects[0];
+        objects[1] = tempObjects[1];
+        objects[2] = tempObjects[2];
+        objects[3] = pushCount;
+        list.clear();
+        list.add(objects);
+        return list;
     }
 
     /**
@@ -89,7 +109,7 @@ public class PtPhoneHistoryManager {
      */
     private List<Object[]> intoDB() {
         List<Object[]> list = new ArrayList<>();
-        Object[] objects = new Object[3];
+        Object[] objects = new Object[4];
         objects[0] = historyDataBeans.size();
         //排除重复的联系人
         Set<String> customerSet = new HashSet<>();
@@ -98,7 +118,7 @@ public class PtPhoneHistoryManager {
 
         for (PhoneHistoryDataBean bean : historyDataBeans) {
             PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
-            ptPhoneHistory.setCallTime(bean.getCalltime());
+            ptPhoneHistory.setCallTime(Integer.valueOf(bean.getCalltime()));
             ptPhoneHistory.setCallToNo(bean.getCalltono());
             ptPhoneHistory.setCrmId(bean.getCrmId());
             ptPhoneHistory.setCustomerCompany(bean.getCustomerCompany());
@@ -115,6 +135,9 @@ public class PtPhoneHistoryManager {
             totalCallTime += Integer.valueOf(bean.getCalltime());
             //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
             boolean crmExist = ptPushResultManager.existCrmId(bean.getCrmId());
+            if (crmExist) {
+                pushCount++;
+            }
 
             customerSet.add(bean.getCalltono());
             save(ptPhoneHistory);
@@ -122,6 +145,7 @@ public class PtPhoneHistoryManager {
 
         objects[1] = totalCallTime;
         objects[2] = customerSet.size();
+        objects[3] = pushCount;
         list.add(objects);
         return list;
     }
@@ -130,6 +154,7 @@ public class PtPhoneHistoryManager {
         if (nowPageNo > maxPageNo) {
             return;
         }
+
         PhoneHistoryRequest request = new PhoneHistoryRequest();
         String date = DateUtil.formatDate(oneDay);
         request.setStartDate(date);
@@ -139,6 +164,10 @@ public class PtPhoneHistoryManager {
         PhoneHistory phoneHistory = (PhoneHistory) callManager.execute(serviceBuilder.getPhoneHistoryService().history
                 (request));
         PhoneHistoryData data = phoneHistory.getData();
+        if (data == null) {
+            return;
+        }
+
         historyDataBeans.addAll(data.getResult());
 
         maxPageNo = data.getMaxPageNo();

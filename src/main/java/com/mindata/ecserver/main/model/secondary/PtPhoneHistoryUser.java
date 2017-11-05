@@ -12,14 +12,14 @@ import java.util.Date;
  * 个人单日通话历史统计表
  */
 @Entity
-@Table(name = "pt_phone_history_user", indexes = {@Index(name = "ec_user_id", columnList =
-        "ecUserId"), @Index(name = "start_time", columnList =
+@Table(name = "pt_phone_history_user", indexes = {@Index(name = "user_id", columnList =
+        "userId"), @Index(name = "start_time", columnList =
         "startTime")})
 public class PtPhoneHistoryUser extends BaseEntity {
     /**
-     * EC员工id
+     * 员工id
      */
-    private Long ecUserId;
+    private Integer userId;
     /**
      * 打电话日期（精确到日）
      */
@@ -27,33 +27,33 @@ public class PtPhoneHistoryUser extends BaseEntity {
     /**
      * 总电话时长
      */
-    private Integer totalCallTime;
+    private Long totalCallTime;
     /**
      * 总打电话数量
      */
-    private Integer totalCallCount;
+    private Long totalCallCount;
     /**
      * 总联系人数量（对客户id排重）
      */
-    private Integer totalCustomer;
+    private Long totalCustomer;
     /**
      * 总联系人中有哪些是我们推送的客户
      */
-    private Integer pushCount;
+    private Long pushCount;
 
-    public Long getEcUserId() {
-        return ecUserId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setEcUserId(Long ecUserId) {
-        this.ecUserId = ecUserId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getPushCount() {
+    public Long getPushCount() {
         return pushCount;
     }
 
-    public void setPushCount(Integer pushCount) {
+    public void setPushCount(Long pushCount) {
         this.pushCount = pushCount;
     }
 
@@ -65,27 +65,27 @@ public class PtPhoneHistoryUser extends BaseEntity {
         this.startTime = startTime;
     }
 
-    public Integer getTotalCallTime() {
+    public Long getTotalCallTime() {
         return totalCallTime;
     }
 
-    public void setTotalCallTime(Integer totalCallTime) {
+    public void setTotalCallTime(Long totalCallTime) {
         this.totalCallTime = totalCallTime;
     }
 
-    public Integer getTotalCallCount() {
+    public Long getTotalCallCount() {
         return totalCallCount;
     }
 
-    public void setTotalCallCount(Integer totalCallCount) {
+    public void setTotalCallCount(Long totalCallCount) {
         this.totalCallCount = totalCallCount;
     }
 
-    public Integer getTotalCustomer() {
+    public Long getTotalCustomer() {
         return totalCustomer;
     }
 
-    public void setTotalCustomer(Integer totalCustomer) {
+    public void setTotalCustomer(Long totalCustomer) {
         this.totalCustomer = totalCustomer;
     }
 }

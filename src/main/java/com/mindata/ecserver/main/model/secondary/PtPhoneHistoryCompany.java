@@ -12,14 +12,14 @@ import java.util.Date;
  * 个人单日通话历史统计表
  */
 @Entity
-@Table(name = "pt_phone_history_dept", indexes = {@Index(name = "dept_id", columnList =
-        "deptId"), @Index(name = "start_time", columnList =
+@Table(name = "pt_phone_history_company", indexes = {@Index(name = "company_id", columnList =
+        "companyId"), @Index(name = "start_time", columnList =
         "startTime")})
-public class PtPhoneHistoryDept extends BaseEntity {
+public class PtPhoneHistoryCompany extends BaseEntity {
     /**
-     * 部门id
+     * 公司id
      */
-    private Integer deptId;
+    private Integer companyId;
     /**
      * 统计日期（精确到日）
      */
@@ -41,12 +41,12 @@ public class PtPhoneHistoryDept extends BaseEntity {
      */
     private Long pushCount;
 
-    public Integer getDeptId() {
-        return deptId;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Long getPushCount() {

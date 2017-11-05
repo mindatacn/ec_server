@@ -7,6 +7,7 @@ import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.xiaoleilu.hutool.json.JSONArray;
 import com.xiaoleilu.hutool.json.JSONObject;
 import com.xiaoleilu.hutool.json.JSONUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -52,6 +53,9 @@ public class RoleMenuCache extends BaseCache {
      *         菜单集合
      */
     public void setMenuByRoleId(int roleId, List<PtMenu> menus) {
+        if (CollectionUtil.isEmpty(menus)) {
+            return;
+        }
         JSONArray jsonArray = JSONUtil.parseArray(menus);
         stringRedisTemplate.opsForValue().set(keyOfRole(roleId), JSONUtil.toJsonStr(jsonArray));
     }

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
@@ -26,4 +28,6 @@ public interface PtDepartmentRepository extends JpaRepository<PtDepartment, Inte
     Page<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state, Pageable pageable);
 
     Page<PtDepartment> findByState(Integer state, Pageable pageable);
+
+    List<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state);
 }

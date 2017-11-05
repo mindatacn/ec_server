@@ -1,8 +1,9 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryUser;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryUserRepository;
-import com.xiaoleilu.hutool.date.DateUtil;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/11/3.
@@ -22,30 +24,64 @@ public class PtPhoneHistoryUserManager {
     private PtPhoneHistoryUserRepository ptPhoneHistoryUserRepository;
     @Resource
     private PtPhoneHistoryManager ptPhoneHistoryManager;
+    @Resource
+    private PtUserManager ptUserManager;
+
+    /**
+     * 查询某天某个部门所有员工的电话统计
+     *
+     * @param deptId
+     *         部门id
+     * @param begin
+     *         一天开始时间
+     * @param end
+     *         一天结束时间
+     * @return 数量集合
+     */
+    public List<Object[]> findDeptOneDayTotalByDeptId(Integer deptId, Date begin, Date end) throws IOException {
+        //找到部门所有正常的员工
+        List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, 0);
+        List<Integer> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
+
+        List<Object[]> list = new ArrayList<>();
+        long totalCallTime = 0L, totalCallCount = 0L, totalCustomer = 0L, pushCount = 0L;
+        for (Integer id : ids) {
+            PtPhoneHistoryUser user = findOneDay(id, begin, end);
+            totalCallTime += user.getTotalCallTime();
+            totalCallCount += user.getTotalCallCount();
+            totalCustomer += user.getTotalCustomer();
+            pushCount += user.getPushCount();
+        }
+        Object[] objects = new Object[]{totalCallTime, totalCallCount, totalCustomer, pushCount};
+        list.add(objects);
+        //得到该天的累计数量
+        return list;
+    }
+
 
     /**
      * 查询某天某用户的通话统计信息
      *
-     * @param date
-     *         某一天
      * @return 统计信息
      */
-    public PtPhoneHistoryUser findOneDay(Long ecUserId, Date date) throws IOException {
-        Date tempBegin = DateUtil.beginOfDay(date);
-        Date tempEnd = DateUtil.endOfDay(date);
-        List<PtPhoneHistoryUser> list = ptPhoneHistoryUserRepository.findByEcUserIdAndStartTimeBetween(ecUserId,
+    private PtPhoneHistoryUser findOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
+        List<PtPhoneHistoryUser> list = ptPhoneHistoryUserRepository.findByUserIdAndStartTimeBetween(userId,
                 tempBegin,
                 tempEnd);
         if (CollectionUtil.isEmpty(list)) {
             //去PhoneHistory总表去查询某天该用户的通话历史
-            List<Object[]> ptPhoneHistoryList = ptPhoneHistoryManager.findTotalByEcUserIdAndOneDay(ecUserId, date);
+            List<Object[]> ptPhoneHistoryList = ptPhoneHistoryManager.findTotalByUserIdAndOneDay(userId,
+                    tempBegin, tempEnd);
             PtPhoneHistoryUser historyUser = new PtPhoneHistoryUser();
             Object[] objects = ptPhoneHistoryList.get(0);
-            historyUser.setEcUserId(ecUserId);
-            historyUser.setStartTime(date);
-            historyUser.setTotalCallCount((int) objects[0]);
-            historyUser.setTotalCallTime((int) objects[1]);
-            historyUser.setTotalCustomer((int) objects[2]);
+            historyUser.setCreateTime(CommonUtil.getNow());
+            historyUser.setUpdateTime(CommonUtil.getNow());
+            historyUser.setUserId(userId);
+            historyUser.setStartTime(tempBegin);
+            historyUser.setTotalCallCount((Long) objects[0]);
+            historyUser.setTotalCallTime((Long) objects[1]);
+            historyUser.setTotalCustomer((Long) objects[2]);
+            historyUser.setPushCount((Long) objects[3]);
             return ptPhoneHistoryUserRepository.save(historyUser);
         }
         return list.get(0);
@@ -60,15 +96,15 @@ public class PtPhoneHistoryUserManager {
      *         结束时间
      * @return 分页数据
      */
-    public List<PtPhoneHistoryUser> findByEcUserId(Long ecUserId, Date begin, Date end) throws IOException {
-        List<PtPhoneHistoryUser> historyUsers = new ArrayList<>();
-        Date tempBegin = DateUtil.beginOfDay(begin);
-        Date tempEnd = DateUtil.endOfDay(end);
-        //如果有缺失，获取begin到end间的所有天，每一天去count表查一次，把缺失的一天数据给补上
-        for (; tempBegin.before(tempEnd); tempBegin = DateUtil.offsetDay(tempBegin, 1)) {
-            //每一天的
-            historyUsers.add(findOneDay(ecUserId, tempBegin));
-        }
-        return historyUsers;
-    }
+    //public List<PtPhoneHistoryUser> findByEcUserId(Long ecUserId, Date begin, Date end) throws IOException {
+    //    List<PtPhoneHistoryUser> historyUsers = new ArrayList<>();
+    //    Date tempBegin = DateUtil.beginOfDay(begin);
+    //    Date tempEnd = DateUtil.endOfDay(end);
+    //    //如果有缺失，获取begin到end间的所有天，每一天去count表查一次，把缺失的一天数据给补上
+    //    for (; tempBegin.before(tempEnd); tempBegin = DateUtil.offsetDay(tempBegin, 1)) {
+    //        //每一天的
+    //        historyUsers.add(findOneDay(ecUserId, tempBegin, tempEnd));
+    //    }
+    //    return historyUsers;
+    //}
 }

@@ -111,6 +111,10 @@ public class PtUserManager {
         return userRepository.findOne(id);
     }
 
+    public PtUser findByEcUserId(Long ecUserId) {
+        return userRepository.findByEcUserId(ecUserId);
+    }
+
     public PtUser update(PtUser ptUser) {
         return userRepository.save(ptUser);
     }
@@ -124,5 +128,18 @@ public class PtUserManager {
      */
     public Integer countByDepartmentId(Integer deparmentId) {
         return userRepository.countByDepartmentIdAndState(deparmentId, 0);
+    }
+
+    /**
+     * 根据部门id，查询所有的员工
+     *
+     * @param deptId
+     *         ec部门id
+     * @param state
+     *         状态
+     * @return user
+     */
+    public List<PtUser> findByDeptIdAndState(Integer deptId, Integer state) {
+        return userRepository.findByDepartmentIdAndState(deptId, state);
     }
 }

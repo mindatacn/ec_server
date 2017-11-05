@@ -75,8 +75,8 @@ public class PushService extends BaseService {
         )));
 
         int totalCount = pushBody.getIds().size();
-        int failureCount = bean.getSuccessCrmIds().size();
-        int successCount = totalCount - failureCount;
+        int successCount = bean.getSuccessCrmIds().size();
+        int failureCount = totalCount - successCount;
         return new PushResultCountVO(successCount, failureCount);
     }
 
@@ -84,19 +84,18 @@ public class PushService extends BaseService {
         List<String> fieldList = new ArrayList<>();
         fieldList.add("f_name");
         fieldList.add("f_mobile");
-        //fieldList.add("f_phone");
-        //fieldList.add("f_title");
+        fieldList.add("f_phone");
+        fieldList.add("f_title");
         //fieldList.add("f_fax");
         //fieldList.add("f_qq");
-        //fieldList.add("f_email");
+        fieldList.add("f_email");
         fieldList.add("f_company");
         fieldList.add("f_company_addr");
-        //fieldList.add("f_company_url");
-//      fieldList.add("f_call");
-//        fieldList.add("f_memo");
+        fieldList.add("f_company_url");
+        fieldList.add("f_memo");
         fieldList.add("f_gender");
         fieldList.add("f_company_province");
-        //fieldList.add("f_company_city");
+        fieldList.add("f_company_city");
 //      fieldList.add("f_vocation");
 //      fieldList.add("f_channel");
         return fieldList.toArray();
@@ -108,18 +107,18 @@ public class PushService extends BaseService {
             List<Object> v = new ArrayList<>();
             v.add(e.getName());
             v.add(e.getMobile());
-            //v.add(e.getPhone());
-            //v.add(e.getTitle());
+            v.add(e.getPhone() == null ? "" : e.getPhone());
+            v.add(e.getTitle() == null ? "" : e.getTitle());
             //v.add(e.getFax());
             //v.add(e.getQq());
-            //v.add(e.getEmail());
-            v.add(e.getCompany());
-            v.add(e.getAddress());
-            //v.add(e.getUrl());
-            //v.add(e.getMemo());
+            v.add(e.getEmail() == null ? "" : e.getEmail());
+            v.add(e.getCompany() == null ? "" : e.getCompany());
+            v.add(e.getAddress() == null ? "" : e.getAddress());
+            v.add(e.getUrl() == null ? "" : e.getUrl());
+            v.add(e.getMemo() == null ? "" : e.getMemo());
             v.add(e.getGender() == null ? 0 : e.getGender());
             v.add(ecCodeAreaManager.findById(e.getProvince()));
-            //v.add(ecCodeAreaManager.findById(e.getCity()));
+            v.add(ecCodeAreaManager.findById(e.getCity()));
             valueList.add(v.toArray());
         }
         return valueList;

@@ -38,6 +38,8 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
 
     List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state);
 
+    List<PtUser> findByCompanyIdAndStateAndNameLike(Integer companyId, Integer state, String name);
+
     /**
      * 根据名字模糊查询某个部门的员工
      *

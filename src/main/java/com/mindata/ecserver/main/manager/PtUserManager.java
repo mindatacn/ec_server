@@ -163,4 +163,11 @@ public class PtUserManager {
         }
         return userRepository.findByDepartmentIdAndStateAndNameLike(deptId, 0, "%" + name + "%");
     }
+
+    public List<PtUser> findByCompanyIdAndNameLike(Integer companyId, String name) {
+        if (StrUtil.isEmpty(name)) {
+            return userRepository.findByCompanyIdAndState(companyId, 0);
+        }
+        return userRepository.findByCompanyIdAndStateAndNameLike(companyId, 0, "%" + name + "%");
+    }
 }

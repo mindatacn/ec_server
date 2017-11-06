@@ -72,9 +72,9 @@ public class UserController {
      *         名字
      * @return 集合
      */
-    @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
+    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("")
     public BaseData findUserByNameLike(String name) {
-        return ResultGenerator.genSuccessResult(userService.findByDeptIdAndNameLike(name));
+        return ResultGenerator.genSuccessResult(userService.findByNameLike(name));
     }
 }

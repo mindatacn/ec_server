@@ -3,13 +3,13 @@ package com.mindata.ecserver.main.controller;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
+import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -63,5 +63,18 @@ public class UserController {
     @PutMapping
     public BaseData modifyInfo(String name, String mobile, String email) {
         return ResultGenerator.genSuccessResult(userService.modifyInfo(name, mobile, email));
+    }
+
+    /**
+     * 根据名字模糊查询
+     *
+     * @param name
+     *         名字
+     * @return 集合
+     */
+    @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
+    @GetMapping("")
+    public BaseData findUserByNameLike(String name) {
+        return ResultGenerator.genSuccessResult(userService.findByDeptIdAndNameLike(name));
     }
 }

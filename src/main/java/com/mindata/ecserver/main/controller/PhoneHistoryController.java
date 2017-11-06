@@ -6,6 +6,7 @@ import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
 import com.mindata.ecserver.main.service.PhoneHistoryUserService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -47,7 +48,7 @@ public class PhoneHistoryController {
                 pageable));
     }
 
-    @RequiresRoles({Constant.ROLE_MANAGER, Constant.ROLE_LEADER})
+    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept/{ids}")
     public BaseData queryDept(@PathVariable String ids, Date begin, Date end,
                               @PageableDefault(direction =
@@ -56,7 +57,7 @@ public class PhoneHistoryController {
         return null;
     }
 
-    @RequiresRoles({Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER})
+    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("/user/{ids}")
     public BaseData queryUser(@PathVariable String ids, Date begin, Date end,
                               @PageableDefault(direction =
@@ -67,7 +68,7 @@ public class PhoneHistoryController {
     /**
      * 查询个人的统计
      */
-    @RequiresRoles(Constant.ROLE_USER)
+    @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("")
     public BaseData query(String begin, String end,
                           @PageableDefault(direction =

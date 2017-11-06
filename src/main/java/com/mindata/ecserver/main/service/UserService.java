@@ -184,4 +184,14 @@ public class UserService extends BaseService {
         //该user的token已经存在了
         userTokenCache.deleteBothByUserId(ptUser.getId());
     }
+
+    /**
+     * 查询自己部门的所有员工name like的集合
+     *
+     * @return 结果集
+     */
+    public List<PtUser> findByDeptIdAndNameLike(String name) {
+        PtUser ptUser = ShiroKit.getCurrentUser();
+        return userManager.findByDeptIdAndNameLike(ptUser.getDepartmentId(), name);
+    }
 }

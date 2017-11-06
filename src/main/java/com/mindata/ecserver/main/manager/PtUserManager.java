@@ -5,6 +5,7 @@ import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -145,5 +146,21 @@ public class PtUserManager {
 
     public List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state) {
         return userRepository.findByCompanyIdAndState(companyId, state);
+    }
+
+    /**
+     * 查询某个部门名字like
+     *
+     * @param deptId
+     *         部门id
+     * @param name
+     *         名字
+     * @return 结果集
+     */
+    public List<PtUser> findByDeptIdAndNameLike(Integer deptId, String name) {
+        if (StrUtil.isEmpty(name)) {
+            return userRepository.findByDepartmentIdAndState(deptId, 0);
+        }
+        return userRepository.findByDepartmentIdAndStateAndNameLike(deptId, 0, "%" + name + "%");
     }
 }

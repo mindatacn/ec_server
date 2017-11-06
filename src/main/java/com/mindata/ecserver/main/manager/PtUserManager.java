@@ -142,4 +142,8 @@ public class PtUserManager {
     public List<PtUser> findByDeptIdAndState(Integer deptId, Integer state) {
         return userRepository.findByDepartmentIdAndState(deptId, state);
     }
+
+    public List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state) {
+        return userRepository.findByCompanyIdAndState(companyId, state);
+    }
 }

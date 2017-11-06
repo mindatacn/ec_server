@@ -46,8 +46,7 @@ public class PtMenuManager {
         }
         List<PtMenuRole> menuRoles = ptMenuRoleRepository.findByRoleId(roleId);
         menuList = menuRoles.stream().map(ptMenuRole -> ptMenuRepository.findOne(ptMenuRole.getMenuId())).collect
-                (Collectors
-                .toList());
+                (Collectors.toList());
         roleMenuCache.setMenuByRoleId(roleId, menuList);
         return menuList;
     }
@@ -59,4 +58,6 @@ public class PtMenuManager {
         }
         return menus;
     }
+
+
 }

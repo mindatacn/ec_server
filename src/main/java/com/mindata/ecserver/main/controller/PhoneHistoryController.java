@@ -5,6 +5,7 @@ import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
+import com.mindata.ecserver.main.service.PhoneHistoryUserService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,8 @@ import java.util.Date;
 public class PhoneHistoryController {
     @Resource
     private PhoneHistoryCompanyService phoneHistoryCompanyService;
+    @Resource
+    private PhoneHistoryUserService phoneHistoryUserService;
 
     /**
      * 根据传来的参数进行查询，如果什么都不传，就是查公司级的，传
@@ -49,6 +52,7 @@ public class PhoneHistoryController {
     public BaseData queryDept(@PathVariable String ids, Date begin, Date end,
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
+
         return null;
     }
 
@@ -58,5 +62,29 @@ public class PhoneHistoryController {
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
         return null;
+    }
+
+    /**
+     * 查询个人的统计
+     */
+    @RequiresRoles(Constant.ROLE_USER)
+    @RequestMapping("")
+    public BaseData query(String begin, String end,
+                          @PageableDefault(direction =
+                                  Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
+        phoneHistoryUserService.findPersonalHistoryByDate(begin, end, pageable);
+        return null;
+    }
+
+    /**
+     * 查询所有用户某段时间任务完成情况
+     *
+     * @param begin
+     * @param end
+     * @return
+     */
+    @RequestMapping("/state")
+    public Object queryUserFinishState(String begin, String end) {
+        return phoneHistoryCompanyService.findHistoryStrByDate(begin, end);
     }
 }

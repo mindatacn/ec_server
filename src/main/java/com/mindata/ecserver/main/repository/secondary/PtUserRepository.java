@@ -26,4 +26,6 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
     Integer countByDepartmentIdAndState(Integer departmentId, Integer state);
 
     List<PtUser> findByDepartmentIdAndState(Integer departmentId, Integer state);
+
+    List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state);
 }

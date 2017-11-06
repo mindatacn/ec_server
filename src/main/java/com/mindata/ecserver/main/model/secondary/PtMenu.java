@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pt_menu", indexes = {@Index(name = "parent_id", columnList =
         "parentId")})
-public class PtMenu extends BaseEntity {
+public class PtMenu extends BaseEntity implements Comparable {
     /**
      * 菜单名
      */
@@ -109,5 +109,21 @@ public class PtMenu extends BaseEntity {
 
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (this == o) {
+            return 0;
+        } else if (o != null && o instanceof PtMenu) {
+            PtMenu u = (PtMenu) o;
+            if (orderNum > u.orderNum) {
+                return -1;
+            } else {
+                return 1;
+            }
+        } else {
+            return -1;
+        }
     }
 }

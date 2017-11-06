@@ -20,11 +20,17 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
+    /**
+     * 获取自己的菜单
+     *
+     * @param parentId
+     *         父菜单id
+     * @return 菜单结果
+     */
     @GetMapping("")
     public BaseData get(Integer parentId) {
-        return null;
+        return ResultGenerator.genSuccessResult(menuService.find(parentId));
     }
-
 
     @PostMapping("")
     @RequiresRoles(Constant.ROLE_ADMIN)

@@ -36,4 +36,8 @@ public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHisto
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
             " from PtPhoneHistoryUser where userId in ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(List<Integer> userIds, Date begin, Date end);
+
+    @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
+            " from PtPhoneHistoryUser where userId = ?1 and startTime between ?2 and ?3")
+    List<Object[]> findCount(Integer userId, Date begin, Date end);
 }

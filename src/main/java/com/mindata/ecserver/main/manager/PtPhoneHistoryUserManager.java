@@ -5,6 +5,8 @@ import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -59,6 +61,17 @@ public class PtPhoneHistoryUserManager {
         return list;
     }
 
+    /**
+     * 查询某用户一段时间内的统计信息
+     *
+     * @param userId
+     * @param begin
+     * @param end
+     * @return
+     */
+    public List<Object[]> findTotalByUserId(Integer userId, Date begin, Date end) {
+        return ptPhoneHistoryUserRepository.findCount(userId, begin, end);
+    }
 
     /**
      * 查询某天某用户的通话统计信息
@@ -98,15 +111,7 @@ public class PtPhoneHistoryUserManager {
      *         结束时间
      * @return 分页数据
      */
-    //public List<PtPhoneHistoryUser> findByEcUserId(Long ecUserId, Date begin, Date end) throws IOException {
-    //    List<PtPhoneHistoryUser> historyUsers = new ArrayList<>();
-    //    Date tempBegin = DateUtil.beginOfDay(begin);
-    //    Date tempEnd = DateUtil.endOfDay(end);
-    //    //如果有缺失，获取begin到end间的所有天，每一天去count表查一次，把缺失的一天数据给补上
-    //    for (; tempBegin.before(tempEnd); tempBegin = DateUtil.offsetDay(tempBegin, 1)) {
-    //        //每一天的
-    //        historyUsers.add(findOneDay(ecUserId, tempBegin, tempEnd));
-    //    }
-    //    return historyUsers;
-    //}
+    public Page<PtPhoneHistoryUser> findByUserId(Integer userId, Date begin, Date end, Pageable pageable) {
+        return ptPhoneHistoryUserRepository.findByUserIdAndStartTimeBetween(userId, begin, end, pageable);
+    }
 }

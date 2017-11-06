@@ -2,9 +2,12 @@ package com.mindata.ecserver.util;
 
 
 import com.mindata.ecserver.global.constant.Constant;
+import com.xiaoleilu.hutool.io.file.FileReader;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,6 +102,52 @@ public class CommonUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(password("admin"));
+        //System.out.println(password("admin"));
+        jisuan();
+    }
+
+    private static void jisuan() {
+        FileReader fileReader = new FileReader("/Users/wuwf/Downloads/2017.csv", "gbk");
+        List<String> list = fileReader.readLines();
+        list.remove(0);
+        for (String line : list) {
+            String[] array = line.split(",");
+            String finish = array[4];
+            //取电话次数
+            int a = finish.indexOf("\"");
+            int b = finish.indexOf("次");
+            int cishu = Integer.valueOf(finish.substring(a + 1, b));
+
+            int begin = finish.indexOf("：");
+            int end = finish.indexOf("秒");
+            String s = finish.substring(begin + 1, end);
+            int userSeconds = getSeconds(s);
+            DecimalFormat df = new DecimalFormat("######0.00");
+            double scale = userSeconds * 100.0 / 3600;
+            double noscale = (3600 - userSeconds) * 100.0 / 3600;
+            String result = array[0].replace("\"", "") + "," +
+                    "60分钟" + ",已打" + secToTime(userSeconds) + ",未打" + secToTime(3600 - userSeconds) + ",电话完成率"
+                    + df.format(scale) + "%,未完成率" + df.format(noscale) + "%" + ",拜访" + array[9].replace("\"", "") +
+                    "人,"
+                    + "加上折算、累计次数" + (cishu + Integer.valueOf(array[9].replace("\"", "")) * 20) + ",还欠次数" + (60 -
+                    (cishu + Integer.valueOf(array[9].replace("\"", "")) * 20));
+            System.out.println(result);
+        }
+    }
+
+    private static Integer getSeconds(String hourStr) {
+        int count = 0;
+        if (hourStr.contains("小时")) {
+            Integer hour = Integer.valueOf(hourStr.substring(0, hourStr.indexOf("小时")));
+            count += hour * 3600;
+            hourStr = hourStr.replace(hour + "小时", "");
+        }
+        if (hourStr.contains("分")) {
+            Integer hour = Integer.valueOf(hourStr.substring(0, hourStr.indexOf("分")));
+            count += hour * 60;
+            hourStr = hourStr.replace(hour + "分", "");
+        }
+        count += Integer.valueOf(hourStr);
+        return count;
     }
 }

@@ -127,5 +127,4 @@ public class PtDepartmentManager extends BaseService {
         return ptDepartments;
     }
 
-
 }

@@ -149,7 +149,7 @@ public class PtUserManager {
     }
 
     /**
-     * 查询某个部门名字like
+     * 查询某个部门的员工名字like
      *
      * @param deptId
      *         部门id

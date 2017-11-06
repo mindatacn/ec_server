@@ -28,12 +28,13 @@ public class DepartmentController {
      * @param name
      * 部门名
      * @return
+     * 部门集合
      */
     @GetMapping("")
-    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_ADMIN}, logical = Logical.OR)
+    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_ADMIN, Constant.ROLE_LEADER}, logical = Logical.OR)
     public BaseData find(@PageableDefault(sort = {"sort", "id"}, direction = Sort.Direction.DESC) Pageable pageable,
-                         String name) {
-        return ResultGenerator.genSuccessResult(departmentService.findByName(name, pageable));
+                         String name, Integer companyId) {
+        return ResultGenerator.genSuccessResult(departmentService.findByName(companyId, name, pageable));
     }
 
 

@@ -29,9 +29,12 @@ public class DepartmentService {
     /**
      * 根据部门名查询集合
      */
-    public SimplePage<DepartmentSimpleVO> findByName(String name, Pageable pageable) {
-        PtUser ptUser = ShiroKit.getCurrentUser();
-        Page<PtDepartment> departmentPage = ptDepartmentManager.findByName(name, ptUser.getCompanyId(), 0, pageable);
+    public SimplePage<DepartmentSimpleVO> findByName(Integer companyId, String name, Pageable pageable) {
+        if (companyId == null) {
+            PtUser ptUser = ShiroKit.getCurrentUser();
+            companyId = ptUser.getCompanyId();
+        }
+        Page<PtDepartment> departmentPage = ptDepartmentManager.findByName(name, companyId, 0, pageable);
         List<PtDepartment> departments = departmentPage.getContent();
         List<DepartmentSimpleVO> vos = new ArrayList<>(departments.size());
         for (PtDepartment department : departments) {

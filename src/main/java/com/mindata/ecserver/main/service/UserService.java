@@ -1,7 +1,13 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.ec.model.request.UserAccountRequest;
+import com.mindata.ecserver.ec.model.response.UserAccountData;
+import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
+import com.mindata.ecserver.ec.service.UserAccountService;
+import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.bean.TokenExpire;
 import com.mindata.ecserver.global.cache.UserTokenCache;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
@@ -10,9 +16,11 @@ import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +40,10 @@ public class UserService extends BaseService {
     private PtUserManager userManager;
     @Resource
     private UserTokenCache userTokenCache;
+    @Resource
+    private ServiceBuilder serviceBuilder;
+    @Resource
+    private CallManager callManager;
 
     /**
      * 查询用户的所有权限集合
@@ -116,6 +128,53 @@ public class UserService extends BaseService {
         return 0;
     }
 
+    /**
+     * 修改个人信息
+     *
+     * @param name
+     *         名字
+     * @param mobile
+     *         电话
+     * @param email
+     *         邮箱
+     * @return
+     */
+    public PtUser modifyInfo(String name, String mobile, String email) {
+        PtUser ptUser = getCurrentUser();
+        if (name != null && !StrUtil.equals(name, ptUser.getName())) {
+            ptUser.setName(name);
+        }
+        if (mobile != null && !StrUtil.equals(mobile, ptUser.getMobile())) {
+            ptUser.setMobile(mobile);
+        }
+        if (email != null && !StrUtil.equals(email, ptUser.getEmail())) {
+            ptUser.setEmail(email);
+        }
+        return userManager.update(ptUser);
+    }
+
+    /**
+     * 绑定ec账号
+     */
+    public int bindEc(String phone) throws IOException {
+        UserAccountService userAccountService = serviceBuilder.getUserAccountService();
+        UserAccountRequest userAccountRequest = new UserAccountRequest(phone);
+        UserAccountData userAccountData = (UserAccountData) callManager.execute(userAccountService.userAccount
+                (userAccountRequest));
+        //得到ec的userId
+        Long ecUserId = userAccountData.getData().getF_user_id();
+        //判断是否在本系统中已经被占用
+        PtUser user = userManager.findByEcUserId(ecUserId);
+        if (user != null) {
+            return -1;
+        }
+
+        PtUser ptUser = ShiroKit.getCurrentUser();
+        ptUser.setEcUserId(ecUserId);
+        userManager.update(ptUser);
+
+        return 0;
+    }
 
     /**
      * 退出登录清除token信息

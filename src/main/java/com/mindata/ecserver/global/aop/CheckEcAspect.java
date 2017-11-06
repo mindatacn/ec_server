@@ -1,6 +1,6 @@
 package com.mindata.ecserver.global.aop;
 
-import com.mindata.ecserver.ec.model.request.AppId;
+import com.mindata.ecserver.ec.model.request.AppIdRequest;
 import com.mindata.ecserver.ec.model.response.AccessData;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.AuthService;
@@ -49,8 +49,8 @@ public class CheckEcAspect {
         if (ecToken == null) {
             AuthService authService = serviceBuilder.getAuthService();
             PtCompany company = companyService.findNowCompany();
-            AppId appId = new AppId(company.getAppId(), company.getAppSecret());
-            AccessData accessData = (AccessData) callManager.execute(authService.accessToken(appId));
+            AppIdRequest appIdRequest = new AppIdRequest(company.getAppId(), company.getAppSecret());
+            AccessData accessData = (AccessData) callManager.execute(authService.accessToken(appIdRequest));
             ecToken = accessData.getData().getAccessToken();
             ecTokenCache.setTokenByCorpId(corpId, ecToken);
         }

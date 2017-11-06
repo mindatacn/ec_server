@@ -3,14 +3,14 @@ package com.mindata.ecserver.ec.model.request;
 /**
  * @author wuweifeng wrote on 2017/10/23.
  */
-public class AppId {
+public class AppIdRequest {
     private String appId;
     private String appSecret;
 
-    public AppId() {
+    public AppIdRequest() {
     }
 
-    public AppId(String appId, String appSecret) {
+    public AppIdRequest(String appId, String appSecret) {
         this.appId = appId;
         this.appSecret = appSecret;
     }

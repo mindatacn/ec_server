@@ -1,6 +1,6 @@
 package com.mindata.ecserver.ec.service;
 
-import com.mindata.ecserver.ec.model.request.AppId;
+import com.mindata.ecserver.ec.model.request.AppIdRequest;
 import com.mindata.ecserver.ec.model.response.AccessData;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,5 +16,5 @@ public interface AuthService {
      * @return token
      */
     @POST("auth/accesstoken")
-    Call<AccessData> accessToken(@Body AppId appId);
+    Call<AccessData> accessToken(@Body AppIdRequest appIdRequest);
 }

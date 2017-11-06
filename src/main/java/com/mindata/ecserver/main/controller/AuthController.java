@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.controller;
 
-import com.mindata.ecserver.ec.model.request.AppId;
+import com.mindata.ecserver.ec.model.request.AppIdRequest;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.util.CallManager;
@@ -45,9 +45,9 @@ public class AuthController {
     @RequestMapping("/ec/token")
     public Object token() throws IOException {
         AuthService authService = serviceBuilder.getAuthService();
-        AppId appId = new AppId("138300510292672512", "DUPsunmpVFNKqAId6hI");
+        AppIdRequest appIdRequest = new AppIdRequest("138300510292672512", "DUPsunmpVFNKqAId6hI");
 
-        return callManager.execute(authService.accessToken(appId));
+        return callManager.execute(authService.accessToken(appIdRequest));
     }
 
     @RequestMapping({"/403"})

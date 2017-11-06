@@ -68,20 +68,16 @@ public class PhoneHistoryController {
      * 查询个人的统计
      */
     @RequiresRoles(Constant.ROLE_USER)
-    @RequestMapping("")
+    @GetMapping("")
     public BaseData query(String begin, String end,
                           @PageableDefault(direction =
                                   Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
-        phoneHistoryUserService.findPersonalHistoryByDate(begin, end, pageable);
-        return null;
+        return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByDate(begin, end,
+                pageable));
     }
 
     /**
-     * 查询所有用户某段时间任务完成情况
-     *
-     * @param begin
-     * @param end
-     * @return
+     * 查询所有用户某段时间任务完成情况，for HR
      */
     @RequestMapping("/state")
     public Object queryUserFinishState(String begin, String end) {

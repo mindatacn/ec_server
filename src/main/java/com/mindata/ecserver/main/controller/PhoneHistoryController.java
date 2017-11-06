@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.main.manager.PtPhoneHistoryCompanyManager;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
 import com.mindata.ecserver.main.service.PhoneHistoryDeptService;
 import com.mindata.ecserver.main.service.PhoneHistoryUserService;
@@ -32,20 +33,22 @@ public class PhoneHistoryController {
     private PhoneHistoryUserService phoneHistoryUserService;
     @Resource
     private PhoneHistoryDeptService phoneHistoryDeptService;
+    @Resource
+    private PtPhoneHistoryCompanyManager ptPhoneHistoryCompanyManager;
 
     /**
-     * 根据传来的参数进行查询，如果什么都不传，就是查公司级的，传
+     * 根据传来的参数进行查询，查公司级的
      *
      * @return 公司级数据
      */
     @RequiresRoles(Constant.ROLE_MANAGER)
     @CheckEcAnnotation
     @GetMapping("/company")
-    public BaseData queryCompany(String begin, String end,
+    public BaseData queryCompany(Integer companyId, String begin, String end,
                                  @PageableDefault(direction =
                                          Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
             IOException {
-        return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.findHistoryByDate(null, begin, end,
+        return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.findHistoryByDate(companyId, begin, end,
                 pageable));
     }
 

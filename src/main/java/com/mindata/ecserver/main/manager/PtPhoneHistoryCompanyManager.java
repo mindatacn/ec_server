@@ -5,6 +5,7 @@ import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryCompanyRepos
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUnit;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -82,5 +83,20 @@ public class PtPhoneHistoryCompanyManager {
 
         return ptPhoneHistoryCompanyRepository.findByCompanyIdAndStartTimeBetween(companyId,
                 begin, end, pageable);
+    }
+
+    /**
+     * 查询某公司一段时间内的统计信息
+     *
+     * @param companyId
+     *         公司id
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 聚合结果数据
+     */
+    public List<Object[]> findTotalByCompanyId(Integer companyId, Date begin, Date end) {
+        return ptPhoneHistoryCompanyRepository.findCount(CollectionUtil.newArrayList(companyId), begin, end);
     }
 }

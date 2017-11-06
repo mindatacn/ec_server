@@ -4,8 +4,10 @@ import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -39,4 +41,19 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      * @return 数量
      */
     Integer countByCompanyIdAndStartTimeBetween(Integer companyId, Date begin, Date end);
+
+    /**
+     * 统计某公司某段时间的统计聚合数据
+     *
+     * @param companyIds
+     *         公司id
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 聚合结果
+     */
+    @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
+            " from PtPhoneHistoryCompany where companyId in ?1 and startTime between ?2 and ?3")
+    List<Object[]> findCount(List<Integer> companyIds, Date begin, Date end);
 }

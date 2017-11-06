@@ -5,6 +5,7 @@ import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
+import com.mindata.ecserver.main.service.PhoneHistoryDeptService;
 import com.mindata.ecserver.main.service.PhoneHistoryUserService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -12,13 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * @author wuweifeng wrote on 2017/11/5.
@@ -31,6 +30,8 @@ public class PhoneHistoryController {
     private PhoneHistoryCompanyService phoneHistoryCompanyService;
     @Resource
     private PhoneHistoryUserService phoneHistoryUserService;
+    @Resource
+    private PhoneHistoryDeptService phoneHistoryDeptService;
 
     /**
      * 根据传来的参数进行查询，如果什么都不传，就是查公司级的，传
@@ -48,32 +49,28 @@ public class PhoneHistoryController {
                 pageable));
     }
 
+    /**
+     * 查询部门的统计
+     */
     @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
-    @GetMapping("/dept/{ids}")
-    public BaseData queryDept(@PathVariable String ids, Date begin, Date end,
+    @GetMapping("/dept")
+    public BaseData queryUser(Integer deptId, String begin, String end,
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
-
-        return null;
-    }
-
-    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
-    @GetMapping("/user/{ids}")
-    public BaseData queryUser(@PathVariable String ids, Date begin, Date end,
-                              @PageableDefault(direction =
-                                      Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
-        return null;
+        return ResultGenerator.genSuccessResult(phoneHistoryDeptService.findDeptHistoryByDateBetween(deptId, begin,
+                end, pageable));
     }
 
     /**
      * 查询个人的统计
      */
     @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
-    @GetMapping("")
-    public BaseData query(String begin, String end,
+    @GetMapping("/user")
+    public BaseData query(Integer userId, String begin, String end,
                           @PageableDefault(direction =
                                   Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
-        return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByDate(begin, end,
+        return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByDate(userId,
+                begin, end,
                 pageable));
     }
 

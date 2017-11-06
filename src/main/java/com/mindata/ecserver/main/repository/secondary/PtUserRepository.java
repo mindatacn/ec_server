@@ -25,6 +25,15 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
      */
     Integer countByDepartmentIdAndState(Integer departmentId, Integer state);
 
+    /**
+     * 查询某个部门所有正常状态员工
+     *
+     * @param departmentId
+     *         部门id
+     * @param state
+     *         状态
+     * @return 结果集
+     */
     List<PtUser> findByDepartmentIdAndState(Integer departmentId, Integer state);
 
     List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state);

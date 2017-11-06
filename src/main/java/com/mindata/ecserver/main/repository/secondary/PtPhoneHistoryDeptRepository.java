@@ -26,7 +26,7 @@ public interface PtPhoneHistoryDeptRepository extends JpaRepository<PtPhoneHisto
      *         分页
      * @return page
      */
-    Page<PtPhoneHistoryDept> findByDeptIdAndStartTimeBetween(Long deptId, Date begin, Date end, Pageable pageable);
+    Page<PtPhoneHistoryDept> findByDeptIdAndStartTimeBetween(Integer deptId, Date begin, Date end, Pageable pageable);
 
     List<PtPhoneHistoryDept> findByDeptIdAndStartTimeBetween(Long deptId, Date begin, Date end);
 

@@ -3,7 +3,6 @@ package com.mindata.ecserver.main.service;
 import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryUserManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryUser;
 import com.mindata.ecserver.main.vo.PhoneHistoryBeanVO;
 import com.mindata.ecserver.main.vo.PhoneHistoryVO;
@@ -24,14 +23,14 @@ import java.util.stream.Collectors;
 public class PhoneHistoryUserService {
     @Resource
     private PtPhoneHistoryUserManager ptPhoneHistoryUserManager;
-    @Resource
-    private PtUserManager ptUserManager;
 
     /**
      * 个人历史营销统计功能
      */
-    public PhoneHistoryVO findPersonalHistoryByDate(String begin, String end, Pageable pageable) {
-        Integer userId = ShiroKit.getCurrentUser().getId();
+    public PhoneHistoryVO findPersonalHistoryByDate(Integer userId, String begin, String end, Pageable pageable) {
+        if (userId == null) {
+            userId = ShiroKit.getCurrentUser().getId();
+        }
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
         //这一段时间的累计数据

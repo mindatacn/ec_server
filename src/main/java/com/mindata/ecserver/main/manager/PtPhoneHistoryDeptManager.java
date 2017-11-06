@@ -4,6 +4,9 @@ import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryDept;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryDeptRepository;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -66,4 +69,31 @@ public class PtPhoneHistoryDeptManager {
         return ptPhoneHistoryDeptRepository.findCount(ids, begin, end);
     }
 
+    /**
+     * 查询某部门一段时间内的统计信息
+     *
+     * @param deptId
+     *         部门id
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 聚合结果数据
+     */
+    public List<Object[]> findTotalByDeptId(Integer deptId, Date begin, Date end) {
+        return ptPhoneHistoryDeptRepository.findCount(CollectionUtil.newArrayList(deptId), begin, end);
+    }
+
+    /**
+     * 查询某个部门在一段时间内的通话历史集合
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 分页数据
+     */
+    public Page<PtPhoneHistoryDept> findByDeptId(Integer deptId, Date begin, Date end, Pageable pageable) {
+        return ptPhoneHistoryDeptRepository.findByDeptIdAndStartTimeBetween(deptId, begin, end, pageable);
+    }
 }

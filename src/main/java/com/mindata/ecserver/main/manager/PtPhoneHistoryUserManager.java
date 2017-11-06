@@ -70,7 +70,7 @@ public class PtPhoneHistoryUserManager {
      * @return
      */
     public List<Object[]> findTotalByUserId(Integer userId, Date begin, Date end) {
-        return ptPhoneHistoryUserRepository.findCount(userId, begin, end);
+        return ptPhoneHistoryUserRepository.findCount(CollectionUtil.newArrayList(userId), begin, end);
     }
 
     /**

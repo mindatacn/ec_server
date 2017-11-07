@@ -45,6 +45,11 @@ public class PtPhoneHistoryManager {
      */
     public List<Object[]> findTotalByUserIdAndOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
         Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
+        //没绑定ec
+        if (ecUserId == null) {
+            //返回全为0
+            return generEmptyList();
+        }
 
         List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealRecodeFalseAndStartTimeBetween
                 (ecUserId, tempBegin, tempEnd);

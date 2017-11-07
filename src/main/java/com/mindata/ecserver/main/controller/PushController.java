@@ -7,6 +7,7 @@ import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.PushService;
@@ -50,7 +51,11 @@ public class PushController {
     public BaseData push(@RequestBody PushBody pushBody) throws IOException {
         //没传跟进人，默认为自己
         if (pushBody.getFollowUserId() == null) {
-            pushBody.setFollowUserId((long) ShiroKit.getCurrentUser().getId());
+            PtUser ptUser = ShiroKit.getCurrentUser();
+            if (ptUser.getEcUserId() == null) {
+                return ResultGenerator.genFailResult("用户没绑定EC账号");
+            }
+            pushBody.setFollowUserId((long) ptUser.getId());
         }
         List<Integer> ids = pushBody.getIds();
         if (ids.size() > MAX_SIZE) {

@@ -2,6 +2,7 @@ package com.mindata.ecserver.global.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -9,6 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 /**
  * @author wuweifeng wrote on 2017/11/6.
  */
+@Order(1)
 @Configuration
 public class CorsConfig {
     private CorsConfiguration buildConfig() {

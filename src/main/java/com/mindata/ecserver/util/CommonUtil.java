@@ -107,7 +107,7 @@ public class CommonUtil {
     }
 
     private static void jisuan() {
-        FileReader fileReader = new FileReader("/Users/wuwf/Downloads/2017.csv", "gbk");
+        FileReader fileReader = new FileReader("/Users/wuwf/Downloads/2.csv", "gbk");
         List<String> list = fileReader.readLines();
         list.remove(0);
         for (String line : list) {

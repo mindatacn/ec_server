@@ -2,7 +2,6 @@ package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryCompanyManager;
-import com.mindata.ecserver.main.manager.PtPhoneHistoryDeptManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryUserManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
@@ -29,8 +28,6 @@ import java.util.List;
 public class PhoneHistoryCompanyService {
     @Resource
     private PtPhoneHistoryCompanyManager ptPhoneHistoryCompanyManager;
-    @Resource
-    private PtPhoneHistoryDeptManager ptPhoneHistoryDeptManager;
     @Resource
     private PtPhoneHistoryUserManager ptPhoneHistoryUserManager;
     @Resource
@@ -62,13 +59,6 @@ public class PhoneHistoryCompanyService {
 
     /**
      * 该接口是生成所有历史数据用的
-     *
-     * @param companyId
-     * @param begin
-     * @param end
-     * @param pageable
-     * @return
-     * @throws IOException
      */
     public Page<PtPhoneHistoryCompany> fetchAllHistoryData(Integer companyId, String begin, String end, Pageable
             pageable) throws IOException {

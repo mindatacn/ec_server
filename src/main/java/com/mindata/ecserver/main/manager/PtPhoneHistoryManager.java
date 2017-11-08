@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.ec.model.request.PhoneFarHistoryRequest;
 import com.mindata.ecserver.ec.model.request.PhoneHistoryRequest;
 import com.mindata.ecserver.ec.model.response.PhoneHistory;
 import com.mindata.ecserver.ec.model.response.PhoneHistoryData;
@@ -39,6 +40,7 @@ public class PtPhoneHistoryManager {
 
     /**
      * 查询某用户某天的通话统计信息
+     *
      * @param userId
      *         userId
      * @return
@@ -66,7 +68,13 @@ public class PtPhoneHistoryManager {
             historyDataBeans.clear();
             nowPageNo = 1;
             maxPageNo = 10000;
-            getFromEc(ecUserId, tempBegin);
+            //此处判断日期是否大于当前超过1个月，选择不同的方法请求数据
+            long days = (CommonUtil.getNow().getTime() - tempBegin.getTime()) / (1000 * 3600 * 24);
+            if (days > 30) {
+                getFarFromEc(ecUserId, tempBegin);
+            } else {
+                getFromEc(ecUserId, tempBegin);
+            }
 
             //如果EC也没该用户的数据，我们就造一条
             if (CollectionUtil.isEmpty(historyDataBeans)) {
@@ -187,6 +195,38 @@ public class PtPhoneHistoryManager {
         maxPageNo = data.getMaxPageNo();
         nowPageNo++;
         getFromEc(ecUserId, oneDay);
+    }
+
+    /**
+     * 获取更早期的历史数据
+     */
+    private void getFarFromEc(Long ecUserId, Date oneDay) throws IOException {
+        if (nowPageNo > maxPageNo) {
+            return;
+        }
+
+        PhoneFarHistoryRequest request = new PhoneFarHistoryRequest();
+        //2017-03-05
+        String date = DateUtil.formatDate(oneDay);
+        String[] array = date.split("-");
+        request.setYear(Integer.valueOf(array[0]));
+        request.setMonth(Integer.valueOf(array[1]));
+        request.setStartDayOfMonth(Integer.valueOf(array[2]));
+        request.setEndDayOfMonth(Integer.valueOf(array[2]));
+        request.setUserIds(ecUserId + "");
+        request.setPageNo(nowPageNo);
+        PhoneHistory phoneHistory = (PhoneHistory) callManager.execute(serviceBuilder.getPhoneHistoryService()
+                .farHistory(request));
+        PhoneHistoryData data = phoneHistory.getData();
+        if (data == null) {
+            return;
+        }
+
+        historyDataBeans.addAll(data.getResult());
+
+        maxPageNo = data.getMaxPageNo();
+        nowPageNo++;
+        getFarFromEc(ecUserId, oneDay);
     }
 
     private List<Object[]> generEmptyList() {

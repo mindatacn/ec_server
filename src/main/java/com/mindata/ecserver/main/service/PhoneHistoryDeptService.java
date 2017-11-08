@@ -25,10 +25,6 @@ public class PhoneHistoryDeptService {
     @Resource
     private PtDepartmentManager ptDepartmentManager;
 
-    /**
-     * 部门历史营销统计功能(某个部门某段时间的累计)
-     */
-    @SuppressWarnings("Duplicates")
     public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Integer deptId, String begin, String end, Pageable
             pageable) {
         if (deptId == null) {
@@ -36,11 +32,21 @@ public class PhoneHistoryDeptService {
         }
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
+        return findDeptHistoryByDateBetween(deptId, beginDate, endDate, pageable);
+    }
+
+    /**
+     * 部门历史营销统计功能(某个部门某段时间的累计)
+     */
+    @SuppressWarnings("Duplicates")
+    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Integer deptId, Date begin, Date end, Pageable
+            pageable) {
         //这一段时间的累计数据
-        List<Object[]> list = ptPhoneHistoryDeptManager.findTotalByDeptId(deptId, beginDate, endDate);
+        List<Object[]> list = ptPhoneHistoryDeptManager.findTotalByDeptId(deptId, begin, end);
         PhoneHistoryDeptBeanVO deptBeanVO = new PhoneHistoryDeptBeanVO(list.get(0));
         deptBeanVO.setDeptName(ptDepartmentManager.findByDeptId(deptId).getName());
         return deptBeanVO;
+
         //sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
         //PhoneHistoryVO historyVO = new PhoneHistoryVO();
         //PhoneHistoryBeanVO totalVO = new PhoneHistoryBeanVO(list.get(0));

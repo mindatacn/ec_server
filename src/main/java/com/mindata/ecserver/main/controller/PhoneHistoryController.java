@@ -54,16 +54,16 @@ public class PhoneHistoryController {
      * 查询部门的统计累计数据，只有一条
      */
     //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
-    @GetMapping("/dept/total")
-    public BaseData queryDept(Integer deptId, String begin, String end,
+    @GetMapping("/dept/{id}")
+    public BaseData queryDept(@PathVariable Integer id, String begin, String end,
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
-        return ResultGenerator.genSuccessResult(phoneHistoryDeptService.findDeptHistoryByDateBetween(deptId, begin,
+        return ResultGenerator.genSuccessResult(phoneHistoryDeptService.findDeptHistoryByDateBetween(id, begin,
                 end, pageable));
     }
 
     /**
-     * 查询部门的统计，按部门分开
+     * 查询所有部门的统计，按部门分开
      */
     //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept")

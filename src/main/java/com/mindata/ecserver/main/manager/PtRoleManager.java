@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import com.mindata.ecserver.main.repository.secondary.PtRoleRepository;
@@ -27,10 +28,21 @@ public class PtRoleManager {
      *         userId
      * @return 集合
      */
-    public List<PtRole> findByUserId(int userId) {
+    public List<PtRole> findByUserId(Integer userId) {
         List<PtUserRole> userRoles = ptUserRoleRepository.findByUserId(userId);
         return userRoles.stream().map(userRole -> ptRoleRepository.findOne(userRole.getRoleId())).collect(Collectors
                 .toList());
+    }
+
+    public boolean isManager(Integer userId) {
+        //判断用户角色
+        List<PtRole> roles = findByUserId(userId);
+        for (PtRole ptRole : roles) {
+            if (Constant.ROLE_MANAGER.equals(ptRole.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Integer findIdByName(String name) {

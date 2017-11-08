@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
+
 /**
  * @author wuweifeng wrote on 2017/11/3.
  * 某人某天的通话历史管理类
@@ -42,7 +44,7 @@ public class PtPhoneHistoryUserManager {
      */
     public List<Object[]> findDeptOneDayTotalByDeptId(Integer deptId, Date begin, Date end) throws IOException {
         //找到部门所有正常的员工
-        List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, 0);
+        List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, STATE_NORMAL);
         List<Integer> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
 
         List<Object[]> list = new ArrayList<>();

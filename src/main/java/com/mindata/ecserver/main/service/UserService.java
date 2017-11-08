@@ -7,7 +7,6 @@ import com.mindata.ecserver.ec.service.UserAccountService;
 import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.bean.TokenExpire;
 import com.mindata.ecserver.global.cache.UserTokenCache;
-import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
@@ -193,12 +192,8 @@ public class UserService extends BaseService {
      */
     public List<PtUser> findByNameLike(String name) {
         PtUser ptUser = ShiroKit.getCurrentUser();
-        //判断用户角色
-        List<PtRole> roles = roleManager.findByUserId(ptUser.getId());
-        for (PtRole ptRole : roles) {
-            if (Constant.ROLE_MANAGER.equals(ptRole.getName())) {
-                return userManager.findByCompanyIdAndNameLike(ptUser.getCompanyId(), name);
-            }
+        if (roleManager.isManager(ptUser.getId())) {
+            return userManager.findByCompanyIdAndNameLike(ptUser.getCompanyId(), name);
         }
         return userManager.findByDeptIdAndNameLike(ptUser.getDepartmentId(), name);
     }

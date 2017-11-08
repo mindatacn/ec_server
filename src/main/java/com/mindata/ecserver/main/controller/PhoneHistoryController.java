@@ -3,7 +3,6 @@ package com.mindata.ecserver.main.controller;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.manager.PtPhoneHistoryCompanyManager;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
 import com.mindata.ecserver.main.service.PhoneHistoryDeptService;
 import com.mindata.ecserver.main.service.PhoneHistoryUserService;
@@ -31,23 +30,31 @@ public class PhoneHistoryController {
     private PhoneHistoryUserService phoneHistoryUserService;
     @Resource
     private PhoneHistoryDeptService phoneHistoryDeptService;
-    @Resource
-    private PtPhoneHistoryCompanyManager ptPhoneHistoryCompanyManager;
+
+    /**
+     * 获取所有历史数据，由定时器定时调用该接口
+     */
+    @CheckEcAnnotation
+    @GetMapping("/fetch")
+    public BaseData fetchCompanyData(Integer companyId, String begin, String end,
+                                     @PageableDefault(direction =
+                                             Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
+            IOException {
+        return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.fetchAllHistoryData(companyId, begin, end,
+                pageable));
+    }
 
     /**
      * 根据传来的参数进行查询，查公司级的
      *
      * @return 公司级数据
      */
-    //@RequiresRoles(Constant.ROLE_MANAGER)
-    @CheckEcAnnotation
     @GetMapping("/company")
     public BaseData queryCompany(Integer companyId, String begin, String end,
                                  @PageableDefault(direction =
                                          Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
             IOException {
-        return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.findHistoryByDate(companyId, begin, end,
-                pageable));
+        return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.findHistoryByDate(companyId, begin, end));
     }
 
     /**

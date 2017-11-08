@@ -38,18 +38,13 @@ public class PhoneHistoryCompanyService {
 
 
     @SuppressWarnings("Duplicates")
-    public PhoneHistoryBeanVO findHistoryByDate(Integer companyId, String begin, String end, Pageable pageable) throws
-            IOException {
+    public PhoneHistoryBeanVO findHistoryByDate(Integer companyId, String begin, String end) {
         //不传companyId，则默认是当前用户
         if (companyId == null) {
             companyId = ShiroKit.getCurrentUser().getCompanyId();
         }
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
-
-        //分页查询这段时间内的分页数据
-        Page<PtPhoneHistoryCompany> page = ptPhoneHistoryCompanyManager.findHistoryByDate(companyId, beginDate, endDate,
-                pageable);
 
         //这一段时间的累计数据
         List<Object[]> list = ptPhoneHistoryCompanyManager.findTotalByCompanyId(companyId, beginDate, endDate);
@@ -63,9 +58,28 @@ public class PhoneHistoryCompanyService {
         //    vo.setTotalCustomer(ptPhoneHistoryDept.getTotalCustomer());
         //    return vo;
         //}).collect(Collectors.toList());
+    }
 
-
-
+    /**
+     * 该接口是生成所有历史数据用的
+     *
+     * @param companyId
+     * @param begin
+     * @param end
+     * @param pageable
+     * @return
+     * @throws IOException
+     */
+    public Page<PtPhoneHistoryCompany> fetchAllHistoryData(Integer companyId, String begin, String end, Pageable
+            pageable) throws IOException {
+        if (companyId == null) {
+            companyId = ShiroKit.getCurrentUser().getCompanyId();
+        }
+        Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
+        Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
+        //分页查询这段时间内的分页数据
+        return ptPhoneHistoryCompanyManager.findHistoryByDate(companyId, beginDate, endDate,
+                pageable);
     }
 
     /**

@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
+
 /**
  * @author wuweifeng wrote on 2017/10/31.
  */
@@ -47,9 +49,9 @@ public class PtDepartmentManager extends BaseService {
         Page<PtDepartment> departments;
         if (StrUtil.isEmpty(name)) {
             if (companyId == 0) {
-                departments = departmentRepository.findByState(0, pageable);
+                departments = departmentRepository.findByState(STATE_NORMAL, pageable);
             } else {
-                departments = departmentRepository.findByCompanyIdAndState(companyId, 0, pageable);
+                departments = departmentRepository.findByCompanyIdAndState(companyId, STATE_NORMAL, pageable);
             }
         } else {
             if (companyId == 0) {
@@ -84,7 +86,7 @@ public class PtDepartmentManager extends BaseService {
         ptDepartment.setSort(companyDeptBean.getSort());
         ptDepartment.setCreateTime(CommonUtil.getNow());
         ptDepartment.setUpdateTime(CommonUtil.getNow());
-        ptDepartment.setState(0);
+        ptDepartment.setState(STATE_NORMAL);
         ptDepartment.setMemo("");
         return departmentRepository.save(ptDepartment);
     }

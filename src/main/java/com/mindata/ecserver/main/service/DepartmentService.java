@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
+
 /**
  * @author wuweifeng wrote on 2017/11/2.
  */
@@ -34,7 +36,7 @@ public class DepartmentService {
             PtUser ptUser = ShiroKit.getCurrentUser();
             companyId = ptUser.getCompanyId();
         }
-        Page<PtDepartment> departmentPage = ptDepartmentManager.findByName(name, companyId, 0, pageable);
+        Page<PtDepartment> departmentPage = ptDepartmentManager.findByName(name, companyId, STATE_NORMAL, pageable);
         List<PtDepartment> departments = departmentPage.getContent();
         List<DepartmentSimpleVO> vos = new ArrayList<>(departments.size());
         for (PtDepartment department : departments) {

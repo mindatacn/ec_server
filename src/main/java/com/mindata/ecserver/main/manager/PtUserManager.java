@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
@@ -42,7 +44,7 @@ public class PtUserManager {
         ptUser.setAccount(account);
         ptUser.setPassword(CommonUtil.password(password));
         ptUser.setCompanyId(companyId);
-        ptUser.setState(0);
+        ptUser.setState(STATE_NORMAL);
         ptUser.setName("公司管理员");
         ptUser.setTitle("公司管理员");
         ptUser = userRepository.save(ptUser);
@@ -67,7 +69,7 @@ public class PtUserManager {
         ptUser.setCreateTime(CommonUtil.getNow());
         ptUser.setUpdateTime(CommonUtil.getNow());
         ptUser.setCompanyId(companyId);
-        ptUser.setState(0);
+        ptUser.setState(STATE_NORMAL);
         ptUser.setEcUserId(companyUserBean.getUserId());
         ptUser.setTitle(companyUserBean.getTitle());
         ptUser.setDepartmentId(departmentManager.findByEcDeptId(companyUserBean.getDeptId()).getId());
@@ -128,7 +130,7 @@ public class PtUserManager {
      * @return 数量
      */
     public Integer countByDepartmentId(Integer deparmentId) {
-        return userRepository.countByDepartmentIdAndState(deparmentId, 0);
+        return userRepository.countByDepartmentIdAndState(deparmentId, STATE_NORMAL);
     }
 
     /**
@@ -159,15 +161,15 @@ public class PtUserManager {
      */
     public List<PtUser> findByDeptIdAndNameLike(Integer deptId, String name) {
         if (StrUtil.isEmpty(name)) {
-            return userRepository.findByDepartmentIdAndState(deptId, 0);
+            return userRepository.findByDepartmentIdAndState(deptId, STATE_NORMAL);
         }
-        return userRepository.findByDepartmentIdAndStateAndNameLike(deptId, 0, "%" + name + "%");
+        return userRepository.findByDepartmentIdAndStateAndNameLike(deptId, STATE_NORMAL, "%" + name + "%");
     }
 
     public List<PtUser> findByCompanyIdAndNameLike(Integer companyId, String name) {
         if (StrUtil.isEmpty(name)) {
-            return userRepository.findByCompanyIdAndState(companyId, 0);
+            return userRepository.findByCompanyIdAndState(companyId, STATE_NORMAL);
         }
-        return userRepository.findByCompanyIdAndStateAndNameLike(companyId, 0, "%" + name + "%");
+        return userRepository.findByCompanyIdAndStateAndNameLike(companyId, STATE_NORMAL, "%" + name + "%");
     }
 }

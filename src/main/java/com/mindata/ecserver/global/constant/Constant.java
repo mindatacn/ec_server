@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 public interface Constant {
     String SALT = "mindata";
 
+    int STATE_NORMAL = 0;
+
     int SUCCESS = 1;
     int FAILURE = 0;
 

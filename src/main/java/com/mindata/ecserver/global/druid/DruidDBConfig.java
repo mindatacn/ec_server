@@ -107,7 +107,7 @@ public class DruidDBConfig {
     @Qualifier("secondaryDataSource")
     @Primary
     public DataSource secondaryDataSource() {
-        return getDruidDataSource(username1, password1, dbUrl2);
+        return getDruidDataSource(username2, password2, dbUrl2);
     }
 
     private DruidDataSource getDruidDataSource(String username, String password, String url) {

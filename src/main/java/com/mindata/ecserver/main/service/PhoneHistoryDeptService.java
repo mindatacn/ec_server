@@ -1,13 +1,11 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryDeptManager;
-import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryDept;
-import com.mindata.ecserver.main.vo.PhoneHistoryBeanVO;
-import com.mindata.ecserver.main.vo.PhoneHistoryVO;
+import com.mindata.ecserver.main.model.secondary.PtDepartment;
+import com.mindata.ecserver.main.vo.PhoneHistoryDeptBeanVO;
 import com.xiaoleilu.hutool.date.DateUtil;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +22,15 @@ import java.util.stream.Collectors;
 public class PhoneHistoryDeptService {
     @Resource
     private PtPhoneHistoryDeptManager ptPhoneHistoryDeptManager;
+    @Resource
+    private PtDepartmentManager ptDepartmentManager;
 
     /**
-     * 部门历史营销统计功能
+     * 部门历史营销统计功能(某个部门某段时间的累计)
      */
     @SuppressWarnings("Duplicates")
-    public PhoneHistoryVO findDeptHistoryByDateBetween(Integer deptId, String begin, String end, Pageable pageable) {
+    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Integer deptId, String begin, String end, Pageable
+            pageable) {
         if (deptId == null) {
             deptId = ShiroKit.getCurrentUser().getDepartmentId();
         }
@@ -37,26 +38,40 @@ public class PhoneHistoryDeptService {
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
         //这一段时间的累计数据
         List<Object[]> list = ptPhoneHistoryDeptManager.findTotalByDeptId(deptId, beginDate, endDate);
+        PhoneHistoryDeptBeanVO deptBeanVO = new PhoneHistoryDeptBeanVO(list.get(0));
+        deptBeanVO.setDeptName(ptDepartmentManager.findByDeptId(deptId).getName());
+        return deptBeanVO;
         //sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
-        PhoneHistoryVO historyVO = new PhoneHistoryVO();
-        PhoneHistoryBeanVO totalVO = new PhoneHistoryBeanVO(list.get(0));
-        historyVO.setTotal(totalVO);
+        //PhoneHistoryVO historyVO = new PhoneHistoryVO();
+        //PhoneHistoryBeanVO totalVO = new PhoneHistoryBeanVO(list.get(0));
+
+        //historyVO.setTotal(totalVO);
         //分页查询这段时间内的分页数据
-        Page<PtPhoneHistoryDept> page = ptPhoneHistoryDeptManager.findByDeptId(deptId, beginDate, endDate, pageable);
-        List<PhoneHistoryBeanVO> beanVOS = page.getContent().stream().map(ptPhoneHistoryDept -> {
-            PhoneHistoryBeanVO vo = new PhoneHistoryBeanVO();
-            vo.setPushCount(ptPhoneHistoryDept.getPushCount());
-            vo.setTotalCallCount(ptPhoneHistoryDept.getTotalCallCount());
-            vo.setValidCount(ptPhoneHistoryDept.getValidCount());
-            vo.setTotalCallTime(ptPhoneHistoryDept.getTotalCallTime());
-            vo.setTotalCustomer(ptPhoneHistoryDept.getTotalCustomer());
-            vo.setDate(DateUtil.formatDate(ptPhoneHistoryDept.getStartTime()));
-            return vo;
-        }).collect(Collectors.toList());
-        SimplePage<PhoneHistoryBeanVO> simplePage = new SimplePage<>(page.getTotalPages(), page.getTotalElements(),
-                beanVOS);
-        historyVO.setPage(simplePage);
-        return historyVO;
+        //Page<PtPhoneHistoryDept> page = ptPhoneHistoryDeptManager.findByDeptId(deptId, beginDate, endDate, pageable);
+        //List<PhoneHistoryBeanVO> beanVOS = page.getContent().stream().map(ptPhoneHistoryDept -> {
+        //    PhoneHistoryBeanVO vo = new PhoneHistoryBeanVO();
+        //    vo.setPushCount(ptPhoneHistoryDept.getPushCount());
+        //    vo.setTotalCallCount(ptPhoneHistoryDept.getTotalCallCount());
+        //    vo.setValidCount(ptPhoneHistoryDept.getValidCount());
+        //    vo.setTotalCallTime(ptPhoneHistoryDept.getTotalCallTime());
+        //    vo.setTotalCustomer(ptPhoneHistoryDept.getTotalCustomer());
+        //    return vo;
+        //}).collect(Collectors.toList());
+        //SimplePage<PhoneHistoryBeanVO> simplePage = new SimplePage<>(page.getTotalPages(), page.getTotalElements(),
+        //        beanVOS);
+        //historyVO.setPage(simplePage);
+
     }
 
+    public List<PhoneHistoryDeptBeanVO> findDeptHisTotalByCompanyIdAndDateBetween(Integer companyId, String begin,
+                                                                                  String end,
+                                                                                  Pageable pageable) {
+        if (companyId == null) {
+            companyId = ShiroKit.getCurrentUser().getCompanyId();
+        }
+        //获取该公司所有部门这段时间内的累计数据，以部门为单位分页
+        List<PtDepartment> departments = ptDepartmentManager.findByCompanyIdAndState(companyId, 0);
+        return departments.stream().map(ptDepartment -> findDeptHistoryByDateBetween(ptDepartment.getId(), begin, end,
+                pageable)).collect(Collectors.toList());
+    }
 }

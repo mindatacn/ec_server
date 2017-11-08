@@ -11,7 +11,6 @@ public class PhoneHistoryBeanVO {
     private Long totalCustomer;
     private Long pushCount;
     private Long validCount;
-    private String date;
 
     public PhoneHistoryBeanVO() {
     }
@@ -23,14 +22,6 @@ public class PhoneHistoryBeanVO {
         totalCustomer = CommonUtil.parseObject(objects[2]);
         pushCount = CommonUtil.parseObject(objects[3]);
         validCount = CommonUtil.parseObject(objects[4]);
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public Long getTotalCallCount() {
@@ -71,5 +62,16 @@ public class PhoneHistoryBeanVO {
 
     public void setValidCount(Long validCount) {
         this.validCount = validCount;
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneHistoryBeanVO{" +
+                "totalCallCount=" + totalCallCount +
+                ", totalCallTime=" + totalCallTime +
+                ", totalCustomer=" + totalCustomer +
+                ", pushCount=" + pushCount +
+                ", validCount=" + validCount +
+                '}';
     }
 }

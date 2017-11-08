@@ -28,14 +28,13 @@ public interface PtPhoneHistoryDeptRepository extends JpaRepository<PtPhoneHisto
      */
     Page<PtPhoneHistoryDept> findByDeptIdAndStartTimeBetween(Integer deptId, Date begin, Date end, Pageable pageable);
 
-    List<PtPhoneHistoryDept> findByDeptIdAndStartTimeBetween(Long deptId, Date begin, Date end);
-
     /**
      * 统计某段时间、多个部门总的打电话次数
      */
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
             " from PtPhoneHistoryDept where deptId in ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(List<Integer> deptIds, Date begin, Date end);
+
 
     /**
      * 获取每天每个部门的统计数量，正常返回1，如果没值返回0

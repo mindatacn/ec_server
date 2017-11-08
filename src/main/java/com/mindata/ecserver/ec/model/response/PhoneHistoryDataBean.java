@@ -1,7 +1,5 @@
 package com.mindata.ecserver.ec.model.response;
 
-import java.util.Date;
-
 /**
  * @author wuweifeng wrote on 2017/11/3.
  * 一条电话联系记录
@@ -14,7 +12,7 @@ public class PhoneHistoryDataBean {
     /**
      * 开始打电话的时间
      */
-    private Date starttime;
+    private String starttime;
     /**
      * 电话号码，被拨打的电话号码
      */
@@ -68,11 +66,11 @@ public class PhoneHistoryDataBean {
                 '}';
     }
 
-    public Date getStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 

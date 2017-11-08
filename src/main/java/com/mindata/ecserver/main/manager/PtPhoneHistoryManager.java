@@ -137,7 +137,7 @@ public class PtPhoneHistoryManager {
             ptPhoneHistory.setType(bean.getType());
             ptPhoneHistory.setMd5(bean.getMd5());
             ptPhoneHistory.setPath(bean.getPath());
-            ptPhoneHistory.setStartTime(bean.getStarttime());
+            ptPhoneHistory.setStartTime(DateUtil.parseTime(bean.getStarttime()));
             ptPhoneHistory.setRealRecode(true);
             ptPhoneHistory.setCreateTime(CommonUtil.getNow());
             ptPhoneHistory.setUpdateTime(CommonUtil.getNow());

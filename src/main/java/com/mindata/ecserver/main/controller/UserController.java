@@ -81,6 +81,7 @@ public class UserController {
     /**
      * 获取自己的推送数量
      */
+    @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("/pushCount")
     public BaseData queryThreshold() {
         return ResultGenerator.genSuccessResult(userService.findPushCount());

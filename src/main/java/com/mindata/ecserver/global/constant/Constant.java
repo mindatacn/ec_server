@@ -10,6 +10,9 @@ public interface Constant {
 
     int STATE_NORMAL = 0;
 
+    String ES_INDEX_NAME = "ec-server";
+    String ES_TYPE_NAME = "contact";
+
     int SUCCESS = 1;
     int FAILURE = 0;
 

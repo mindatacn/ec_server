@@ -21,8 +21,12 @@ public class EcVocationCodeManager {
      * @param vocationCode
      *         主键id
      * @return
+     * 行业类型
      */
-    public String findNameByCode(int vocationCode) {
+    public String findNameByCode(Integer vocationCode) {
+        if (vocationCode == null) {
+            return "未设置";
+        }
         return ecVocationCodeEntityRepository.findOne(vocationCode).getVocationName();
     }
 

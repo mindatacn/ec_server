@@ -34,6 +34,26 @@ public class ContactRequestBody {
      * 是否招聘销售
      */
     private Boolean needSale;
+
+    /*ES里存的字段*/
+    /**
+     * 公司名称
+     */
+    private String companyName;
+    /**
+     * 详细地址
+     */
+    private String address;
+    /**
+     * 招聘岗位
+     */
+    private String jobName;
+    /**
+     * 公司简介
+     */
+    private String comintro;
+    /*ES结束*/
+
     /**
      * 每页多少个
      */
@@ -137,6 +157,38 @@ public class ContactRequestBody {
 
     public void setNeedSale(Boolean needSale) {
         this.needSale = needSale;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getComintro() {
+        return comintro;
+    }
+
+    public void setComintro(String comintro) {
+        this.comintro = comintro;
     }
 
     @Override

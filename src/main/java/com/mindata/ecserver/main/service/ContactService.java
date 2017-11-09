@@ -4,7 +4,8 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
-import com.mindata.ecserver.main.manager.EcCodeVocationTagManager;
+import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.es.EsContactManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
@@ -31,7 +32,9 @@ public class ContactService extends BaseService {
     @Resource
     private EcContactRepository contactRepository;
     @Resource
-    private EcCodeVocationTagManager ecCodeVocationTagManager;
+    private EsContactManager esContactManager;
+    @Resource
+    private EcVocationCodeManager ecVocationCodeManager;
 
     public EcContactEntity findById(int id) {
         return contactRepository.findOne(id);
@@ -39,6 +42,12 @@ public class ContactService extends BaseService {
 
     public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody
             contactRequestBody) {
+        //公司名\详细地址\职位名称\企业简介，任何一个不为空，就走ES
+        if (!StrUtil.isEmpty(contactRequestBody.getCompanyName()) || !StrUtil.isEmpty(contactRequestBody.getAddress()
+        ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())) {
+            return esContactManager.findByRequestBody(contactRequestBody);
+        }
+
         Criteria<EcContactEntity> criteria = new Criteria<>();
         criteria.add(Restrictions.eq("state", state, true));
         //有手机号
@@ -98,7 +107,7 @@ public class ContactService extends BaseService {
             vo.setId(ecContactEntity.getId());
             vo.setMobile(ecContactEntity.getMobile());
             vo.setName(ecContactEntity.getName());
-            vo.setVocation(ecCodeVocationTagManager.findNameByCode(ecContactEntity.getVocationTag()));
+            vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));
             contactVOS.add(vo);
         }

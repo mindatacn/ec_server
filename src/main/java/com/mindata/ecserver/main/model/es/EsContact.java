@@ -1,9 +1,7 @@
 package com.mindata.ecserver.main.model.es;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 
@@ -99,7 +97,12 @@ public class EsContact {
     /**
      * 插入ES库的日期
      */
-    @Field(type = FieldType.Date)
+    @Field(
+            type = FieldType.Date,
+            index = FieldIndex.not_analyzed,
+            store = true,
+            format = DateFormat.custom, pattern = "dd-MM-yyyy hh:mm:ss"
+    )
     private Long insertTime;
 
     public String getMainJob() {

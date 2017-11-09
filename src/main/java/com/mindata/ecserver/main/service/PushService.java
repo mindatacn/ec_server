@@ -51,6 +51,9 @@ public class PushService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public PushResultCountVO push(PushBody pushBody) throws IOException {
         List<EcContactEntity> contactEntities = ecContactManager.findByIds(pushBody.getIds());
+        if (contactEntities.size() == 0) {
+            return new PushResultCountVO(0, 0);
+        }
         CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
         if (pushBody.getOptUserId() == null) {
             //设置操作人id

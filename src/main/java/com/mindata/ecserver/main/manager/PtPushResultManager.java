@@ -59,8 +59,12 @@ public class PtPushResultManager {
         Integer followUserId = pushResultVO.getPushBody().getFollowUserId().intValue();
 
         for (CreateFailureRecord record : failureRecordList) {
-            PtPushFailureResult pushFailureResult = new PtPushFailureResult();
             Integer contactId = contactIds.get(record.getIndex());
+            //已经有重复contactId了
+            if (findFailureByContactId(contactId).size() > 0) {
+                continue;
+            }
+            PtPushFailureResult pushFailureResult = new PtPushFailureResult();
             //设置失败的线索id
             pushFailureResult.setContactId(contactId);
             pushFailureResult.setExistedCustomerName(record.getExistedCustomerName());
@@ -102,6 +106,11 @@ public class PtPushResultManager {
         successCrmIds.forEach((key, value) -> {
             Integer index = Integer.valueOf(key);
             EcContactEntity contactEntity = ecContactManager.findOne(contactIds.get(index));
+            //已经有重复contactId了
+            if (findSuccessByContactId(contactEntity.getId()).size() > 0) {
+                return;
+            }
+
             PtPushSuccessResult result = new PtPushSuccessResult();
             result.setCreateTime(CommonUtil.getNow());
             result.setUpdateTime(CommonUtil.getNow());
@@ -126,6 +135,14 @@ public class PtPushResultManager {
         });
 
 
+    }
+
+    public List<PtPushSuccessResult> findSuccessByContactId(Integer contactId) {
+        return ptPushSuccessResultRepository.findByContactId(contactId);
+    }
+
+    public List<PtPushFailureResult> findFailureByContactId(Integer contactId) {
+        return ptPushFailureResultRepository.findByContactId(contactId);
     }
 
     /**

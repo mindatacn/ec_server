@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -30,4 +31,13 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      * @return 结果
      */
     PtPushSuccessResult findByCrmId(Long crmId);
+
+    /**
+     * 理论上不能有多个，但是有测试数据需要删除掉
+     *
+     * @param contactId
+     *         EcContactEntity表的id
+     * @return 结果集
+     */
+    List<PtPushSuccessResult> findByContactId(Integer contactId);
 }

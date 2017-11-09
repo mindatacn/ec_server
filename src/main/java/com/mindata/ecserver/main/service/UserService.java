@@ -11,10 +11,13 @@ import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
+import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
+import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.RoleVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,8 @@ public class UserService extends BaseService {
     @Resource
     private PtUserManager userManager;
     @Resource
+    private PtUserPushThresholdManager ptUserPushThresholdManager;
+    @Resource
     private UserTokenCache userTokenCache;
     @Resource
     private ServiceBuilder serviceBuilder;
@@ -61,6 +66,16 @@ public class UserService extends BaseService {
     public Set<String> findRolesByUser(PtUser user) {
         List<PtRole> roles = roleManager.findByUserId(user.getId());
         return roles.stream().map(PtRole::getName).collect(Collectors.toSet());
+    }
+
+    /**
+     * 获取用户的角色
+     *
+     * @return
+     */
+    public List<RoleVO> findRole() {
+        List<PtRole> roles = roleManager.findByUserId(ShiroKit.getCurrentUser().getId());
+        return roles.stream().map(ptRole -> new RoleVO(ptRole.getName())).collect(Collectors.toList());
     }
 
     /**
@@ -196,5 +211,15 @@ public class UserService extends BaseService {
             return userManager.findByCompanyIdAndNameLike(ptUser.getCompanyId(), name);
         }
         return userManager.findByDeptIdAndNameLike(ptUser.getDepartmentId(), name);
+    }
+
+    /**
+     * 查询今天的推送数量
+     *
+     * @return 类
+     */
+    public PtUserPushCount findPushCount() {
+        return ptUserPushThresholdManager.findCountByUserId(ShiroKit.getCurrentUser().getId()
+                , null);
     }
 }

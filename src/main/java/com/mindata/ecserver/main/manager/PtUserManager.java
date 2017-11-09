@@ -44,7 +44,8 @@ public class PtUserManager {
         ptUser.setAccount(account);
         ptUser.setPassword(CommonUtil.password(password));
         ptUser.setCompanyId(companyId);
-        ptUser.setState(STATE_NORMAL);
+        //设置不能关联ec账户
+        ptUser.setState(1);
         ptUser.setName("公司管理员");
         ptUser.setTitle("公司管理员");
         ptUser = userRepository.save(ptUser);

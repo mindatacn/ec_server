@@ -77,4 +77,20 @@ public class UserController {
     public BaseData findUserByNameLike(String name) {
         return ResultGenerator.genSuccessResult(userService.findByNameLike(name));
     }
+
+    /**
+     * 获取自己的推送数量
+     */
+    @GetMapping("/pushCount")
+    public BaseData queryThreshold() {
+        return ResultGenerator.genSuccessResult(userService.findPushCount());
+    }
+
+    /**
+     * 获取自己的角色
+     */
+    @GetMapping("/role")
+    public BaseData queryRole() {
+        return ResultGenerator.genSuccessResult(userService.findRole());
+    }
 }

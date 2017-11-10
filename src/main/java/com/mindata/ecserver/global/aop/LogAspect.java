@@ -43,14 +43,14 @@ public class LogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         logger.info("-------------------用户发起请求-----------------");
-        logger.info("-用户id-:" + userTokenCache.getUserIdByToken(request.getHeader(Constant.AUTHORIZATION)));
-        logger.info("-------------------开始计时-----------------");
+        logger.info("token为：" + request.getHeader(Constant.AUTHORIZATION));
+        logger.info("userId为:" + userTokenCache.getUserIdByToken(request.getHeader(Constant.AUTHORIZATION)));
         timer = DateUtil.timer();
         // 记录下请求内容
         logger.info("URL : " + request.getRequestURL().toString());
         logger.info("HTTP_METHOD : " + request.getMethod());
         //如果是表单，参数值是普通键值对。如果是application/json，则request.getParameter是取不到的。
-        logger.info("HTTP_HEAD Type : " + request.getHeader("Content-Type"));
+        logger.info("HTTP_HEAD Type : " + request.getHeader("content-type"));
         logger.info("IP : " + request.getRemoteAddr());
         logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint
                 .getSignature().getName());

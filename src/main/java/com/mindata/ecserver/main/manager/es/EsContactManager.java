@@ -11,6 +11,8 @@ import com.mindata.ecserver.main.vo.ContactVO;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -40,6 +42,8 @@ public class EsContactManager extends BaseService {
     @Resource
     private EsContactRepository esContactRepository;
 
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
+
     /**
      * 模糊查询某列
      *
@@ -48,6 +52,11 @@ public class EsContactManager extends BaseService {
      * @return 结果
      */
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
+        if (!elasticsearchTemplate.indexExists(Constant.ES_INDEX_NAME)) {
+            logger.info("ES index不存在，开始创建index");
+            elasticsearchTemplate.createIndex(Constant.ES_INDEX_NAME);
+            logger.info("创建index完毕");
+        }
 
         EsContact esContact1 = esContactRepository.findOne(223262L);
         System.out.println(esContact1.getCompany());

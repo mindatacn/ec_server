@@ -201,6 +201,14 @@ public class ContactRequestBody {
                 ", websiteIds=" + websiteIds +
                 ", hasMobile=" + hasMobile +
                 ", needSale=" + needSale +
+                ", companyName='" + companyName + '\'' +
+                ", address='" + address + '\'' +
+                ", jobName='" + jobName + '\'' +
+                ", comintro='" + comintro + '\'' +
+                ", size=" + size +
+                ", page=" + page +
+                ", orderBy='" + orderBy + '\'' +
+                ", order=" + order +
                 '}';
     }
 }

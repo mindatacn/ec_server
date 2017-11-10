@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsContact;
+import com.mindata.ecserver.main.repository.es.EsContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
@@ -36,7 +37,8 @@ public class EsContactManager extends BaseService {
     private ElasticsearchTemplate elasticsearchTemplate;
     @Resource
     private EcVocationCodeManager ecVocationCodeManager;
-
+    @Resource
+    private EsContactRepository esContactRepository;
 
     /**
      * 模糊查询某列
@@ -46,6 +48,9 @@ public class EsContactManager extends BaseService {
      * @return 结果
      */
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
+
+        EsContact esContact1 = esContactRepository.findOne(223262L);
+        System.out.println(esContact1.getCompany());
 
         BoolQueryBuilder boolQuery = boolQuery();
 

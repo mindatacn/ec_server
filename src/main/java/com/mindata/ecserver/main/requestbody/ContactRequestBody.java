@@ -217,6 +217,7 @@ public class ContactRequestBody {
                 ", address='" + address + '\'' +
                 ", jobName='" + jobName + '\'' +
                 ", comintro='" + comintro + '\'' +
+                ", extra='" + extra + '\'' +
                 ", size=" + size +
                 ", page=" + page +
                 ", orderBy='" + orderBy + '\'' +

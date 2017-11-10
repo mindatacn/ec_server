@@ -43,7 +43,6 @@ public class ContactService extends BaseService {
         EcContactEntity ecContactEntity = contactRepository.findOne(id);
         if (esContact != null) {
             ecContactEntity.setMemo(esContact.getComintro());
-            ecContactEntity.setAddress(esContact.getAddress());
         }
 
         return ecContactEntity;

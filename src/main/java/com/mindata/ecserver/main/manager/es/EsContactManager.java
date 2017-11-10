@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * elasticsearch的管理类
@@ -68,6 +68,10 @@ public class EsContactManager extends BaseService {
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
         BoolQueryBuilder boolQuery = boolQuery();
 
+        //全文检索
+        if (!StrUtil.isEmpty(contactRequestBody.getExtra())) {
+            boolQuery.must(queryStringQuery(contactRequestBody.getExtra()));
+        }
         //boolQuery.must(matchQuery("state", 0)); TODO
         //公司名
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName())) {

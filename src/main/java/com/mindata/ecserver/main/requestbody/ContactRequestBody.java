@@ -52,6 +52,10 @@ public class ContactRequestBody {
      * 公司简介
      */
     private String comintro;
+    /**
+     * 全文检索
+     */
+    private String extra;
     /*ES结束*/
 
     /**
@@ -93,6 +97,14 @@ public class ContactRequestBody {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 
     public Integer getPage() {

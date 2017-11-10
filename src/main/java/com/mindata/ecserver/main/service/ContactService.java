@@ -6,6 +6,7 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.manager.es.EsContactManager;
+import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
@@ -37,7 +38,15 @@ public class ContactService extends BaseService {
     private EcVocationCodeManager ecVocationCodeManager;
 
     public EcContactEntity findById(int id) {
-        return contactRepository.findOne(id);
+        EsContact esContact = esContactManager.findById((long) id);
+
+        EcContactEntity ecContactEntity = contactRepository.findOne(id);
+        if (esContact != null) {
+            ecContactEntity.setMemo(esContact.getComintro());
+            ecContactEntity.setAddress(esContact.getAddress());
+        }
+
+        return ecContactEntity;
     }
 
     public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody

@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsContact;
+import com.mindata.ecserver.main.repository.es.EsContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
@@ -39,6 +40,8 @@ public class EsContactManager extends BaseService {
     private ElasticsearchTemplate elasticsearchTemplate;
     @Resource
     private EcVocationCodeManager ecVocationCodeManager;
+    @Resource
+    private EsContactRepository esContactRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -49,6 +52,10 @@ public class EsContactManager extends BaseService {
             elasticsearchTemplate.createIndex(Constant.ES_INDEX_NAME);
             logger.info("创建index完毕");
         }
+    }
+
+    public EsContact findById(Long id) {
+        return esContactRepository.findOne(id);
     }
 
     /**

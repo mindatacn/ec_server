@@ -1,5 +1,6 @@
 package com.mindata.ecserver.global.aop;
 
+import com.mindata.ecserver.global.cache.UserTokenCache;
 import com.mindata.ecserver.global.constant.Constant;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.date.TimeInterval;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -25,6 +27,8 @@ import java.lang.reflect.Parameter;
 @Component
 @Order(1)
 public class LogAspect {
+    @Resource
+    private UserTokenCache userTokenCache;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     private TimeInterval timer;
@@ -39,6 +43,7 @@ public class LogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         logger.info("-------------------用户发起请求-----------------");
+        logger.info("-用户id-:" + userTokenCache.getUserIdByToken(request.getHeader(Constant.AUTHORIZATION)));
         logger.info("-------------------开始计时-----------------");
         timer = DateUtil.timer();
         // 记录下请求内容

@@ -72,18 +72,22 @@ public class EsContact {
     /**
      * 省
      */
+    @Field(index = FieldIndex.not_analyzed)
     private String province;
     /**
      * 市
      */
+    @Field(index = FieldIndex.not_analyzed)
     private String city;
     /**
      * 来源（58、桔子）
      */
+    @Field(index = FieldIndex.not_analyzed)
     private Integer websiteId;
     /**
      * 人员数量
      */
+    @Field(index = FieldIndex.not_analyzed)
     private Integer memberSizeTag;
     /**
      * 行业编码

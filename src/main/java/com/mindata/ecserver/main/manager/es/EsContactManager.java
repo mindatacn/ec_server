@@ -114,9 +114,9 @@ public class EsContactManager extends BaseService {
 
         int page = Constant.PAGE_NUM;
         int size = Constant.PAGE_SIZE;
-        Sort.Direction direction = Constant.DIRECTION;
-        String orderBy = "id";
-        Pageable pageable = new PageRequest(page, size, direction, orderBy);
+        //Sort.Direction direction = Constant.DIRECTION;
+        //String orderBy = "id";
+        Pageable pageable = new PageRequest(page, size);
 
         SearchQuery searchQuery = builder.withPageable(pageable).build();
         List<EsContact> esContacts = elasticsearchTemplate.queryForList(searchQuery, EsContact.class);

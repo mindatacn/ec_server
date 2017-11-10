@@ -61,7 +61,7 @@ public class EsContactManager extends BaseService {
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
         BoolQueryBuilder boolQuery = boolQuery();
 
-        boolQuery.must(matchQuery("state", 0));
+        //boolQuery.must(matchQuery("state", 0));
         //公司名
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName())) {
             boolQuery.must(matchQuery("company", contactRequestBody.getCompanyName()));

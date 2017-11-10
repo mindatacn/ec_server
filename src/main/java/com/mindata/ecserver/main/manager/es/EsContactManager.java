@@ -4,7 +4,6 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsContact;
-import com.mindata.ecserver.main.repository.es.EsContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
@@ -21,6 +20,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +39,17 @@ public class EsContactManager extends BaseService {
     private ElasticsearchTemplate elasticsearchTemplate;
     @Resource
     private EcVocationCodeManager ecVocationCodeManager;
-    @Resource
-    private EsContactRepository esContactRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
+
+    @PostConstruct
+    public void initES() {
+        if (!elasticsearchTemplate.indexExists(Constant.ES_INDEX_NAME)) {
+            logger.info("ES index不存在，开始创建index");
+            elasticsearchTemplate.createIndex(Constant.ES_INDEX_NAME);
+            logger.info("创建index完毕");
+        }
+    }
 
     /**
      * 模糊查询某列
@@ -52,19 +59,10 @@ public class EsContactManager extends BaseService {
      * @return 结果
      */
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
-        if (!elasticsearchTemplate.indexExists(Constant.ES_INDEX_NAME)) {
-            logger.info("ES index不存在，开始创建index");
-            elasticsearchTemplate.createIndex(Constant.ES_INDEX_NAME);
-            logger.info("创建index完毕");
-        }
-
-        EsContact esContact1 = esContactRepository.findOne(223262L);
-        System.out.println(esContact1.getCompany());
-
         BoolQueryBuilder boolQuery = boolQuery();
 
-        //boolQuery.must(matchQuery("state", 0));
-        //公司名                                                      、
+        boolQuery.must(matchQuery("state", 0));
+        //公司名
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName())) {
             boolQuery.must(matchQuery("company", contactRequestBody.getCompanyName()));
         }

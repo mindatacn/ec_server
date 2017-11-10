@@ -52,7 +52,8 @@ public class ContactService extends BaseService {
             contactRequestBody) {
         //公司名\详细地址\职位名称\企业简介，任何一个不为空，就走ES
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName()) || !StrUtil.isEmpty(contactRequestBody.getAddress()
-        ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())) {
+        ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())
+                || !StrUtil.isEmpty(contactRequestBody.getExtra())) {
             return esContactManager.findByRequestBody(contactRequestBody);
         }
 

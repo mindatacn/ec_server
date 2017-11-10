@@ -53,7 +53,6 @@ public class StatelessAccessControlFilter extends FormAuthenticationFilter {
             gotoLogin(response);
             return false;
         }
-        //header不为空，拿着token去获取user
         UsernamePasswordToken token1 = new UsernamePasswordToken(user.getAccount(), user.getPassword());
         //5、委托给Realm进行登录
         getSubject(request, response).login(token1);

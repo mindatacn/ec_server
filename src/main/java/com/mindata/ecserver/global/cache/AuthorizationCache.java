@@ -52,7 +52,7 @@ public class AuthorizationCache extends BaseCache {
      *         事件
      */
     @EventListener
-    public void ListenPermissionChange(UserRolePermissionChangeEvent event) {
+    public void listenPermissionChange(UserRolePermissionChangeEvent event) {
         Integer userId = (Integer) event.getSource();
         remove(userId);
     }

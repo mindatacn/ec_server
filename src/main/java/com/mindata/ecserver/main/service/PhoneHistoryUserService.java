@@ -58,7 +58,7 @@ public class PhoneHistoryUserService {
         //if (!manager) {
         //    deptId = ptUser.getDepartmentId();
         //}
-        
+
     }
 
     public PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Integer userId, String begin, String end) {
@@ -85,8 +85,10 @@ public class PhoneHistoryUserService {
     private List<PhoneHistoryUserBeanVO> findPersonalHistoryByCompanyId(Integer companyId, Date begin, Date end) {
         List<PtDepartment> ptDepartments = ptDepartmentManager.findByCompanyIdAndState(companyId, 0);
         List<PhoneHistoryUserBeanVO> vos = new ArrayList<>();
-        vos.addAll(ptDepartments.stream().map(ptUser -> findPersonalHistoryByUserId(ptUser.getId(), begin, end))
-                .collect(Collectors.toList()));
+        for (PtDepartment ptDepartment : ptDepartments) {
+            vos.addAll(findPersonalHistoryByDeptId
+                    (ptDepartment.getId(), begin, end));
+        }
         return vos;
     }
 

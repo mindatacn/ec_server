@@ -37,4 +37,13 @@ public class PushBody {
     public void setIds(List<Integer> ids) {
         this.ids = ids;
     }
+
+    @Override
+    public String toString() {
+        return "PushBody{" +
+                "ids=" + ids +
+                ", followUserId=" + followUserId +
+                ", optUserId=" + optUserId +
+                '}';
+    }
 }

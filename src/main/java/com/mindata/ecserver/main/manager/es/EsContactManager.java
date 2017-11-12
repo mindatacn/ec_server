@@ -25,9 +25,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * elasticsearch的管理类
@@ -72,7 +70,7 @@ public class EsContactManager extends BaseService {
         if (!StrUtil.isEmpty(contactRequestBody.getExtra())) {
             boolQuery.must(queryStringQuery(contactRequestBody.getExtra()));
         }
-        //boolQuery.must(matchQuery("state", 0)); TODO
+        boolQuery.must(matchQuery("state", 0));
         //公司名
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName())) {
             boolQuery.must(matchQuery("company", contactRequestBody.getCompanyName()));

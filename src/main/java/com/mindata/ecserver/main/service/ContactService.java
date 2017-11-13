@@ -61,7 +61,7 @@ public class ContactService extends BaseService {
         criteria.add(Restrictions.eq("state", state, true));
         //有手机号
         if (contactRequestBody.getHasMobile() != null && contactRequestBody.getHasMobile()) {
-            criteria.add(Restrictions.ne("mobile", "", true));
+            criteria.add(Restrictions.ne("mobile", "", false));
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
@@ -114,7 +114,11 @@ public class ContactService extends BaseService {
             ContactVO vo = new ContactVO();
             vo.setCompany(ecContactEntity.getCompany());
             vo.setId(ecContactEntity.getId());
-            vo.setMobile(ecContactEntity.getMobile());
+            if (StrUtil.isEmpty(ecContactEntity.getMobile())) {
+                vo.setMobile(ecContactEntity.getPhone());
+            } else {
+                vo.setMobile(ecContactEntity.getMobile());
+            }
             vo.setName(ecContactEntity.getName());
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));

@@ -2,10 +2,13 @@ package com.mindata.ecserver.main.model.secondary;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mindata.ecserver.main.model.base.BaseEntity;
+import com.mindata.ecserver.main.vo.RoleVO;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -66,6 +69,17 @@ public class PtUser extends BaseEntity {
      * 状态，（0正常，1被删除）
      */
     private Integer state;
+
+    @Transient
+    private List<RoleVO> roles;
+
+    public List<RoleVO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleVO> roles) {
+        this.roles = roles;
+    }
 
     public String getTitle() {
         return title;

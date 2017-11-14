@@ -76,6 +76,12 @@ public class EcContactEntity {
 
     private Date createTime;
 
+    /**
+     * 不入库，仅供单条查询时使用
+     */
+    @Transient
+    private String jobName;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -321,6 +327,14 @@ public class EcContactEntity {
     @Column(name = "state")
     public Integer getState() {
         return state;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public void setState(Integer state) {

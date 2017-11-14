@@ -79,6 +79,12 @@ public class UserService extends BaseService {
         return roles.stream().map(ptRole -> new RoleVO(ptRole.getName())).collect(Collectors.toList());
     }
 
+    public PtUser getInfo() {
+        PtUser ptUser = getCurrentUser();
+        ptUser.setRoles(findRole());
+        return ptUser;
+    }
+
     /**
      * 根据token获取user
      *
@@ -168,10 +174,6 @@ public class UserService extends BaseService {
             ptUser.setEmail(email);
         }
         return userManager.update(ptUser);
-    }
-
-    public PtUser getInfo() {
-        return getCurrentUser();
     }
 
     /**

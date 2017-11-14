@@ -97,25 +97,35 @@ public class EsContactManager extends BaseService {
         }
         //来源
         if (!CollectionUtil.isEmpty(contactRequestBody.getWebsiteIds())) {
-            boolQuery.must(matchQuery("websiteId", contactRequestBody.getWebsiteIds()));
+            for (Integer webSiteId : contactRequestBody.getWebsiteIds()) {
+                boolQuery.should(matchQuery("websiteId", webSiteId));
+            }
         }
         //规模
         if (!CollectionUtil.isEmpty(contactRequestBody.getMemberSizeTags())) {
-            boolQuery.must(matchQuery("memberSizeTag", contactRequestBody.getMemberSizeTags()));
+            for (Integer memberSize : contactRequestBody.getMemberSizeTags()) {
+                boolQuery.should(matchQuery("memberSizeTag", memberSize));
+            }
         }
         //行业
         if (!CollectionUtil.isEmpty(contactRequestBody.getVocations())) {
-            boolQuery.must(matchQuery("vocation", getVocations(contactRequestBody.getVocations())));
+            for (Integer vocation : getVocations(contactRequestBody.getVocations())) {
+                boolQuery.should(matchQuery("vocation", vocation));
+            }
         }
         //区域
         if (!CollectionUtil.isEmpty(contactRequestBody.getProvinces())) {
-            boolQuery.must(matchQuery("province", contactRequestBody.getProvinces()));
+            for (String province : contactRequestBody.getProvinces()) {
+                boolQuery.should(matchQuery("province", province));
+            }
             List<String> cities = contactRequestBody.getCities();
 
             //如果勾了多个市，则用in
             if (!CollectionUtil.isEmpty(cities)) {
                 cities = getCities(contactRequestBody.getProvinces(), cities);
-                boolQuery.must(matchQuery("city", cities));
+                for (String city : cities) {
+                    boolQuery.should(matchQuery("city", city));
+                }
             }
         }
 

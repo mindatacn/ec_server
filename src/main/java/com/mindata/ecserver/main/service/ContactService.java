@@ -66,7 +66,7 @@ public class ContactService extends BaseService {
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
-            criteria.add(Restrictions.eq("needSale", true, true));
+            criteria.add(Restrictions.eq("needSale", true, false));
         }
         //来源
         if (!CollectionUtil.isEmpty(contactRequestBody.getWebsiteIds())) {

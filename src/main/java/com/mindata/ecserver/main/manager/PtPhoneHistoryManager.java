@@ -12,6 +12,8 @@ import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -47,6 +49,22 @@ public class PtPhoneHistoryManager {
      */
     public Integer findTotalContactTimeByCrmId(Long crmId) {
         return ptPhoneHistoryRepository.findTotalContactTimeByCrmId(crmId);
+    }
+
+    /**
+     * 查最后一次通话记录
+     *
+     * @param crmId
+     *         客户id
+     * @return 时间
+     */
+    public Date findByCrmIdOrderByCallTime(Long crmId) {
+        Pageable pageable = new PageRequest(0, 1);
+        List<PtPhoneHistory> ptPhoneHistory = ptPhoneHistoryRepository.findByCrmIdOrderByCallTimeDesc(crmId, pageable);
+        if (ptPhoneHistory.size() == 0) {
+            return null;
+        }
+        return ptPhoneHistory.get(0).getStartTime();
     }
 
     /**

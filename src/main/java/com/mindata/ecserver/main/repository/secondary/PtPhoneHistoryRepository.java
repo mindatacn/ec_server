@@ -37,6 +37,17 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
     Integer findTotalContactTimeByCrmId(Long crmId);
 
     /**
+     * 查询某个客户最后沟通时间
+     *
+     * @param crmId
+     *         客户
+     * @param pageable
+     *         目前是只取一条
+     * @return 结果
+     */
+    List<PtPhoneHistory> findByCrmIdOrderByCallTimeDesc(Long crmId, Pageable pageable);
+
+    /**
      * 查询某天虚假的电话记录
      *
      * @param ecUserId

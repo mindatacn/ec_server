@@ -108,6 +108,8 @@ public class PushSuccessResultService extends BaseService {
             vo.setCreateTime(result.getCreateTime());
             vo.setId(result.getId());
             vo.setContactDuration(ptPhoneHistoryManager.findTotalContactTimeByCrmId(result.getCrmId()));
+            //最后沟通时间
+            vo.setLastContactTime(ptPhoneHistoryManager.findByCrmIdOrderByCallTime(result.getCrmId()));
             //TODO 沟通相关的属性
             vos.add(vo);
         }

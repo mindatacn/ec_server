@@ -85,7 +85,7 @@ public class EsContactManager extends BaseService {
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
-            boolQuery.mustNot(matchQuery("jobName", ""));
+            boolQuery.must(matchQuery("needSale", true));
         }
         //企业简介
         if (!StrUtil.isEmpty(contactRequestBody.getComintro())) {

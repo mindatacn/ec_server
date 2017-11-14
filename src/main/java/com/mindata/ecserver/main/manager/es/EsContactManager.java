@@ -89,7 +89,7 @@ public class EsContactManager extends BaseService {
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
-            boolQuery.must(matchQuery("needSale", true));
+            boolQuery.must(matchQuery("needSale", 1));
         }
         //企业简介
         if (!StrUtil.isEmpty(contactRequestBody.getComintro())) {
@@ -159,7 +159,7 @@ public class EsContactManager extends BaseService {
             }
             vo.setName(esContact.getName());
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
-            vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince()));
+            vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             contactVOS.add(vo);
         }
         return new SimplePage<>((int) totalCount / size + 1, totalCount, contactVOS);

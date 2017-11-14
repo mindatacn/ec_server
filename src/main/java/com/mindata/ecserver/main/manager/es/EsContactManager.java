@@ -116,6 +116,12 @@ public class EsContactManager extends BaseService {
 
         int page = Constant.PAGE_NUM;
         int size = Constant.PAGE_SIZE;
+        if (contactRequestBody.getPage() != null) {
+            page = contactRequestBody.getPage();
+        }
+        if (contactRequestBody.getSize() != null) {
+            size = contactRequestBody.getSize();
+        }
         //Sort.Direction direction = Constant.DIRECTION;
         //String orderBy = "id";
         Pageable pageable = new PageRequest(page, size);

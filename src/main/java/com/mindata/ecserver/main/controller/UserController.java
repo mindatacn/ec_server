@@ -68,7 +68,7 @@ public class UserController {
     /**
      * 获取个人信息
      */
-    @GetMapping
+    @GetMapping("/info")
     public BaseData userInfo() {
         return ResultGenerator.genSuccessResult(userService.getInfo());
     }

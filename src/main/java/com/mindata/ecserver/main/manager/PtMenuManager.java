@@ -34,11 +34,11 @@ public class PtMenuManager {
         return ptMenuRepository.save(ptMenu);
     }
 
-    public void delete(Integer id) {
+    public void delete(Long id) {
         ptMenuRepository.delete(id);
     }
 
-    public List<PtMenu> findByRoleId(int roleId) {
+    public List<PtMenu> findByRoleId(Long roleId) {
         //读缓存
         List<PtMenu> menuList = roleMenuCache.findMenuByRoleId(roleId);
         if (menuList != null) {

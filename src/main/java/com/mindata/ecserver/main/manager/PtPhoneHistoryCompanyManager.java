@@ -40,7 +40,7 @@ public class PtPhoneHistoryCompanyManager {
      *         分页
      * @return 分页结果
      */
-    public Page<PtPhoneHistoryCompany> findHistoryByDate(Integer companyId, Date begin, Date end, Pageable pageable)
+    public Page<PtPhoneHistoryCompany> findHistoryByDate(Long companyId, Date begin, Date end, Pageable pageable)
             throws IOException {
         Date tempBegin = DateUtil.beginOfDay(begin);
         Date tempEnd = DateUtil.endOfDay(end);
@@ -96,7 +96,7 @@ public class PtPhoneHistoryCompanyManager {
      *         结束时间
      * @return 聚合结果数据
      */
-    public List<Object[]> findTotalByCompanyId(Integer companyId, Date begin, Date end) {
+    public List<Object[]> findTotalByCompanyId(Long companyId, Date begin, Date end) {
         return ptPhoneHistoryCompanyRepository.findCount(CollectionUtil.newArrayList(companyId), begin, end);
     }
 }

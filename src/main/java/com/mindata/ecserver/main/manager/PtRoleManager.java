@@ -28,13 +28,13 @@ public class PtRoleManager {
      *         userId
      * @return 集合
      */
-    public List<PtRole> findByUserId(Integer userId) {
+    public List<PtRole> findByUserId(Long userId) {
         List<PtUserRole> userRoles = ptUserRoleRepository.findByUserId(userId);
         return userRoles.stream().map(userRole -> ptRoleRepository.findOne(userRole.getRoleId())).collect(Collectors
                 .toList());
     }
 
-    public boolean isManager(Integer userId) {
+    public boolean isManager(Long userId) {
         //判断用户角色
         List<PtRole> roles = findByUserId(userId);
         for (PtRole ptRole : roles) {
@@ -45,7 +45,7 @@ public class PtRoleManager {
         return false;
     }
 
-    public Integer findIdByName(String name) {
+    public Long findIdByName(String name) {
         return ptRoleRepository.findByName(name).getId();
     }
 

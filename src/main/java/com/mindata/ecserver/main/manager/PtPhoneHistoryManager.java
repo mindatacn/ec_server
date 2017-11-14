@@ -75,7 +75,7 @@ public class PtPhoneHistoryManager {
      * @return
      * 统计信息
      */
-    public List<Object[]> findTotalByUserIdAndOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
+    public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd) throws IOException {
         Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
         //没绑定ec
         if (ecUserId == null) {

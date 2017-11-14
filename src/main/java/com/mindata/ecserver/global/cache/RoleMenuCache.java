@@ -34,7 +34,7 @@ public class RoleMenuCache extends BaseCache {
      *         roleId
      * @return 菜单集合
      */
-    public List<PtMenu> findMenuByRoleId(int roleId) {
+    public List<PtMenu> findMenuByRoleId(Long roleId) {
         Object object = stringRedisTemplate.opsForValue().get(keyOfRole(roleId));
         if (object == null) {
             return null;
@@ -52,7 +52,7 @@ public class RoleMenuCache extends BaseCache {
      * @param menus
      *         菜单集合
      */
-    public void setMenuByRoleId(int roleId, List<PtMenu> menus) {
+    public void setMenuByRoleId(Long roleId, List<PtMenu> menus) {
         if (CollectionUtil.isEmpty(menus)) {
             return;
         }
@@ -77,7 +77,7 @@ public class RoleMenuCache extends BaseCache {
         roles.forEach(role -> stringRedisTemplate.delete(keyOfRole(role.getId())));
     }
 
-    private String keyOfRole(int roleId) {
+    private String keyOfRole(Long roleId) {
         return CACHE_ROLE_MENU_KEY + "_" + roleId;
     }
 }

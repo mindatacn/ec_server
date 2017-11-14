@@ -18,7 +18,7 @@ public class PtDepartment extends BaseEntity {
     /**
      * 公司ID
      */
-    private Integer companyId;
+    private Long companyId;
     /**
      * 名称
      */
@@ -26,7 +26,7 @@ public class PtDepartment extends BaseEntity {
     /**
      * 父部门id
      */
-    private Integer parentId;
+    private Long parentId;
     /**
      * 部门leader（id1，id2）
      */
@@ -34,11 +34,11 @@ public class PtDepartment extends BaseEntity {
     /**
      * 在EC的父部门id
      */
-    private Integer ecParentDeptId;
+    private Long ecParentDeptId;
     /**
      * 在EC的部门id
      */
-    private Integer ecDeptId;
+    private Long ecDeptId;
     /**
      * 在EC的sort
      */
@@ -56,11 +56,11 @@ public class PtDepartment extends BaseEntity {
      */
     private Integer state;
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -88,11 +88,11 @@ public class PtDepartment extends BaseEntity {
         this.state = state;
     }
 
-    public Integer getEcDeptId() {
+    public Long getEcDeptId() {
         return ecDeptId;
     }
 
-    public void setEcDeptId(Integer ecDeptId) {
+    public void setEcDeptId(Long ecDeptId) {
         this.ecDeptId = ecDeptId;
     }
 
@@ -104,19 +104,19 @@ public class PtDepartment extends BaseEntity {
         this.threshold = threshold;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public Integer getEcParentDeptId() {
+    public Long getEcParentDeptId() {
         return ecParentDeptId;
     }
 
-    public void setEcParentDeptId(Integer ecParentDeptId) {
+    public void setEcParentDeptId(Long ecParentDeptId) {
         this.ecParentDeptId = ecParentDeptId;
     }
 

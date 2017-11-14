@@ -35,7 +35,7 @@ public class PhoneHistoryCompanyService {
 
 
     @SuppressWarnings("Duplicates")
-    public PhoneHistoryBeanVO findHistoryByDate(Integer companyId, String begin, String end) {
+    public PhoneHistoryBeanVO findHistoryByDate(Long companyId, String begin, String end) {
         //不传companyId，则默认是当前用户
         if (companyId == null) {
             companyId = ShiroKit.getCurrentUser().getCompanyId();
@@ -60,7 +60,7 @@ public class PhoneHistoryCompanyService {
     /**
      * 该接口是生成所有历史数据用的
      */
-    public Page<PtPhoneHistoryCompany> fetchAllHistoryData(Integer companyId, String begin, String end, Pageable
+    public Page<PtPhoneHistoryCompany> fetchAllHistoryData(Long companyId, String begin, String end, Pageable
             pageable) throws IOException {
         if (companyId == null) {
             companyId = ShiroKit.getCurrentUser().getCompanyId();
@@ -82,7 +82,7 @@ public class PhoneHistoryCompanyService {
     public List<UserHistoryStateVO> findHistoryByDate(String begin, String end) {
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
-        List<PtUser> userList = ptUserManager.findByCompanyIdAndState(1, 0);
+        List<PtUser> userList = ptUserManager.findByCompanyIdAndState(1L, 0);
         List<UserHistoryStateVO> vos = new ArrayList<>();
         for (PtUser ptUser : userList) {
             List<Object[]> objects = ptPhoneHistoryUserManager.findTotalByUserId(ptUser.getId(), beginDate, endDate);

@@ -16,7 +16,7 @@ public class PtPushSuccessResult extends BaseEntity {
     /**
      * 数据的id
      */
-    private Integer contactId;
+    private Long contactId;
     /**
      * 线索中的公司名
      */
@@ -52,25 +52,25 @@ public class PtPushSuccessResult extends BaseEntity {
     /**
      * 跟进人的公司id
      */
-    private Integer companyId;
+    private Long companyId;
     /**
      * 操作人id
      */
-    private Integer optUserId;
+    private Long optUserId;
     /**
      * 跟进人id
      */
-    private Integer followUserId;
+    private Long followUserId;
     /**
      * 跟进人的部门id
      */
-    private Integer departmentId;
+    private Long departmentId;
 
-    public Integer getContactId() {
+    public Long getContactId() {
         return contactId;
     }
 
-    public void setContactId(Integer contactId) {
+    public void setContactId(Long contactId) {
         this.contactId = contactId;
     }
 
@@ -138,35 +138,35 @@ public class PtPushSuccessResult extends BaseEntity {
         this.crmId = crmId;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public Integer getOptUserId() {
+    public Long getOptUserId() {
         return optUserId;
     }
 
-    public void setOptUserId(Integer optUserId) {
+    public void setOptUserId(Long optUserId) {
         this.optUserId = optUserId;
     }
 
-    public Integer getFollowUserId() {
+    public Long getFollowUserId() {
         return followUserId;
     }
 
-    public void setFollowUserId(Integer followUserId) {
+    public void setFollowUserId(Long followUserId) {
         this.followUserId = followUserId;
     }
 
-    public Integer getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 

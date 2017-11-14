@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/25.
  */
-public interface EcAnalyContactCountRepository extends JpaRepository<PtAnalyContactCount, Integer> {
+public interface EcAnalyContactCountRepository extends JpaRepository<PtAnalyContactCount, Long> {
     /**
      * 查询某一段时间的统计聚合数据
      *

@@ -97,7 +97,7 @@ public class UserService extends BaseService {
         if (userIdStr == null) {
             return null;
         }
-        return userManager.findByUserId(Integer.valueOf(userIdStr));
+        return userManager.findByUserId(Long.valueOf(userIdStr));
     }
 
     /**
@@ -107,7 +107,7 @@ public class UserService extends BaseService {
      */
     public TokenExpire token() {
         PtUser ptUser = getCurrentUser();
-        Integer userId = ptUser.getId();
+        Long userId = ptUser.getId();
         //获得token
         String token = userTokenCache.getTokenByUserId(userId);
         if (token == null) {
@@ -126,7 +126,7 @@ public class UserService extends BaseService {
      */
     public TokenExpire refreshToken() {
         PtUser ptUser = getCurrentUser();
-        Integer userId = ptUser.getId();
+        Long userId = ptUser.getId();
         //获得token
         String token = userTokenCache.getTokenByUserId(userId);
         userTokenCache.setBothTokenByUserId(token, userId);

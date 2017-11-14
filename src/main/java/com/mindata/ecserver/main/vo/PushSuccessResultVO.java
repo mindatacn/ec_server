@@ -6,7 +6,11 @@ import java.util.Date;
  * @author wuweifeng wrote on 2017/11/2.
  */
 public class PushSuccessResultVO {
-    private Integer id;
+    private Long id;
+    /**
+     * 线索id
+     */
+    private Long contactId;
     /**
      * 公司名
      */
@@ -36,12 +40,20 @@ public class PushSuccessResultVO {
      */
     private Integer saleState;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public String getFollowUser() {

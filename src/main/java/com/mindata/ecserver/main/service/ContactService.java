@@ -37,8 +37,8 @@ public class ContactService extends BaseService {
     @Resource
     private EcVocationCodeManager ecVocationCodeManager;
 
-    public EcContactEntity findById(int id) {
-        EsContact esContact = esContactManager.findById((long) id);
+    public EcContactEntity findById(Long id) {
+        EsContact esContact = esContactManager.findById(id);
 
         EcContactEntity ecContactEntity = contactRepository.findOne(id);
         if (esContact != null) {

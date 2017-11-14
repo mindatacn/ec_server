@@ -4,24 +4,24 @@ package com.mindata.ecserver.ec.model.response;
  * @author wuweifeng wrote on 2017/10/30.
  */
 public class CompanyDeptBean {
-    private Integer deptId;
-    private Integer parentDeptId;
+    private Long deptId;
+    private Long parentDeptId;
     private String deptName;
     private Integer sort;
 
-    public Integer getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Integer deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public Integer getParentDeptId() {
+    public Long getParentDeptId() {
         return parentDeptId;
     }
 
-    public void setParentDeptId(Integer parentDeptId) {
+    public void setParentDeptId(Long parentDeptId) {
         this.parentDeptId = parentDeptId;
     }
 

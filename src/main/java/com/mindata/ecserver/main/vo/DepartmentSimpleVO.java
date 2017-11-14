@@ -4,7 +4,7 @@ package com.mindata.ecserver.main.vo;
  * @author wuweifeng wrote on 2017/11/2.
  */
 public class DepartmentSimpleVO {
-    private Integer id;
+    private Long id;
     private String name;
     private String leaders;
     private Integer count;
@@ -12,18 +12,18 @@ public class DepartmentSimpleVO {
     public DepartmentSimpleVO() {
     }
 
-    public DepartmentSimpleVO(Integer id, String name, String leaders, Integer count) {
+    public DepartmentSimpleVO(Long id, String name, String leaders, Integer count) {
         this.id = id;
         this.name = name;
         this.leaders = leaders;
         this.count = count;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

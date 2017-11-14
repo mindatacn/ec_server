@@ -12,22 +12,22 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pt_menu_role")
 public class PtMenuRole extends BaseEntity {
-    private int menuId;
-    private int roleId;
+    private Long menuId;
+    private Long roleId;
 
-    public int getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(int menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 
-    public int getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 }

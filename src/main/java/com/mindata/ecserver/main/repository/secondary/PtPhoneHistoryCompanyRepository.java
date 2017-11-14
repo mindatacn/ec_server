@@ -26,7 +26,7 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      *         分页
      * @return page
      */
-    Page<PtPhoneHistoryCompany> findByCompanyIdAndStartTimeBetween(Integer companyId, Date begin, Date end, Pageable
+    Page<PtPhoneHistoryCompany> findByCompanyIdAndStartTimeBetween(Long companyId, Date begin, Date end, Pageable
             pageable);
 
     /**
@@ -40,7 +40,7 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      *         结束时间
      * @return 数量
      */
-    Integer countByCompanyIdAndStartTimeBetween(Integer companyId, Date begin, Date end);
+    Integer countByCompanyIdAndStartTimeBetween(Long companyId, Date begin, Date end);
 
     /**
      * 统计某公司某段时间的统计聚合数据
@@ -55,5 +55,5 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      */
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
             " from PtPhoneHistoryCompany where companyId in ?1 and startTime between ?2 and ?3")
-    List<Object[]> findCount(List<Integer> companyIds, Date begin, Date end);
+    List<Object[]> findCount(List<Long> companyIds, Date begin, Date end);
 }

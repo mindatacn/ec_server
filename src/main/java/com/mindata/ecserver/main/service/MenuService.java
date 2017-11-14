@@ -55,7 +55,7 @@ public class MenuService extends BaseService {
         return menu;
     }
 
-    public void delete(Integer id) {
+    public void delete(Long id) {
         ptMenuManager.delete(id);
         //发布菜单事件
         eventPublisher.publishEvent(new MenuCrudEvent(null));
@@ -67,8 +67,8 @@ public class MenuService extends BaseService {
      * @param parentId
      *         父菜单id
      */
-    public List<PtMenu> find(final Integer parentId) {
-        int id = parentId == null ? 0 : parentId;
+    public List<PtMenu> find(final Long parentId) {
+        long id = parentId == null ? 0 : parentId;
         List<PtRole> ptRoleList = ptRoleManager.findByUserId(ShiroKit.getCurrentUser().getId());
         //得到该用户所有菜单
         List<PtMenu> menuList = ptMenuManager.findAllByRoles(ptRoleList);

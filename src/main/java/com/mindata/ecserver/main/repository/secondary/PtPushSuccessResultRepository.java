@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSuccessResult, Integer>,
+public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSuccessResult, Long>,
         JpaSpecificationExecutor<PtPushSuccessResult> {
     /**
      * 统计已推送的数量
@@ -39,5 +39,5 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      *         EcContactEntity表的id
      * @return 结果集
      */
-    List<PtPushSuccessResult> findByContactId(Integer contactId);
+    List<PtPushSuccessResult> findByContactId(Long contactId);
 }

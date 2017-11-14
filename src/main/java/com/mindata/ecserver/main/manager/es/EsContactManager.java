@@ -137,7 +137,7 @@ public class EsContactManager extends BaseService {
         for (EsContact esContact : esContacts) {
             ContactVO vo = new ContactVO();
             vo.setCompany(esContact.getCompany());
-            vo.setId(esContact.getId().intValue());
+            vo.setId(esContact.getId());
             if (StrUtil.isEmpty(esContact.getMobile())) {
                 vo.setMobile(esContact.getPhone());
             } else {

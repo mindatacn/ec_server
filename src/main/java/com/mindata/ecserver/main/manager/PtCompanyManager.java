@@ -42,11 +42,11 @@ public class PtCompanyManager {
      *         corpId
      * @return 公司
      */
-    public PtCompany findByEcCorpId(Integer corpId) {
+    public PtCompany findByEcCorpId(Long corpId) {
         return companyRepository.findByCorpId(corpId);
     }
 
-    public PtCompany findOne(Integer id) {
+    public PtCompany findOne(Long id) {
         return companyRepository.findOne(id);
     }
 }

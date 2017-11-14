@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, Integer> {
+public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, Long> {
     Page<PtPhoneHistory> findByStartTimeBetween(Date begin, Date end, Pageable pageable);
 
     Page<PtPhoneHistory> findByEcUserIdIn(List<Integer> ecUserIds, Pageable pageable);

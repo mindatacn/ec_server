@@ -39,11 +39,11 @@ public class EcContactManager {
      *         线索id集合
      * @return 线索集合
      */
-    public List<EcContactEntity> findByIds(List<Integer> ids) {
+    public List<EcContactEntity> findByIds(List<Long> ids) {
         return contactRepository.findByIdIn(ids);
     }
 
-    public EcContactEntity findOne(Integer id) {
+    public EcContactEntity findOne(Long id) {
         return contactRepository.findOne(id);
     }
 

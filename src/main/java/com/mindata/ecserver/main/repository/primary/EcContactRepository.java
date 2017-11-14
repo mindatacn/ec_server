@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/25.
  */
-public interface EcContactRepository extends JpaRepository<EcContactEntity, Integer>,
+public interface EcContactRepository extends JpaRepository<EcContactEntity, Long>,
         JpaSpecificationExecutor<EcContactEntity> {
     /**
      * 获取某天的爬取数量
@@ -30,7 +30,7 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
      *         id集合
      * @return 线索集合
      */
-    List<EcContactEntity> findByIdIn(List<Integer> ids);
+    List<EcContactEntity> findByIdIn(List<Long> ids);
 
     /**
      * 复杂条件查询

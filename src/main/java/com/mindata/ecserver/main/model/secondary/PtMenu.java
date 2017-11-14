@@ -21,7 +21,7 @@ public class PtMenu extends BaseEntity implements Comparable {
     /**
      * 父菜单id（1级为0）
      */
-    private int parentId;
+    private Long parentId;
     /**
      * 地址url("/contact")
      */
@@ -71,11 +71,11 @@ public class PtMenu extends BaseEntity implements Comparable {
         this.name = name;
     }
 
-    public int getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

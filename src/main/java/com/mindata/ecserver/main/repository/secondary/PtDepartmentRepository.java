@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtDepartmentRepository extends JpaRepository<PtDepartment, Integer> {
+public interface PtDepartmentRepository extends JpaRepository<PtDepartment, Long> {
     /**
      * 根据ecDeptId查询本地的Department
      *
@@ -18,16 +18,16 @@ public interface PtDepartmentRepository extends JpaRepository<PtDepartment, Inte
      *         deptId
      * @return Department
      */
-    PtDepartment findByEcDeptId(Integer deptId);
+    PtDepartment findByEcDeptId(Long deptId);
 
-    Page<PtDepartment> findByCompanyIdAndNameLikeAndState(Integer companyId, String name, Integer state, Pageable
+    Page<PtDepartment> findByCompanyIdAndNameLikeAndState(Long companyId, String name, Integer state, Pageable
             pageable);
 
     Page<PtDepartment> findByNameLikeAndState(String name, Integer state, Pageable pageable);
 
-    Page<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state, Pageable pageable);
+    Page<PtDepartment> findByCompanyIdAndState(Long companyId, Integer state, Pageable pageable);
 
     Page<PtDepartment> findByState(Integer state, Pageable pageable);
 
-    List<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state);
+    List<PtDepartment> findByCompanyIdAndState(Long companyId, Integer state);
 }

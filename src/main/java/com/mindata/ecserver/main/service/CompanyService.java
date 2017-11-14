@@ -71,7 +71,7 @@ public class CompanyService extends BaseService {
      * @return Company
      */
     public PtCompany findNowCompany() {
-        Integer companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         return ptCompanyManager.findOne(companyId);
     }
 
@@ -89,7 +89,7 @@ public class CompanyService extends BaseService {
         //根据CompanyData往本地Company插值
         List<CompanyDeptBean> deptBeanList = companyData.getData().getDepts();
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
-        Integer companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId);
         ptUserManager.addUsers(userBeanList, companyId);
 

@@ -13,14 +13,14 @@ import static com.mindata.ecserver.global.constant.CacheConstant.*;
 @Component
 public class UserTokenCache extends BaseCache {
 
-    public void setBothTokenByUserId(String token, Integer userId) {
+    public void setBothTokenByUserId(String token, Long userId) {
         stringRedisTemplate.opsForValue().set(keyOfUserId(userId), token, CACHE_USER_HEADER_TOKEN_EXPIE, TimeUnit
                 .SECONDS);
         stringRedisTemplate.opsForValue().set(keyOfToken(token), userId + "", CACHE_USER_HEADER_TOKEN_EXPIE, TimeUnit
                 .SECONDS);
     }
 
-    public String getTokenByUserId(Integer userId) {
+    public String getTokenByUserId(Long userId) {
         return stringRedisTemplate.opsForValue().get(keyOfUserId(userId));
     }
 
@@ -28,16 +28,16 @@ public class UserTokenCache extends BaseCache {
         return stringRedisTemplate.opsForValue().get(keyOfToken(token));
     }
 
-    public void deleteBothByUserId(Integer userId) {
+    public void deleteBothByUserId(Long userId) {
         stringRedisTemplate.delete(keyOfUserId(userId));
         stringRedisTemplate.delete(keyOfToken(getTokenByUserId(userId)));
     }
 
-    public Long getExpire(Integer userId) {
+    public Long getExpire(Long userId) {
         return stringRedisTemplate.getExpire(keyOfUserId(userId));
     }
 
-    private String keyOfUserId(Integer userId) {
+    private String keyOfUserId(Long userId) {
         return CACHE_USER_TOKEN_ID_KEY + "_" + userId;
     }
 

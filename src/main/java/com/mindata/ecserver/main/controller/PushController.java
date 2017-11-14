@@ -58,13 +58,12 @@ public class PushController {
             }
             pushBody.setFollowUserId((long) ptUser.getId());
         }
-        List<Integer> ids = pushBody.getIds();
+        List<Long> ids = pushBody.getIds();
         if (ids.size() > MAX_SIZE) {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_TO_LARGE, "一次最多推送50条");
         }
         //检查被推送的用户每日上限
-        PtUserPushCount userCount = ptUserPushThresholdManager.findCountByUserId(pushBody.getFollowUserId().intValue()
-                , null);
+        PtUserPushCount userCount = ptUserPushThresholdManager.findCountByUserId(pushBody.getFollowUserId(), null);
         if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日最大限制");
         }
@@ -87,19 +86,19 @@ public class PushController {
     @CheckEcAnnotation
     @RequestMapping("/push")
     public Object push() throws IOException, InterruptedException {
-        int beginId = 218302;
-        int endId = 223301;
+        Long beginId = 218302L;
+        Long endId = 223301L;
         long optUserId = 4;//侯学明
         long qizhi = 46;
         long zhao = 47;
 
         int count = 1;
-        List<Integer> ids = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
 
         PushBody pushBody = new PushBody();
         pushBody.setOptUserId(optUserId);
         pushBody.setFollowUserId(qizhi);
-        for (int i = beginId; i <= 220802; i++) {
+        for (Long i = beginId; i <= 220802; i++) {
             ids.add(i);
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);
@@ -118,7 +117,7 @@ public class PushController {
         ids.clear();
         count = 1;
         pushBody.setFollowUserId(zhao);
-        for (int i = 220803; i <= endId; i++) {
+        for (Long i = 220803L; i <= endId; i++) {
             ids.add(i);
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);

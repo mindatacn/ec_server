@@ -41,9 +41,9 @@ public class PushSuccessResultService extends BaseService {
     private PtUserManager ptUserManager;
     @Resource
     private PtDepartmentManager ptDepartmentManager;
-    
 
-    public PtPushSuccessResult findById(int id) {
+
+    public PtPushSuccessResult findById(Long id) {
         return ptPushResultManager.findOneSuccess(id);
     }
 
@@ -121,6 +121,7 @@ public class PushSuccessResultService extends BaseService {
             vo.setContactDuration(ptPhoneHistoryManager.findTotalContactTimeByCrmId(result.getCrmId()));
             //最后沟通时间
             vo.setLastContactTime(ptPhoneHistoryManager.findByCrmIdOrderByCallTime(result.getCrmId()));
+            vo.setContactId(result.getContactId());
             //TODO 沟通相关的属性
             vos.add(vo);
         }

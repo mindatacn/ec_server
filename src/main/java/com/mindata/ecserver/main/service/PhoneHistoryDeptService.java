@@ -25,7 +25,7 @@ public class PhoneHistoryDeptService {
     @Resource
     private PtDepartmentManager ptDepartmentManager;
 
-    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Integer deptId, String begin, String end, Pageable
+    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Long deptId, String begin, String end, Pageable
             pageable) {
         if (deptId == null) {
             deptId = ShiroKit.getCurrentUser().getDepartmentId();
@@ -39,7 +39,7 @@ public class PhoneHistoryDeptService {
      * 部门历史营销统计功能(某个部门某段时间的累计)
      */
     @SuppressWarnings("Duplicates")
-    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Integer deptId, Date begin, Date end, Pageable
+    public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Long deptId, Date begin, Date end, Pageable
             pageable) {
         //这一段时间的累计数据
         List<Object[]> list = ptPhoneHistoryDeptManager.findTotalByDeptId(deptId, begin, end);
@@ -69,7 +69,7 @@ public class PhoneHistoryDeptService {
 
     }
 
-    public List<PhoneHistoryDeptBeanVO> findDeptHisTotalByCompanyIdAndDateBetween(Integer companyId, String begin,
+    public List<PhoneHistoryDeptBeanVO> findDeptHisTotalByCompanyIdAndDateBetween(Long companyId, String begin,
                                                                                   String end,
                                                                                   Pageable pageable) {
         if (companyId == null) {

@@ -40,13 +40,13 @@ public class PtPhoneHistoryDeptManager {
      *         一天结束时间
      * @return 数量集合
      */
-    public List<Object[]> findCompanyOneDayTotalByCompanyId(Integer companyId, Date begin, Date end) throws
+    public List<Object[]> findCompanyOneDayTotalByCompanyId(Long companyId, Date begin, Date end) throws
             IOException {
         //找到公司所有正常的部门
         List<PtDepartment> departments = ptDepartmentManager.findByCompanyIdAndState(companyId, STATE_NORMAL);
-        List<Integer> ids = departments.stream().map(PtDepartment::getId).collect(Collectors.toList());
+        List<Long> ids = departments.stream().map(PtDepartment::getId).collect(Collectors.toList());
 
-        for (Integer deptId : ids) {
+        for (Long deptId : ids) {
             Integer count = ptPhoneHistoryDeptRepository.countByDeptIdAndStartTimeBetween(deptId, begin, end);
             //如果今天没值，就去统计userHistory的总数量，并且把今天的值给补上
             if (count == 0) {
@@ -82,7 +82,7 @@ public class PtPhoneHistoryDeptManager {
      *         结束时间
      * @return 聚合结果数据
      */
-    public List<Object[]> findTotalByDeptId(Integer deptId, Date begin, Date end) {
+    public List<Object[]> findTotalByDeptId(Long deptId, Date begin, Date end) {
         return ptPhoneHistoryDeptRepository.findCount(CollectionUtil.newArrayList(deptId), begin, end);
     }
 
@@ -95,7 +95,7 @@ public class PtPhoneHistoryDeptManager {
      *         结束时间
      * @return 分页数据
      */
-    public Page<PtPhoneHistoryDept> findByDeptId(Integer deptId, Date begin, Date end, Pageable pageable) {
+    public Page<PtPhoneHistoryDept> findByDeptId(Long deptId, Date begin, Date end, Pageable pageable) {
         return ptPhoneHistoryDeptRepository.findByDeptIdAndStartTimeBetween(deptId, begin, end, pageable);
     }
 }

@@ -36,7 +36,7 @@ public class PtUserManager {
      *
      * @return 用户
      */
-    public PtUser addAdmin(String account, String password, Integer companyId) {
+    public PtUser addAdmin(String account, String password, Long companyId) {
         Date now = CommonUtil.getNow();
         PtUser ptUser = new PtUser();
         ptUser.setCreateTime(now);
@@ -61,7 +61,7 @@ public class PtUserManager {
      *         ec的user信息
      * @return 本地的user
      */
-    public PtUser add(CompanyUserBean companyUserBean, Integer companyId) {
+    public PtUser add(CompanyUserBean companyUserBean, Long companyId) {
         PtUser ptUser = userRepository.findByEcUserId(companyUserBean.getUserId());
         if (ptUser != null) {
             return ptUser;
@@ -92,7 +92,7 @@ public class PtUserManager {
      *         ec用户集合
      * @return 本地集合
      */
-    public List<PtUser> addUsers(List<CompanyUserBean> userBeanList, Integer companyId) {
+    public List<PtUser> addUsers(List<CompanyUserBean> userBeanList, Long companyId) {
         List<PtUser> ptUsers = new ArrayList<>();
         for (CompanyUserBean userBean : userBeanList) {
             ptUsers.add(add(userBean, companyId));
@@ -111,7 +111,7 @@ public class PtUserManager {
         return userRepository.findByAccount(account);
     }
 
-    public PtUser findByUserId(Integer id) {
+    public PtUser findByUserId(Long id) {
         return userRepository.findOne(id);
     }
 
@@ -130,7 +130,7 @@ public class PtUserManager {
      *         部门id
      * @return 数量
      */
-    public Integer countByDepartmentId(Integer deparmentId) {
+    public Integer countByDepartmentId(Long deparmentId) {
         return userRepository.countByDepartmentIdAndState(deparmentId, STATE_NORMAL);
     }
 
@@ -143,11 +143,11 @@ public class PtUserManager {
      *         状态
      * @return user
      */
-    public List<PtUser> findByDeptIdAndState(Integer deptId, Integer state) {
+    public List<PtUser> findByDeptIdAndState(Long deptId, Integer state) {
         return userRepository.findByDepartmentIdAndState(deptId, state);
     }
 
-    public List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state) {
+    public List<PtUser> findByCompanyIdAndState(Long companyId, Integer state) {
         return userRepository.findByCompanyIdAndState(companyId, state);
     }
 
@@ -160,14 +160,14 @@ public class PtUserManager {
      *         名字
      * @return 结果集
      */
-    public List<PtUser> findByDeptIdAndNameLike(Integer deptId, String name) {
+    public List<PtUser> findByDeptIdAndNameLike(Long deptId, String name) {
         if (StrUtil.isEmpty(name)) {
             return userRepository.findByDepartmentIdAndState(deptId, STATE_NORMAL);
         }
         return userRepository.findByDepartmentIdAndStateAndNameLike(deptId, STATE_NORMAL, "%" + name + "%");
     }
 
-    public List<PtUser> findByCompanyIdAndNameLike(Integer companyId, String name) {
+    public List<PtUser> findByCompanyIdAndNameLike(Long companyId, String name) {
         if (StrUtil.isEmpty(name)) {
             return userRepository.findByCompanyIdAndState(companyId, STATE_NORMAL);
         }

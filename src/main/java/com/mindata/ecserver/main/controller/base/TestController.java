@@ -37,20 +37,20 @@ public class TestController {
     @CheckEcAnnotation
     @RequestMapping("/push")
     public Object push() throws IOException {
-        int beginId = 218302;
-        int endId = 223301;
+        long beginId = 218302;
+        long endId = 223301;
 
         long optUserId = 4;//侯学明
         long qizhi = 46;
         long zhao = 47;
 
         int count = 0;
-        List<Integer> ids = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
 
         PushBody pushBody = new PushBody();
         pushBody.setOptUserId(optUserId);
         pushBody.setFollowUserId(qizhi);
-        for (int i = beginId; i <= 220802; i++) {
+        for (Long i = beginId; i <= 220802; i++) {
             ids.add(i);
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);
@@ -68,7 +68,7 @@ public class TestController {
         ids.clear();
         count = 0;
         pushBody.setFollowUserId(zhao);
-        for (int i = 220803; i <= endId; i++) {
+        for (Long i = 220803L; i <= endId; i++) {
             ids.add(i);
             if (count != 0 && count % 50 == 0) {
                 pushBody.setIds(ids);

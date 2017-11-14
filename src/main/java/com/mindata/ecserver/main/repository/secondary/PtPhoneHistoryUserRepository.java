@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHistoryUser, Integer> {
+public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHistoryUser, Long> {
     /**
      * 查询某个用户一段时间内的通话历史统计
      *
@@ -26,14 +26,14 @@ public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHisto
      *         分页
      * @return page
      */
-    Page<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Integer userId, Date begin, Date end, Pageable pageable);
+    Page<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Long userId, Date begin, Date end, Pageable pageable);
 
-    List<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Integer userId, Date begin, Date end);
+    List<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Long userId, Date begin, Date end);
 
     /**
      * 统计某天、某个部门所有员工总的打电话次数
      */
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +
             " from PtPhoneHistoryUser where userId in ?1 and startTime between ?2 and ?3")
-    List<Object[]> findCount(List<Integer> userIds, Date begin, Date end);
+    List<Object[]> findCount(List<Long> userIds, Date begin, Date end);
 }

@@ -4,7 +4,7 @@ package com.mindata.ecserver.main.vo;
  * @author wuweifeng wrote on 2017/11/2.
  */
 public class ContactVO {
-    private Integer id;
+    private Long id;
     /**
      * 人名
      */
@@ -30,11 +30,11 @@ public class ContactVO {
      */
     private String phone;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

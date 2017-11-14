@@ -19,7 +19,7 @@ public class PtPhoneHistoryCompany extends BaseEntity {
     /**
      * 公司id
      */
-    private Integer companyId;
+    private Long companyId;
     /**
      * 统计日期（精确到日）
      */
@@ -45,11 +45,11 @@ public class PtPhoneHistoryCompany extends BaseEntity {
      */
     private Long validCount;
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 

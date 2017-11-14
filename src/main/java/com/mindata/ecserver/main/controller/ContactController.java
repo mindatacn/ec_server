@@ -29,7 +29,7 @@ public class ContactController {
     }
 
     @GetMapping("/{id}")
-    public BaseData queryOne(@PathVariable Integer id) {
+    public BaseData queryOne(@PathVariable Long id) {
         return ResultGenerator.genSuccessResult(contactService.findById(id));
     }
 }

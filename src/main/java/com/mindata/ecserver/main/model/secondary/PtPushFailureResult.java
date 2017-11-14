@@ -18,15 +18,15 @@ public class PtPushFailureResult extends BaseEntity {
     /**
      * 线索公司的id
      */
-    private Integer contactId;
+    private Long contactId;
     /**
      * 操作人id
      */
-    private Integer optUserId;
+    private Long optUserId;
     /**
      * 跟进人id
      */
-    private Integer followUserId;
+    private Long followUserId;
     /**
      * 失败原因
      */
@@ -44,27 +44,27 @@ public class PtPushFailureResult extends BaseEntity {
      */
     private String existedFollowUserName;
 
-    public Integer getContactId() {
+    public Long getContactId() {
         return contactId;
     }
 
-    public void setContactId(Integer contactId) {
+    public void setContactId(Long contactId) {
         this.contactId = contactId;
     }
 
-    public Integer getOptUserId() {
+    public Long getOptUserId() {
         return optUserId;
     }
 
-    public void setOptUserId(Integer optUserId) {
+    public void setOptUserId(Long optUserId) {
         this.optUserId = optUserId;
     }
 
-    public Integer getFollowUserId() {
+    public Long getFollowUserId() {
         return followUserId;
     }
 
-    public void setFollowUserId(Integer followUserId) {
+    public void setFollowUserId(Long followUserId) {
         this.followUserId = followUserId;
     }
 

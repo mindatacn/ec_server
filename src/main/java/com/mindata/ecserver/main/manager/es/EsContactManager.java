@@ -83,6 +83,10 @@ public class EsContactManager extends BaseService {
         if (!StrUtil.isEmpty(contactRequestBody.getJobName())) {
             boolQuery.must(matchQuery("jobName", contactRequestBody.getJobName()));
         }
+        //有手机号
+        if (contactRequestBody.getHasMobile() != null && contactRequestBody.getHasMobile()) {
+            boolQuery.mustNot(matchQuery("mobile", ""));
+        }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
             boolQuery.must(matchQuery("needSale", true));

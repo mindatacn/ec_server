@@ -10,15 +10,14 @@ import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
+import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushService;
+import com.mindata.ecserver.main.service.PushSuccessResultService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -35,6 +34,8 @@ public class PushController {
     private PushService pushService;
     @Resource
     private PtUserPushThresholdManager ptUserPushThresholdManager;
+    @Resource
+    private PushSuccessResultService pushSuccessResultService;
 
     private static final int MAX_SIZE = 50;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -69,6 +70,19 @@ public class PushController {
         }
         return ResultGenerator.genSuccessResult(pushService.push(pushBody));
     }
+
+    /**
+     * 查看推送成功的历史
+     *
+     * @param pushResultRequestBody
+     *         body
+     * @return 结果
+     */
+    @GetMapping("/success")
+    public BaseData get(PushResultRequestBody pushResultRequestBody) {
+        return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
+    }
+
 
     @CheckEcAnnotation
     @RequestMapping("/push")

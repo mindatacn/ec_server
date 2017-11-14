@@ -39,11 +39,23 @@ public class PtPhoneHistoryManager {
     private int maxPageNo;
 
     /**
+     * 查询某客户的累计通话时长
+     *
+     * @param crmId
+     *         客户id
+     * @return 时间累计
+     */
+    public Integer findTotalContactTimeByCrmId(Long crmId) {
+        return ptPhoneHistoryRepository.findTotalContactTimeByCrmId(crmId);
+    }
+
+    /**
      * 查询某用户某天的通话统计信息
      *
      * @param userId
      *         userId
      * @return
+     * 统计信息
      */
     public List<Object[]> findTotalByUserIdAndOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
         Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
@@ -234,11 +246,6 @@ public class PtPhoneHistoryManager {
         Object[] objects = new Object[]{0, 0, 0, 0, 0};
         list.add(objects);
         return list;
-    }
-
-
-    public List<PtPhoneHistory> findByEcUserIdAndDateBetween(Long ecUserId, Date begin, Date end) {
-        return null;
     }
 
     public PtPhoneHistory save(PtPhoneHistory ptPhoneHistory) {

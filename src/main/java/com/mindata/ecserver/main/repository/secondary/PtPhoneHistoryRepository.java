@@ -27,6 +27,16 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
     List<PtPhoneHistory> findByEcUserIdAndStartTimeBetween(Long ecUserId, Date begin, Date end);
 
     /**
+     * 查询某个客户的累计沟通时长
+     *
+     * @param crmId
+     *         客户id
+     * @return 总时长
+     */
+    @Query("select  sum(callTime) from PtPhoneHistory where crmId = ?1")
+    Integer findTotalContactTimeByCrmId(Long crmId);
+
+    /**
      * 查询某天虚假的电话记录
      *
      * @param ecUserId

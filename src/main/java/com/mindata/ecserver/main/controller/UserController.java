@@ -66,6 +66,14 @@ public class UserController {
     }
 
     /**
+     * 获取个人信息
+     */
+    @GetMapping
+    public BaseData userInfo() {
+        return ResultGenerator.genSuccessResult(userService.getInfo());
+    }
+
+    /**
      * 根据名字模糊查询
      *
      * @param name

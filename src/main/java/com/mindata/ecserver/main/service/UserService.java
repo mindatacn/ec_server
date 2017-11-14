@@ -72,6 +72,7 @@ public class UserService extends BaseService {
      * 获取用户的角色
      *
      * @return
+     * 角色
      */
     public List<RoleVO> findRole() {
         List<PtRole> roles = roleManager.findByUserId(ShiroKit.getCurrentUser().getId());
@@ -153,6 +154,7 @@ public class UserService extends BaseService {
      * @param email
      *         邮箱
      * @return
+     * user
      */
     public PtUser modifyInfo(String name, String mobile, String email) {
         PtUser ptUser = getCurrentUser();
@@ -166,6 +168,10 @@ public class UserService extends BaseService {
             ptUser.setEmail(email);
         }
         return userManager.update(ptUser);
+    }
+
+    public PtUser getInfo() {
+        return getCurrentUser();
     }
 
     /**

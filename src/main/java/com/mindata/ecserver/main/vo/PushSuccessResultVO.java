@@ -12,6 +12,14 @@ public class PushSuccessResultVO {
      */
     private String company;
     /**
+     * 跟进人
+     */
+    private String followUser;
+    /**
+     * 跟进团队
+     */
+    private String followDept;
+    /**
      * 推送时间
      */
     private Date createTime;
@@ -34,6 +42,22 @@ public class PushSuccessResultVO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFollowUser() {
+        return followUser;
+    }
+
+    public void setFollowUser(String followUser) {
+        this.followUser = followUser;
+    }
+
+    public String getFollowDept() {
+        return followDept;
+    }
+
+    public void setFollowDept(String followDept) {
+        this.followDept = followDept;
     }
 
     public String getCompany() {
@@ -74,5 +98,19 @@ public class PushSuccessResultVO {
 
     public void setSaleState(Integer saleState) {
         this.saleState = saleState;
+    }
+
+    @Override
+    public String toString() {
+        return "PushSuccessResultVO{" +
+                "id=" + id +
+                ", company='" + company + '\'' +
+                ", followUser='" + followUser + '\'' +
+                ", followDept='" + followDept + '\'' +
+                ", createTime=" + createTime +
+                ", lastContactTime=" + lastContactTime +
+                ", contactDuration=" + contactDuration +
+                ", saleState=" + saleState +
+                '}';
     }
 }

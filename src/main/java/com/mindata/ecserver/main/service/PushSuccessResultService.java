@@ -4,9 +4,12 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
+import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryManager;
 import com.mindata.ecserver.main.manager.PtPushResultManager;
+import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushSuccessResultVO;
@@ -34,6 +37,11 @@ public class PushSuccessResultService extends BaseService {
     private PtPushResultManager ptPushResultManager;
     @Resource
     private PtPhoneHistoryManager ptPhoneHistoryManager;
+    @Resource
+    private PtUserManager ptUserManager;
+    @Resource
+    private PtDepartmentManager ptDepartmentManager;
+    
 
     public PtPushSuccessResult findById(int id) {
         return ptPushResultManager.findOneSuccess(id);
@@ -107,6 +115,9 @@ public class PushSuccessResultService extends BaseService {
             vo.setCompany(result.getCompanyName());
             vo.setCreateTime(result.getCreateTime());
             vo.setId(result.getId());
+            PtUser ptUser = ptUserManager.findByUserId(result.getFollowUserId());
+            vo.setFollowUser(ptUser.getName());
+            vo.setFollowDept(ptDepartmentManager.findByDeptId(ptUser.getDepartmentId()).getName());
             vo.setContactDuration(ptPhoneHistoryManager.findTotalContactTimeByCrmId(result.getCrmId()));
             //最后沟通时间
             vo.setLastContactTime(ptPhoneHistoryManager.findByCrmIdOrderByCallTime(result.getCrmId()));

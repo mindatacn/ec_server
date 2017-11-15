@@ -173,4 +173,8 @@ public class PtUserManager {
         }
         return userRepository.findByCompanyIdAndStateAndNameLike(companyId, STATE_NORMAL, "%" + name + "%");
     }
+
+    public List<PtUser> findAll(){
+        return  userRepository.findAll();
+    }
 }

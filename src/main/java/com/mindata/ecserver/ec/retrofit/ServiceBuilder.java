@@ -31,4 +31,8 @@ public class ServiceBuilder {
     public UserAccountService getUserAccountService() {
         return retrofitBuilder.getRetrofit().create(UserAccountService.class);
     }
+
+    public CustomerGroupInfoService getCustomerGroupInfoService(){
+        return retrofitBuilder.getRetrofit().create(CustomerGroupInfoService.class);
+    }
 }

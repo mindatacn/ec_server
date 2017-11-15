@@ -16,6 +16,7 @@ import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushResultCountVO;
 import com.mindata.ecserver.main.vo.PushResultVO;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,7 +109,12 @@ public class PushService extends BaseService {
         List<Object[]> valueList = new ArrayList<>(contactEntities.size());
         for (EcContactEntity e : contactEntities) {
             List<Object> v = new ArrayList<>();
-            v.add(e.getName());
+            if (StrUtil.isEmpty(e.getName())) {
+                v.add("未知");
+            } else {
+                v.add(e.getName());
+            }
+            
             v.add(e.getMobile());
             v.add(e.getPhone() == null ? "" : e.getPhone());
             v.add(e.getTitle() == null ? "" : e.getTitle());

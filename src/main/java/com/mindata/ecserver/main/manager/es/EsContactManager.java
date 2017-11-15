@@ -85,7 +85,7 @@ public class EsContactManager extends BaseService {
         }
         //有手机号
         if (contactRequestBody.getHasMobile() != null && contactRequestBody.getHasMobile()) {
-            boolQuery.mustNot(matchQuery("mobile", ""));
+            boolQuery.must(rangeQuery("mobile").gt(10000));
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {

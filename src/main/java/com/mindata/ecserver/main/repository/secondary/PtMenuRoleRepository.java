@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Integer> {
+public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Long> {
     /**
      * 根据role查询所有的菜单
      *
@@ -16,5 +16,5 @@ public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Integer>
      *         role
      * @return 集合
      */
-    List<PtMenuRole> findByRoleId(Integer roleId);
+    List<PtMenuRole> findByRoleId(Long roleId);
 }

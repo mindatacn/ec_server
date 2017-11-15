@@ -10,12 +10,12 @@ import com.mindata.ecserver.main.requestbody.PushBody;
 public class PushResultVO {
     private CustomerCreateDataBean customerCreateDataBean;
     private PushBody pushBody;
-    private Integer optUserId;
+    private Long optUserId;
 
     public PushResultVO() {
     }
 
-    public PushResultVO(CustomerCreateDataBean customerCreateDataBean, PushBody pushBody, Integer optUserId) {
+    public PushResultVO(CustomerCreateDataBean customerCreateDataBean, PushBody pushBody, Long optUserId) {
         this.customerCreateDataBean = customerCreateDataBean;
         this.pushBody = pushBody;
         this.optUserId = optUserId;
@@ -37,11 +37,11 @@ public class PushResultVO {
         this.pushBody = pushBody;
     }
 
-    public Integer getOptUserId() {
+    public Long getOptUserId() {
         return optUserId;
     }
 
-    public void setOptUserId(Integer optUserId) {
+    public void setOptUserId(Long optUserId) {
         this.optUserId = optUserId;
     }
 }

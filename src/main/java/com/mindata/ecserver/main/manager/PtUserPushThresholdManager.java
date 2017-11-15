@@ -48,7 +48,7 @@ public class PtUserPushThresholdManager extends BaseService {
             logger.info("成功的线索为空");
             return;
         }
-        PtUserPushCount ptUserPushCount = findCountByUserId(pushResultVO.getPushBody().getFollowUserId().intValue(),
+        PtUserPushCount ptUserPushCount = findCountByUserId(pushResultVO.getPushBody().getFollowUserId(),
                 null);
         ptUserPushCount.setPushedCount(ptUserPushCount.getPushedCount() + successCrmIds.size());
         ptUserPushCountRepository.save(ptUserPushCount);
@@ -64,7 +64,7 @@ public class PtUserPushThresholdManager extends BaseService {
      *         日期
      * @return 结果
      */
-    public PtUserPushCount findCountByUserId(Integer userId, Date date) {
+    public PtUserPushCount findCountByUserId(Long userId, Date date) {
         if (date == null) {
             date = CommonUtil.getNow();
         }
@@ -84,7 +84,7 @@ public class PtUserPushThresholdManager extends BaseService {
      *
      * @return 添加的实例
      */
-    public PtUserPushCount add(Integer userId, Date date) {
+    public PtUserPushCount add(Long userId, Date date) {
         PtUserPushCount ptUserPushCount = new PtUserPushCount();
         ptUserPushCount.setCreateTime(date);
         ptUserPushCount.setUpdateTime(date);

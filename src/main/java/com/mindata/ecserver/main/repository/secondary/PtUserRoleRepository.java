@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Integer> {
-    List<PtUserRole> findByUserId(Integer userId);
+public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Long> {
+    List<PtUserRole> findByUserId(Long userId);
 
-    PtUserRole findByUserIdAndRoleId(Integer userId, Integer roleId);
+    PtUserRole findByUserIdAndRoleId(Long userId, Long roleId);
 }

@@ -33,7 +33,7 @@ public class DepartmentController {
     @GetMapping("")
     @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_ADMIN, Constant.ROLE_LEADER}, logical = Logical.OR)
     public BaseData find(@PageableDefault(sort = {"sort", "id"}, direction = Sort.Direction.DESC) Pageable pageable,
-                         String name, Integer companyId) {
+                         String name, Long companyId) {
         return ResultGenerator.genSuccessResult(departmentService.findByName(companyId, name, pageable));
     }
 

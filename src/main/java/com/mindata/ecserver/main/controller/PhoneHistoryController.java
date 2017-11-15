@@ -36,7 +36,7 @@ public class PhoneHistoryController {
      */
     @CheckEcAnnotation
     @GetMapping("/fetch")
-    public BaseData fetchCompanyData(Integer companyId, String begin, String end,
+    public BaseData fetchCompanyData(Long companyId, String begin, String end,
                                      @PageableDefault(direction =
                                              Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
             IOException {
@@ -50,7 +50,7 @@ public class PhoneHistoryController {
      * @return 公司级数据
      */
     @GetMapping("/company")
-    public BaseData queryCompany(Integer companyId, String begin, String end,
+    public BaseData queryCompany(Long companyId, String begin, String end,
                                  @PageableDefault(direction =
                                          Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
             IOException {
@@ -62,7 +62,7 @@ public class PhoneHistoryController {
      */
     //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept/{id}")
-    public BaseData queryDept(@PathVariable Integer id, String begin, String end,
+    public BaseData queryDept(@PathVariable Long id, String begin, String end,
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
         return ResultGenerator.genSuccessResult(phoneHistoryDeptService.findDeptHistoryByDateBetween(id, begin,
@@ -74,7 +74,7 @@ public class PhoneHistoryController {
      */
     //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept")
-    public BaseData queryUser(Integer companyId, String begin, String end,
+    public BaseData queryUser(Long companyId, String begin, String end,
                               @PageableDefault(direction =
                                       Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
         return ResultGenerator.genSuccessResult(phoneHistoryDeptService.findDeptHisTotalByCompanyIdAndDateBetween
@@ -87,13 +87,13 @@ public class PhoneHistoryController {
      */
     //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("/user")
-    public BaseData query(Integer deptId, String begin, String end) {
+    public BaseData query(Long deptId, String begin, String end) {
         return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByDate(deptId,
                 begin, end));
     }
 
     @GetMapping("/user/{id}")
-    public BaseData queryOneUser(@PathVariable Integer id, String begin, String end) {
+    public BaseData queryOneUser(@PathVariable Long id, String begin, String end) {
         return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByUserId(id,
                 begin, end));
     }

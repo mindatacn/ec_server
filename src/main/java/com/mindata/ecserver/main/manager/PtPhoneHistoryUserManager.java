@@ -42,14 +42,14 @@ public class PtPhoneHistoryUserManager {
      *         一天结束时间
      * @return 数量集合
      */
-    public List<Object[]> findDeptOneDayTotalByDeptId(Integer deptId, Date begin, Date end) throws IOException {
+    public List<Object[]> findDeptOneDayTotalByDeptId(Long deptId, Date begin, Date end) throws IOException {
         //找到部门所有正常的员工
         List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, STATE_NORMAL);
-        List<Integer> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
+        List<Long> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
 
         List<Object[]> list = new ArrayList<>();
         long totalCallTime = 0L, totalCallCount = 0L, totalCustomer = 0L, pushCount = 0L, validCount = 0;
-        for (Integer id : ids) {
+        for (Long id : ids) {
             PtPhoneHistoryUser user = findOneDay(id, begin, end);
             totalCallTime += user.getTotalCallTime();
             totalCallCount += user.getTotalCallCount();
@@ -71,7 +71,7 @@ public class PtPhoneHistoryUserManager {
      * @param end
      * @return
      */
-    public List<Object[]> findTotalByUserId(Integer userId, Date begin, Date end) {
+    public List<Object[]> findTotalByUserId(Long userId, Date begin, Date end) {
         return ptPhoneHistoryUserRepository.findCount(CollectionUtil.newArrayList(userId), begin, end);
     }
 
@@ -80,7 +80,7 @@ public class PtPhoneHistoryUserManager {
      *
      * @return 统计信息
      */
-    private PtPhoneHistoryUser findOneDay(Integer userId, Date tempBegin, Date tempEnd) throws IOException {
+    private PtPhoneHistoryUser findOneDay(Long userId, Date tempBegin, Date tempEnd) throws IOException {
         List<PtPhoneHistoryUser> list = ptPhoneHistoryUserRepository.findByUserIdAndStartTimeBetween(userId,
                 tempBegin,
                 tempEnd);
@@ -113,7 +113,7 @@ public class PtPhoneHistoryUserManager {
      *         结束时间
      * @return 分页数据
      */
-    public Page<PtPhoneHistoryUser> findByUserId(Integer userId, Date begin, Date end, Pageable pageable) {
+    public Page<PtPhoneHistoryUser> findByUserId(Long userId, Date begin, Date end, Pageable pageable) {
         return ptPhoneHistoryUserRepository.findByUserIdAndStartTimeBetween(userId, begin, end, pageable);
     }
 }

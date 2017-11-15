@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, Integer> {
+public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, Long> {
     Page<PtPhoneHistory> findByStartTimeBetween(Date begin, Date end, Pageable pageable);
 
     Page<PtPhoneHistory> findByEcUserIdIn(List<Integer> ecUserIds, Pageable pageable);
@@ -25,6 +25,27 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
     List<Object[]> findCount(Long ecUserId, Date begin, Date end);
 
     List<PtPhoneHistory> findByEcUserIdAndStartTimeBetween(Long ecUserId, Date begin, Date end);
+
+    /**
+     * 查询某个客户的累计沟通时长
+     *
+     * @param crmId
+     *         客户id
+     * @return 总时长
+     */
+    @Query("select  sum(callTime) from PtPhoneHistory where crmId = ?1")
+    Integer findTotalContactTimeByCrmId(Long crmId);
+
+    /**
+     * 查询某个客户最后沟通时间
+     *
+     * @param crmId
+     *         客户
+     * @param pageable
+     *         目前是只取一条
+     * @return 结果
+     */
+    List<PtPhoneHistory> findByCrmIdOrderByCallTimeDesc(Long crmId, Pageable pageable);
 
     /**
      * 查询某天虚假的电话记录

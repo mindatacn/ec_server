@@ -6,11 +6,23 @@ import java.util.Date;
  * @author wuweifeng wrote on 2017/11/2.
  */
 public class PushSuccessResultVO {
-    private Integer id;
+    private Long id;
+    /**
+     * 线索id
+     */
+    private Long contactId;
     /**
      * 公司名
      */
     private String company;
+    /**
+     * 跟进人
+     */
+    private String followUser;
+    /**
+     * 跟进团队
+     */
+    private String followDept;
     /**
      * 推送时间
      */
@@ -28,12 +40,36 @@ public class PushSuccessResultVO {
      */
     private Integer saleState;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
+
+    public String getFollowUser() {
+        return followUser;
+    }
+
+    public void setFollowUser(String followUser) {
+        this.followUser = followUser;
+    }
+
+    public String getFollowDept() {
+        return followDept;
+    }
+
+    public void setFollowDept(String followDept) {
+        this.followDept = followDept;
     }
 
     public String getCompany() {
@@ -74,5 +110,19 @@ public class PushSuccessResultVO {
 
     public void setSaleState(Integer saleState) {
         this.saleState = saleState;
+    }
+
+    @Override
+    public String toString() {
+        return "PushSuccessResultVO{" +
+                "id=" + id +
+                ", company='" + company + '\'' +
+                ", followUser='" + followUser + '\'' +
+                ", followDept='" + followDept + '\'' +
+                ", createTime=" + createTime +
+                ", lastContactTime=" + lastContactTime +
+                ", contactDuration=" + contactDuration +
+                ", saleState=" + saleState +
+                '}';
     }
 }

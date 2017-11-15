@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
+public interface PtUserRepository extends JpaRepository<PtUser, Long> {
     PtUser findByAccount(String account);
 
     /**
@@ -23,7 +23,7 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
     /**
      * 查询某个部门的所有成员数量
      */
-    Integer countByDepartmentIdAndState(Integer departmentId, Integer state);
+    Integer countByDepartmentIdAndState(Long departmentId, Integer state);
 
     /**
      * 查询某个部门所有正常状态员工
@@ -34,11 +34,11 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
      *         状态
      * @return 结果集
      */
-    List<PtUser> findByDepartmentIdAndState(Integer departmentId, Integer state);
+    List<PtUser> findByDepartmentIdAndState(Long departmentId, Integer state);
 
-    List<PtUser> findByCompanyIdAndState(Integer companyId, Integer state);
+    List<PtUser> findByCompanyIdAndState(Long companyId, Integer state);
 
-    List<PtUser> findByCompanyIdAndStateAndNameLike(Integer companyId, Integer state, String name);
+    List<PtUser> findByCompanyIdAndStateAndNameLike(Long companyId, Integer state, String name);
 
     /**
      * 根据名字模糊查询某个部门的员工
@@ -51,5 +51,5 @@ public interface PtUserRepository extends JpaRepository<PtUser, Integer> {
      *         名字
      * @return 集合
      */
-    List<PtUser> findByDepartmentIdAndStateAndNameLike(Integer deptId, Integer state, String name);
+    List<PtUser> findByDepartmentIdAndStateAndNameLike(Long deptId, Integer state, String name);
 }

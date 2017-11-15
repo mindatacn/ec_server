@@ -54,12 +54,12 @@ public class PtPushResultManager {
             logger.info("失败的线索为空");
             return;
         }
-        Integer optUserId = pushResultVO.getOptUserId();
-        List<Integer> contactIds = pushResultVO.getPushBody().getIds();
-        Integer followUserId = pushResultVO.getPushBody().getFollowUserId().intValue();
+        Long optUserId = pushResultVO.getOptUserId();
+        List<Long> contactIds = pushResultVO.getPushBody().getIds();
+        Long followUserId = pushResultVO.getPushBody().getFollowUserId();
 
         for (CreateFailureRecord record : failureRecordList) {
-            Integer contactId = contactIds.get(record.getIndex());
+            Long contactId = contactIds.get(record.getIndex());
             //已经有重复contactId了
             if (findFailureByContactId(contactId).size() > 0) {
                 continue;
@@ -100,9 +100,9 @@ public class PtPushResultManager {
             return;
         }
         logger.info("开始处理推送成功的线索");
-        Integer optUserId = pushResultVO.getOptUserId();
-        List<Integer> contactIds = pushResultVO.getPushBody().getIds();
-        Integer followUserId = pushResultVO.getPushBody().getFollowUserId().intValue();
+        Long optUserId = pushResultVO.getOptUserId();
+        List<Long> contactIds = pushResultVO.getPushBody().getIds();
+        Long followUserId = pushResultVO.getPushBody().getFollowUserId();
         successCrmIds.forEach((key, value) -> {
             Integer index = Integer.valueOf(key);
             EcContactEntity contactEntity = ecContactManager.findOne(contactIds.get(index));
@@ -137,11 +137,11 @@ public class PtPushResultManager {
 
     }
 
-    public List<PtPushSuccessResult> findSuccessByContactId(Integer contactId) {
+    public List<PtPushSuccessResult> findSuccessByContactId(Long contactId) {
         return ptPushSuccessResultRepository.findByContactId(contactId);
     }
 
-    public List<PtPushFailureResult> findFailureByContactId(Integer contactId) {
+    public List<PtPushFailureResult> findFailureByContactId(Long contactId) {
         return ptPushFailureResultRepository.findByContactId(contactId);
     }
 
@@ -170,7 +170,7 @@ public class PtPushResultManager {
      *         id
      * @return 记录
      */
-    public PtPushSuccessResult findOneSuccess(int id) {
+    public PtPushSuccessResult findOneSuccess(Long id) {
         return ptPushSuccessResultRepository.findOne(id);
     }
 

@@ -18,7 +18,7 @@ public class PtUserPushCount extends BaseEntity {
     /**
      * userID
      */
-    private Integer userId;
+    private Long userId;
     /**
      * 已经推送了的数量
      */
@@ -34,33 +34,33 @@ public class PtUserPushCount extends BaseEntity {
     /**
      * 部门id
      */
-    private Integer departmentId;
+    private Long departmentId;
     /**
      * 公司id
      */
-    private Integer companyId;
+    private Long companyId;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 

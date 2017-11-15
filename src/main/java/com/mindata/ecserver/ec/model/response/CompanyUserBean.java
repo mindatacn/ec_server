@@ -5,7 +5,7 @@ package com.mindata.ecserver.ec.model.response;
  */
 public class CompanyUserBean {
     private Long userId;
-    private Integer deptId;
+    private Long deptId;
     private String userName;
     private String account;
     private String title;
@@ -18,11 +18,11 @@ public class CompanyUserBean {
         this.userId = userId;
     }
 
-    public Integer getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Integer deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 

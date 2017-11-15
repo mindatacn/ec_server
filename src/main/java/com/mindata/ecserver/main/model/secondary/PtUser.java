@@ -2,10 +2,13 @@ package com.mindata.ecserver.main.model.secondary;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mindata.ecserver.main.model.base.BaseEntity;
+import com.mindata.ecserver.main.vo.RoleVO;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -33,11 +36,11 @@ public class PtUser extends BaseEntity {
     /**
      * 公司ID
      */
-    private Integer companyId;
+    private Long companyId;
     /**
      * 部门ID
      */
-    private Integer departmentId;
+    private Long departmentId;
     /**
      * 称号
      */
@@ -66,6 +69,17 @@ public class PtUser extends BaseEntity {
      * 状态，（0正常，1被删除）
      */
     private Integer state;
+
+    @Transient
+    private List<RoleVO> roles;
+
+    public List<RoleVO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleVO> roles) {
+        this.roles = roles;
+    }
 
     public String getTitle() {
         return title;
@@ -99,11 +113,11 @@ public class PtUser extends BaseEntity {
         this.name = name;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
@@ -123,11 +137,11 @@ public class PtUser extends BaseEntity {
         this.password = password;
     }
 
-    public Integer getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 

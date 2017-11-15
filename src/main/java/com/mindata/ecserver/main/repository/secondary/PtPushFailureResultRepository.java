@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPushFailureResultRepository extends JpaRepository<PtPushFailureResult, Integer> {
+public interface PtPushFailureResultRepository extends JpaRepository<PtPushFailureResult, Long> {
     /**
      * 查询某段时间数量
      *
@@ -28,5 +28,5 @@ public interface PtPushFailureResultRepository extends JpaRepository<PtPushFailu
      *         EcContactEntity表的id
      * @return 结果集
      */
-    List<PtPushFailureResult> findByContactId(Integer contactId);
+    List<PtPushFailureResult> findByContactId(Long contactId);
 }

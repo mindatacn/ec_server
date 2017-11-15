@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "ec_contact_no_push")
 public class EcContactEntity {
-    private int id;
+    private Long id;
     /**
      * 人名
      */
@@ -72,28 +72,34 @@ public class EcContactEntity {
     /**
      * 对应爬虫的公司id
      */
-    private Integer compId;
+    private Long compId;
 
     private Date createTime;
+
+    /**
+     * 不入库，仅供单条查询时使用
+     */
+    @Transient
+    private String jobName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "comp_id")
-    public Integer getCompId() {
+    public Long getCompId() {
         return compId;
     }
 
-    public void setCompId(Integer compId) {
+    public void setCompId(Long compId) {
         this.compId = compId;
     }
 
@@ -321,6 +327,14 @@ public class EcContactEntity {
     @Column(name = "state")
     public Integer getState() {
         return state;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public void setState(Integer state) {

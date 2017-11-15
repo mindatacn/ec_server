@@ -163,5 +163,24 @@ public class PushResultRequestBody {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public String toString() {
+        return "PushResultRequestBody{" +
+                "companyName='" + companyName + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", saleState=" + saleState +
+                ", provinces=" + provinces +
+                ", cities=" + cities +
+                ", vocations=" + vocations +
+                ", websiteIds=" + websiteIds +
+                ", size=" + size +
+                ", page=" + page +
+                ", orderBy='" + orderBy + '\'' +
+                ", order=" + order +
+                '}';
+    }
 }
 

@@ -37,7 +37,7 @@ public class PhoneHistoryUserService {
     /**
      * 个人历史营销统计功能
      */
-    public List<PhoneHistoryUserBeanVO> findPersonalHistoryByDate(Integer deptId, String begin, String end) {
+    public List<PhoneHistoryUserBeanVO> findPersonalHistoryByDate(Long deptId, String begin, String end) {
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
         //如果当前用户不是管理员
@@ -61,13 +61,13 @@ public class PhoneHistoryUserService {
 
     }
 
-    public PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Integer userId, String begin, String end) {
+    public PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Long userId, String begin, String end) {
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
         return findPersonalHistoryByUserId(userId, beginDate, endDate);
     }
 
-    private PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Integer userId, Date begin, Date end) {
+    private PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Long userId, Date begin, Date end) {
         List<Object[]> list = ptPhoneHistoryUserManager.findTotalByUserId(userId, begin, end);
         PhoneHistoryUserBeanVO vo = new PhoneHistoryUserBeanVO(list.get(0));
         PtUser ptUser = ptUserManager.findByUserId(userId);
@@ -76,13 +76,13 @@ public class PhoneHistoryUserService {
         return vo;
     }
 
-    private List<PhoneHistoryUserBeanVO> findPersonalHistoryByDeptId(Integer deptId, Date begin, Date end) {
+    private List<PhoneHistoryUserBeanVO> findPersonalHistoryByDeptId(Long deptId, Date begin, Date end) {
         List<PtUser> ptUsers = ptUserManager.findByDeptIdAndState(deptId, 0);
         return ptUsers.stream().map(ptUser -> findPersonalHistoryByUserId(ptUser.getId(), begin, end)).collect
                 (Collectors.toList());
     }
 
-    private List<PhoneHistoryUserBeanVO> findPersonalHistoryByCompanyId(Integer companyId, Date begin, Date end) {
+    private List<PhoneHistoryUserBeanVO> findPersonalHistoryByCompanyId(Long companyId, Date begin, Date end) {
         List<PtDepartment> ptDepartments = ptDepartmentManager.findByCompanyIdAndState(companyId, 0);
         List<PhoneHistoryUserBeanVO> vos = new ArrayList<>();
         for (PtDepartment ptDepartment : ptDepartments) {
@@ -92,7 +92,7 @@ public class PhoneHistoryUserService {
         return vos;
     }
 
-    private Page<PtPhoneHistoryUser> findByUserIdAndDate(Integer userId, Date begin, Date end, Pageable pageable) {
+    private Page<PtPhoneHistoryUser> findByUserIdAndDate(Long userId, Date begin, Date end, Pageable pageable) {
         //分页查询这段时间内的分页数据
         return ptPhoneHistoryUserManager.findByUserId(userId, begin, end, pageable);
         //List<PhoneHistoryBeanVO> beanVOS = page.getContent().stream().map(ptPhoneHistoryUser -> {

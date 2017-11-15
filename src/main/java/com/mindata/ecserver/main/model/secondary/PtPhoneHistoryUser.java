@@ -19,7 +19,7 @@ public class PtPhoneHistoryUser extends BaseEntity {
     /**
      * 员工id
      */
-    private Integer userId;
+    private Long userId;
     /**
      * 打电话日期（精确到日）
      */
@@ -45,11 +45,11 @@ public class PtPhoneHistoryUser extends BaseEntity {
      */
     private Long validCount;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

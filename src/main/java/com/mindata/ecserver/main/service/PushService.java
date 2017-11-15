@@ -59,11 +59,11 @@ public class PushService extends BaseService {
             //设置操作人id
             customerCreateRequest.setOptUserId(ShiroKit.getCurrentUser().getEcUserId());
         } else {
-            customerCreateRequest.setOptUserId(ptUserManager.findByUserId(pushBody.getOptUserId().intValue())
+            customerCreateRequest.setOptUserId(ptUserManager.findByUserId(pushBody.getOptUserId())
                     .getEcUserId());
         }
         //设置跟进人id
-        customerCreateRequest.setFollowUserId(ptUserManager.findByUserId(pushBody.getFollowUserId().intValue())
+        customerCreateRequest.setFollowUserId(ptUserManager.findByUserId(pushBody.getFollowUserId())
                 .getEcUserId());
         customerCreateRequest.setFieldNameMapping(fieldName());
         customerCreateRequest.setFieldValueList(fieldValueList(contactEntities));

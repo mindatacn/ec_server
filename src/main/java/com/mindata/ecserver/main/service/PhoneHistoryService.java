@@ -30,7 +30,7 @@ public class PhoneHistoryService {
      * 查询某个用户自己的统计历史
      */
     public SimplePage fetchUserHistory(Date begin, Date end, Pageable pageable) {
-        Integer userId = ShiroKit.getCurrentUser().getId();
+        Long userId = ShiroKit.getCurrentUser().getId();
         Date tempBegin = DateUtil.beginOfDay(begin);
         Date tempEnd = DateUtil.endOfDay(end);
         Page page = ptPhoneHistoryUserManager.findByUserId(userId, begin, end, pageable);

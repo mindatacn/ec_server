@@ -8,9 +8,9 @@ import java.util.Date;
 /**
  * @author wuweifeng wrote on 2017/11/1.
  */
-public interface PtUserPushCountRepository extends JpaRepository<PtUserPushCount, Integer> {
+public interface PtUserPushCountRepository extends JpaRepository<PtUserPushCount, Long> {
     /**
      * 查询某用户某个时间段内推送的阈值
      */
-    PtUserPushCount findByUserIdAndPushDateBetween(Integer userId, Date begin, Date end);
+    PtUserPushCount findByUserIdAndPushDateBetween(Long userId, Date begin, Date end);
 }

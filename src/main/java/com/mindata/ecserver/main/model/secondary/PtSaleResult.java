@@ -21,7 +21,7 @@ public class PtSaleResult extends BaseEntity {
     /**
      * 在EC的客户id
      */
-    private Integer crmId;
+    private Long crmId;
     /**
      * 销售状态（跟进中、已成交等等）
      */
@@ -29,17 +29,17 @@ public class PtSaleResult extends BaseEntity {
     /**
      * 跟进人id
      */
-    private Integer followUserId;
+    private Long followUserId;
     /**
      * 最后沟通时间
      */
     private Date lastContactTime;
 
-    public Integer getCrmId() {
+    public Long getCrmId() {
         return crmId;
     }
 
-    public void setCrmId(Integer crmId) {
+    public void setCrmId(Long crmId) {
         this.crmId = crmId;
     }
 
@@ -47,11 +47,11 @@ public class PtSaleResult extends BaseEntity {
         return saleState;
     }
 
-    public Integer getFollowUserId() {
+    public Long getFollowUserId() {
         return followUserId;
     }
 
-    public void setFollowUserId(Integer followUserId) {
+    public void setFollowUserId(Long followUserId) {
         this.followUserId = followUserId;
     }
 

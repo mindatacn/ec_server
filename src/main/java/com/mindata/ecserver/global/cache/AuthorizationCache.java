@@ -52,12 +52,12 @@ public class AuthorizationCache extends BaseCache {
      *         事件
      */
     @EventListener
-    public void ListenPermissionChange(UserRolePermissionChangeEvent event) {
-        Integer userId = (Integer) event.getSource();
+    public void listenPermissionChange(UserRolePermissionChangeEvent event) {
+        Long userId = (Long) event.getSource();
         remove(userId);
     }
 
-    private void remove(Integer userId) {
+    private void remove(Long userId) {
         PtUser user = ptUserManager.findByUserId(userId);
         stringRedisTemplate.delete(authorKeyOfAccount(user.getAccount()));
     }

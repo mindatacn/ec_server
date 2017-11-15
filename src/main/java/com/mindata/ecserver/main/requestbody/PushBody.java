@@ -6,7 +6,7 @@ import java.util.List;
  * @author wuweifeng wrote on 2017/10/26.
  */
 public class PushBody {
-    private List<Integer> ids;
+    private List<Long> ids;
     /**
      * 跟进人id
      */
@@ -30,11 +30,20 @@ public class PushBody {
         this.followUserId = followUserId;
     }
 
-    public List<Integer> getIds() {
+    public List<Long> getIds() {
         return ids;
     }
 
-    public void setIds(List<Integer> ids) {
+    public void setIds(List<Long> ids) {
         this.ids = ids;
+    }
+
+    @Override
+    public String toString() {
+        return "PushBody{" +
+                "ids=" + ids +
+                ", followUserId=" + followUserId +
+                ", optUserId=" + optUserId +
+                '}';
     }
 }

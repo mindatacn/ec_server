@@ -26,15 +26,15 @@ public class PtDepartmentManager extends BaseService {
     @Resource
     private PtCompanyManager companyManager;
 
-    public PtDepartment findByEcDeptId(Integer ecDeptId) {
+    public PtDepartment findByEcDeptId(Long ecDeptId) {
         return departmentRepository.findByEcDeptId(ecDeptId);
     }
 
-    public PtDepartment findByDeptId(Integer id) {
+    public PtDepartment findByDeptId(Long id) {
         return departmentRepository.findOne(id);
     }
 
-    public List<PtDepartment> findByCompanyIdAndState(Integer companyId, Integer state) {
+    public List<PtDepartment> findByCompanyIdAndState(Long companyId, Integer state) {
         return departmentRepository.findByCompanyIdAndState(companyId, state);
     }
 
@@ -45,7 +45,7 @@ public class PtDepartmentManager extends BaseService {
      *         部门名称
      * @return 集合
      */
-    public Page<PtDepartment> findByName(String name, Integer companyId, Integer state, Pageable pageable) {
+    public Page<PtDepartment> findByName(String name, Long companyId, Integer state, Pageable pageable) {
         Page<PtDepartment> departments;
         if (StrUtil.isEmpty(name)) {
             if (companyId == 0) {
@@ -71,7 +71,7 @@ public class PtDepartmentManager extends BaseService {
      *         ec的dept结构
      * @return 本地的部门数据
      */
-    public PtDepartment add(CompanyDeptBean companyDeptBean, Integer companyId) {
+    public PtDepartment add(CompanyDeptBean companyDeptBean, Long companyId) {
         //deptId是唯一的
         PtDepartment ptDepartment = findByEcDeptId(companyDeptBean.getDeptId());
         if (ptDepartment != null) {
@@ -101,7 +101,7 @@ public class PtDepartmentManager extends BaseService {
      * @param companyDeptBeans
      *         一批部门信息
      */
-    public List<PtDepartment> addDepts(List<CompanyDeptBean> companyDeptBeans, Integer companyId) {
+    public List<PtDepartment> addDepts(List<CompanyDeptBean> companyDeptBeans, Long companyId) {
         List<PtDepartment> ptDepartments = new ArrayList<>();
         for (CompanyDeptBean bean : companyDeptBeans) {
             ptDepartments.add(add(bean, companyId));
@@ -109,10 +109,10 @@ public class PtDepartmentManager extends BaseService {
         //然后根据ec的父部门信息，设置本地的父部门信息
         for (PtDepartment department : ptDepartments) {
             //取到本地的ec父部门信息
-            Integer ecParentDeptId = department.getEcParentDeptId();
+            Long ecParentDeptId = department.getEcParentDeptId();
             //如果为0，说明是顶级菜单
-            if (ecParentDeptId.equals(0)) {
-                department.setParentId(0);
+            if (ecParentDeptId.equals(0L)) {
+                department.setParentId(0L);
                 addOrUpdate(department);
                 continue;
             }

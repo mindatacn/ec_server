@@ -1,17 +1,18 @@
 package com.mindata.ecserver.main.model.es;
 
+import com.mindata.ecserver.global.constant.Constant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 
 import static com.mindata.ecserver.global.constant.Constant.ES_INDEX_NAME;
-import static com.mindata.ecserver.global.constant.Constant.ES_TYPE_NAME;
+
 
 /**
  * @author wuweifeng wrote on 2017/11/8.
  */
-@Document(indexName = ES_INDEX_NAME, type = ES_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
+@Document(indexName = ES_INDEX_NAME, type = Constant.ES_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
         refreshInterval = "-1")
 public class EsContact {
     @Id
@@ -73,12 +74,12 @@ public class EsContact {
      * 省
      */
     @Field(index = FieldIndex.not_analyzed)
-    private String province;
+    private Integer province;
     /**
      * 市
      */
     @Field(index = FieldIndex.not_analyzed)
-    private String city;
+    private Integer city;
     /**
      * 来源（58、桔子）
      */
@@ -93,6 +94,14 @@ public class EsContact {
      * 行业编码
      */
     private Integer vocation;
+    /**
+     * 行业信息
+     */
+    private String industry;
+    /**
+     * 需要招聘销售
+     */
+    private Integer needSale;
     /**
      * 该记录在数据库的创建日期
      */
@@ -125,6 +134,14 @@ public class EsContact {
         this.id = id;
     }
 
+    public Integer getNeedSale() {
+        return needSale;
+    }
+
+    public void setNeedSale(Integer needSale) {
+        this.needSale = needSale;
+    }
+
     public Long getCompId() {
         return compId;
     }
@@ -139,6 +156,14 @@ public class EsContact {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
     public String getIpcFlag() {
@@ -157,19 +182,19 @@ public class EsContact {
         this.company = company;
     }
 
-    public String getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
-    public String getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 

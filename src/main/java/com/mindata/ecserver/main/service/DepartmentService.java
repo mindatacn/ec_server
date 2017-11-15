@@ -31,7 +31,7 @@ public class DepartmentService {
     /**
      * 根据部门名查询集合
      */
-    public SimplePage<DepartmentSimpleVO> findByName(Integer companyId, String name, Pageable pageable) {
+    public SimplePage<DepartmentSimpleVO> findByName(Long companyId, String name, Pageable pageable) {
         if (companyId == null) {
             PtUser ptUser = ShiroKit.getCurrentUser();
             companyId = ptUser.getCompanyId();
@@ -48,7 +48,7 @@ public class DepartmentService {
             String leaders = department.getLeaders();
             if (!StrUtil.isEmpty(leaders)) {
                 for (String str : leaders.split(",")) {
-                    leaderStr += ptUserManager.findByUserId(Integer.valueOf(str)).getName() + " ";
+                    leaderStr += ptUserManager.findByUserId(Long.valueOf(str)).getName() + " ";
                 }
             }
 

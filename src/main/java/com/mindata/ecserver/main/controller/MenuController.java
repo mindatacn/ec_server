@@ -28,7 +28,7 @@ public class MenuController {
      * @return 菜单结果
      */
     @GetMapping("")
-    public BaseData get(Integer parentId) {
+    public BaseData get(Long parentId) {
         return ResultGenerator.genSuccessResult(menuService.find(parentId));
     }
 

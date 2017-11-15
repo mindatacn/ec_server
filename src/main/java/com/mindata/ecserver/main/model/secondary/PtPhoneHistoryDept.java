@@ -19,7 +19,7 @@ public class PtPhoneHistoryDept extends BaseEntity {
     /**
      * 部门id
      */
-    private Integer deptId;
+    private Long deptId;
     /**
      * 统计日期（精确到日）
      */
@@ -45,11 +45,11 @@ public class PtPhoneHistoryDept extends BaseEntity {
      */
     private Long validCount;
 
-    public Integer getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Integer deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 

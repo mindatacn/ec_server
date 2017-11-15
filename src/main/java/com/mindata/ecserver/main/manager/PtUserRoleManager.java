@@ -18,7 +18,7 @@ public class PtUserRoleManager {
     /**
      * 添加一个role和user的对应关系
      */
-    public PtUserRole add(Integer userId, Integer roleId) {
+    public PtUserRole add(Long userId, Long roleId) {
         PtUserRole ptUserRole = ptUserRoleRepository.findByUserIdAndRoleId(userId, roleId);
         if (ptUserRole != null) {
             return ptUserRole;

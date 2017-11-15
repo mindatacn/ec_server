@@ -6,6 +6,7 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.manager.es.EsContactManager;
+import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
@@ -36,15 +37,24 @@ public class ContactService extends BaseService {
     @Resource
     private EcVocationCodeManager ecVocationCodeManager;
 
-    public EcContactEntity findById(int id) {
-        return contactRepository.findOne(id);
+    public EcContactEntity findById(Long id) {
+        EsContact esContact = esContactManager.findById(id);
+
+        EcContactEntity ecContactEntity = contactRepository.findOne(id);
+        if (esContact != null) {
+            ecContactEntity.setMemo(esContact.getComintro());
+            ecContactEntity.setJobName(esContact.getJobName());
+        }
+
+        return ecContactEntity;
     }
 
     public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody
             contactRequestBody) {
         //公司名\详细地址\职位名称\企业简介，任何一个不为空，就走ES
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName()) || !StrUtil.isEmpty(contactRequestBody.getAddress()
-        ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())) {
+        ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())
+                || !StrUtil.isEmpty(contactRequestBody.getExtra())) {
             return esContactManager.findByRequestBody(contactRequestBody);
         }
 
@@ -52,11 +62,11 @@ public class ContactService extends BaseService {
         criteria.add(Restrictions.eq("state", state, true));
         //有手机号
         if (contactRequestBody.getHasMobile() != null && contactRequestBody.getHasMobile()) {
-            criteria.add(Restrictions.ne("mobile", "", true));
+            criteria.add(Restrictions.ne("mobile", "", false));
         }
         //招聘信息
         if (contactRequestBody.getNeedSale() != null && contactRequestBody.getNeedSale()) {
-            criteria.add(Restrictions.eq("needSale", true, true));
+            criteria.add(Restrictions.eq("needSale", true, false));
         }
         //来源
         if (!CollectionUtil.isEmpty(contactRequestBody.getWebsiteIds())) {
@@ -105,7 +115,11 @@ public class ContactService extends BaseService {
             ContactVO vo = new ContactVO();
             vo.setCompany(ecContactEntity.getCompany());
             vo.setId(ecContactEntity.getId());
-            vo.setMobile(ecContactEntity.getMobile());
+            if (StrUtil.isEmpty(ecContactEntity.getMobile())) {
+                vo.setMobile(ecContactEntity.getPhone());
+            } else {
+                vo.setMobile(ecContactEntity.getMobile());
+            }
             vo.setName(ecContactEntity.getName());
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));

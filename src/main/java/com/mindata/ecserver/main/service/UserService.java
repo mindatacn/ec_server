@@ -72,10 +72,17 @@ public class UserService extends BaseService {
      * 获取用户的角色
      *
      * @return
+     * 角色
      */
     public List<RoleVO> findRole() {
         List<PtRole> roles = roleManager.findByUserId(ShiroKit.getCurrentUser().getId());
         return roles.stream().map(ptRole -> new RoleVO(ptRole.getName())).collect(Collectors.toList());
+    }
+
+    public PtUser getInfo() {
+        PtUser ptUser = getCurrentUser();
+        ptUser.setRoles(findRole());
+        return ptUser;
     }
 
     /**
@@ -90,7 +97,7 @@ public class UserService extends BaseService {
         if (userIdStr == null) {
             return null;
         }
-        return userManager.findByUserId(Integer.valueOf(userIdStr));
+        return userManager.findByUserId(Long.valueOf(userIdStr));
     }
 
     /**
@@ -100,7 +107,7 @@ public class UserService extends BaseService {
      */
     public TokenExpire token() {
         PtUser ptUser = getCurrentUser();
-        Integer userId = ptUser.getId();
+        Long userId = ptUser.getId();
         //获得token
         String token = userTokenCache.getTokenByUserId(userId);
         if (token == null) {
@@ -119,7 +126,7 @@ public class UserService extends BaseService {
      */
     public TokenExpire refreshToken() {
         PtUser ptUser = getCurrentUser();
-        Integer userId = ptUser.getId();
+        Long userId = ptUser.getId();
         //获得token
         String token = userTokenCache.getTokenByUserId(userId);
         userTokenCache.setBothTokenByUserId(token, userId);
@@ -153,6 +160,7 @@ public class UserService extends BaseService {
      * @param email
      *         邮箱
      * @return
+     * user
      */
     public PtUser modifyInfo(String name, String mobile, String email) {
         PtUser ptUser = getCurrentUser();

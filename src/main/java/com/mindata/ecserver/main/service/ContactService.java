@@ -104,7 +104,7 @@ public class ContactService extends BaseService {
         if (contactRequestBody.getOrder() != null && contactRequestBody.getOrder()) {
             direction = Sort.Direction.ASC;
         }
-        String orderBy = "createTime";
+        String orderBy = "id";
         if (!StrUtil.isEmpty(contactRequestBody.getOrderBy())) {
             orderBy = contactRequestBody.getOrderBy();
         }

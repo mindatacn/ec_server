@@ -56,7 +56,7 @@ public class PushController {
             if (ptUser.getEcUserId() == null) {
                 return ResultGenerator.genFailResult("用户没绑定EC账号");
             }
-            pushBody.setFollowUserId((long) ptUser.getId());
+            pushBody.setFollowUserId(ptUser.getId());
         }
         List<Long> ids = pushBody.getIds();
         if (ids.size() > MAX_SIZE) {

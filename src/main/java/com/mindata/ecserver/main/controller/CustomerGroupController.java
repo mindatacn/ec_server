@@ -24,8 +24,8 @@ public class CustomerGroupController {
 
     @PostMapping("")
     @CheckEcAnnotation
-    public BaseData getCustomerGroup(@RequestBody CustomerGroupRequest rustomerGroupRequest) throws IOException {
-        return ResultGenerator.genSuccessResult(customerGroupService.getCustomerGroup(rustomerGroupRequest));
+    public BaseData getCustomerGroup() throws IOException {
+        return ResultGenerator.genSuccessResult(customerGroupService.getCustomerGroup());
     }
 
 }

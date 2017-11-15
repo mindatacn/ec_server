@@ -74,10 +74,6 @@ public class PhoneHistoryCompanyService {
 
     /**
      * 给HR用的功能
-     *
-     * @param begin
-     * @param end
-     * @return
      */
     public List<UserHistoryStateVO> findHistoryByDate(String begin, String end) {
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));

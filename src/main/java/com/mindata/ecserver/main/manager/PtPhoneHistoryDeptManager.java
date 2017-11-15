@@ -61,6 +61,7 @@ public class PtPhoneHistoryDeptManager {
                 historyDept.setTotalCustomer(CommonUtil.parseObject(objects[2]));
                 historyDept.setPushCount(CommonUtil.parseObject(objects[3]));
                 historyDept.setValidCount(CommonUtil.parseObject(objects[4]));
+                historyDept.setNoPushCount(CommonUtil.parseObject(objects[5]));
                 historyDept.setCreateTime(CommonUtil.getNow());
                 historyDept.setUpdateTime(CommonUtil.getNow());
                 ptPhoneHistoryDeptRepository.save(historyDept);

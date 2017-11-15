@@ -48,7 +48,8 @@ public class PtPhoneHistoryUserManager {
         List<Long> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
 
         List<Object[]> list = new ArrayList<>();
-        long totalCallTime = 0L, totalCallCount = 0L, totalCustomer = 0L, pushCount = 0L, validCount = 0;
+        long totalCallTime = 0L, totalCallCount = 0L, totalCustomer = 0L, pushCount = 0L, validCount = 0, noPushCount
+                = 0;
         for (Long id : ids) {
             PtPhoneHistoryUser user = findOneDay(id, begin, end);
             totalCallTime += user.getTotalCallTime();
@@ -56,8 +57,10 @@ public class PtPhoneHistoryUserManager {
             totalCustomer += user.getTotalCustomer();
             pushCount += user.getPushCount();
             validCount += user.getValidCount();
+            noPushCount += user.getNoPushCount();
         }
-        Object[] objects = new Object[]{totalCallTime, totalCallCount, totalCustomer, pushCount, validCount};
+        Object[] objects = new Object[]{totalCallTime, totalCallCount, totalCustomer, pushCount, validCount,
+                noPushCount};
         list.add(objects);
         //得到该天的累计数量
         return list;
@@ -99,6 +102,7 @@ public class PtPhoneHistoryUserManager {
             historyUser.setTotalCustomer(CommonUtil.parseObject(objects[2]));
             historyUser.setPushCount(CommonUtil.parseObject(objects[3]));
             historyUser.setValidCount(CommonUtil.parseObject(objects[4]));
+            historyUser.setNoPushCount(CommonUtil.parseObject(objects[5]));
             return ptPhoneHistoryUserRepository.save(historyUser);
         }
         return list.get(0);

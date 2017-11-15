@@ -36,6 +36,8 @@ public class PtPhoneHistoryManager {
     @Resource
     private PtUserManager ptUserManager;
 
+    public static final Integer ARRAY_SIZE = 6;
+
     private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
     private int nowPageNo;
     private int maxPageNo;
@@ -129,24 +131,27 @@ public class PtPhoneHistoryManager {
         //如果该天有真实数据
         List<PtPhoneHistory> ptPhoneHistories = ptPhoneHistoryRepository.findByEcUserIdAndStartTimeBetween(ecUserId,
                 tempBegin, tempEnd);
-        int pushCount = 0;
+        int pushCount = 0, noPushCount = 0;
         int validCount = 0;
         for (PtPhoneHistory history : ptPhoneHistories) {
             //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
             boolean crmExist = ptPushResultManager.existCrmId(history.getCrmId());
             if (crmExist) {
                 pushCount++;
+            } else {
+                noPushCount++;
             }
             if (history.getCallTime() > 0) {
                 validCount++;
             }
         }
-        Object[] objects = new Object[5];
+        Object[] objects = new Object[ARRAY_SIZE];
         objects[0] = tempObjects[0];
         objects[1] = tempObjects[1];
         objects[2] = tempObjects[2];
         objects[3] = pushCount;
         objects[4] = validCount;
+        objects[5] = noPushCount;
         list.clear();
         list.add(objects);
         return list;
@@ -157,12 +162,12 @@ public class PtPhoneHistoryManager {
      */
     private List<Object[]> intoDB() {
         List<Object[]> list = new ArrayList<>();
-        Object[] objects = new Object[5];
+        Object[] objects = new Object[ARRAY_SIZE];
         objects[0] = historyDataBeans.size();
         //排除重复的联系人
         Set<String> customerSet = new HashSet<>();
         int totalCallTime = 0;
-        int pushCount = 0, validCount = 0;
+        int pushCount = 0, validCount = 0, noPushCount = 0;
 
         for (PhoneHistoryDataBean bean : historyDataBeans) {
             PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
@@ -185,6 +190,8 @@ public class PtPhoneHistoryManager {
             boolean crmExist = ptPushResultManager.existCrmId(bean.getCrmId());
             if (crmExist) {
                 pushCount++;
+            } else {
+                noPushCount++;
             }
             if (ptPhoneHistory.getCallTime() > 0) {
                 validCount++;
@@ -198,6 +205,7 @@ public class PtPhoneHistoryManager {
         objects[2] = customerSet.size();
         objects[3] = pushCount;
         objects[4] = validCount;
+        objects[5] = noPushCount;
         list.add(objects);
         return list;
     }
@@ -261,7 +269,7 @@ public class PtPhoneHistoryManager {
 
     private List<Object[]> generEmptyList() {
         List<Object[]> list = new ArrayList<>();
-        Object[] objects = new Object[]{0, 0, 0, 0, 0};
+        Object[] objects = new Integer[ARRAY_SIZE];
         list.add(objects);
         return list;
     }

@@ -97,45 +97,24 @@ public class EsContactManager extends BaseService {
         }
         //来源
         if (!CollectionUtil.isEmpty(contactRequestBody.getWebsiteIds())) {
-            BoolQueryBuilder webBoolQuery = boolQuery();
-            for (Integer webSiteId : contactRequestBody.getWebsiteIds()) {
-                boolQuery.should(termQuery("websiteId", webSiteId));
-            }
-            boolQuery.must(webBoolQuery);
+            boolQuery.filter(termsQuery("websiteId", contactRequestBody.getWebsiteIds()));
         }
         //规模
         if (!CollectionUtil.isEmpty(contactRequestBody.getMemberSizeTags())) {
-            BoolQueryBuilder sizeBoolQuery = boolQuery();
-            for (Integer memberSize : contactRequestBody.getMemberSizeTags()) {
-                sizeBoolQuery.should(termQuery("memberSizeTag", memberSize));
-            }
-            boolQuery.must(sizeBoolQuery);
+            boolQuery.filter(termsQuery("memberSizeTag", contactRequestBody.getMemberSizeTags()));
         }
         //行业
         if (!CollectionUtil.isEmpty(contactRequestBody.getVocations())) {
-            BoolQueryBuilder voBoolQuery = boolQuery();
-            for (Integer vocation : getVocations(contactRequestBody.getVocations())) {
-                voBoolQuery.should(matchQuery("vocation", vocation));
-            }
-            boolQuery.must(voBoolQuery);
+            boolQuery.filter(termsQuery("vocation", contactRequestBody.getVocations()));
         }
         //区域
         if (!CollectionUtil.isEmpty(contactRequestBody.getProvinces())) {
-            BoolQueryBuilder proBoolQuery = boolQuery();
-            for (String province : contactRequestBody.getProvinces()) {
-                proBoolQuery.should(matchQuery("province", province));
-            }
-            boolQuery.must(proBoolQuery);
+            boolQuery.filter(termsQuery("province", contactRequestBody.getProvinces()));
             List<String> cities = contactRequestBody.getCities();
 
             //如果勾了多个市，则用in
             if (!CollectionUtil.isEmpty(cities)) {
-                BoolQueryBuilder cityBoolQuery = boolQuery();
-                cities = getCities(contactRequestBody.getProvinces(), cities);
-                for (String city : cities) {
-                    cityBoolQuery.should(matchQuery("city", city));
-                }
-                boolQuery.must(cityBoolQuery);
+                boolQuery.filter(termsQuery("city", cities));
             }
         }
 

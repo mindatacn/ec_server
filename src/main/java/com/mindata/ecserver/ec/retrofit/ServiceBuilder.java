@@ -36,7 +36,7 @@ public class ServiceBuilder {
         return retrofitBuilder.getRetrofit().create(CustomerGroupInfoService.class);
     }
 
-    public ClassInfoService getClassInfoService(){
-        return retrofitBuilder.getRetrofit().create(ClassInfoService.class);
+    public CustomerTagInfoService getClassInfoService(){
+        return retrofitBuilder.getRetrofit().create(CustomerTagInfoService.class);
     }
 }

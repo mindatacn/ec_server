@@ -1,9 +1,16 @@
-package com.mindata.ecserver.ec.model.response;
+package com.mindata.ecserver.main.model.secondary;
+
+import com.mindata.ecserver.main.model.base.BaseEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author hanliqiang wrote on 2017/11/15
  */
-public class ClassDataBean {
+@Entity
+@Table(name = "pt_customer_tag")
+public class PtCustomerTag extends BaseEntity {
     /**
      * 标签ID
      */

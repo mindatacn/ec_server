@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * @author hanliqiang wrote on 2017/11/15
  */
-public class ClassData extends BaseEcData{
+public class CustomerTagData extends BaseEcData{
     private CustomerGroupBean customerGroupBean;
 
-    private List<ClassDataBean> classBeanList;
+    private List<CustomerTagDataBean> classBeanList;
 
     public CustomerGroupBean getCustomerGroupBean() {
         return customerGroupBean;
@@ -20,11 +20,11 @@ public class ClassData extends BaseEcData{
         this.customerGroupBean = customerGroupBean;
     }
 
-    public List<ClassDataBean> getClassBeanList() {
+    public List<CustomerTagDataBean> getClassBeanList() {
         return classBeanList;
     }
 
-    public void setClassBeanList(List<ClassDataBean> classBeanList) {
+    public void setClassBeanList(List<CustomerTagDataBean> classBeanList) {
         this.classBeanList = classBeanList;
     }
 }

@@ -6,6 +6,7 @@ import com.mindata.ecserver.ec.model.response.CustomerGroupData;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CustomerGroupInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.PtCustomerGroupManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
@@ -32,35 +33,23 @@ public class CustomerGroupService {
     private PtCustomerGroupManager ptCustomerGroupManager;
 
     /**
-     * @return 获取员工客户库分组信息
+     * @return 将从ec查出的员工客户库分组信息添加到数据库
      * @throws IOException
      */
-    public List<CustomerGroupBean> getCustomerGroup() throws IOException {
-        List<PtUser> userList = ptUserManager.findAll();
-        CustomerGroupData groupData = null;
+    @EventListener(CompanySyncEvent.class)
+    public void syncFromEcToDb() throws IOException {
+        List<PtUser> userList = ptUserManager.findByCompanyIdAndState(ShiroKit.getCurrentUser().getCompanyId(), 0);
         for (PtUser user : userList) {
             CustomerGroupRequest request = new CustomerGroupRequest();
             if (user.getEcUserId() != null) {
                 request.setUserId(user.getEcUserId().toString());
                 CustomerGroupInfoService infoService = serviceBuilder.getCustomerGroupInfoService();
-                groupData = (CustomerGroupData) callManager.execute(infoService.getCustomerGroupInfo(request));
-                this.syncFromEcToDb(groupData.getData());
+                CustomerGroupData groupData = (CustomerGroupData) callManager.execute(infoService.getCustomerGroupInfo(request));
+                for (CustomerGroupBean customerGroupBean : groupData.getData()) {
+                    ptCustomerGroupManager.add(customerGroupBean);
+                }
             }
         }
-        return groupData.getData();
-    }
-
-    /**
-     * 将从ec查出的员工客户库分组信息添加到数据库
-     *
-     * @throws IOException
-     */
-    @EventListener(CompanySyncEvent.class)
-    public Object syncFromEcToDb(List<CustomerGroupBean> groupBeanList) throws IOException {
-        for (CustomerGroupBean customerGroupBean : groupBeanList) {
-            ptCustomerGroupManager.add(customerGroupBean);
-        }
-        return null;
     }
 
 }

@@ -7,12 +7,14 @@ import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CompanyInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,6 +86,18 @@ public class CompanyService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Object syncFromEc() throws IOException {
+        eventPublisher.publishEvent(new CompanySyncEvent(ShiroKit.getCurrentUser().getCompanyId()));
+        return null;
+    }
+
+    /**
+     * 监听公司同步信息
+     *
+     * @throws IOException
+     *         EC
+     */
+    @EventListener(CompanySyncEvent.class)
+    public void listen() throws IOException {
         CompanyInfoService companyInfoService = serviceBuilder.getCompanyInfoService();
         CompanyData companyData = (CompanyData) callManager.execute(companyInfoService.getCompanyInfo());
         //根据CompanyData往本地Company插值
@@ -92,7 +106,5 @@ public class CompanyService extends BaseService {
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId);
         ptUserManager.addUsers(userBeanList, companyId);
-
-        return null;
     }
 }

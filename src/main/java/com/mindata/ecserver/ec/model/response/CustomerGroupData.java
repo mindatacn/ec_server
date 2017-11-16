@@ -17,4 +17,11 @@ public class CustomerGroupData extends BaseEcData{
     public void setData(List<CustomerGroupBean> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerGroupData{" +
+                "data=" + data +
+                '}';
+    }
 }

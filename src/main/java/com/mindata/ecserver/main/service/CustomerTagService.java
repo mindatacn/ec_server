@@ -6,11 +6,9 @@ import com.mindata.ecserver.ec.model.response.CustomerTagDataBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CustomerTagInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
-import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.PtCustomerGroupManager;
 import com.mindata.ecserver.main.manager.PtCustomerTagManager;
 import com.mindata.ecserver.main.model.secondary.PtCustomerGroup;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,7 +34,7 @@ public class CustomerTagService {
      *
      * @throws IOException
      */
-    @EventListener(CompanySyncEvent.class)
+    //@EventListener(CompanySyncEvent.class)
     public void syncFromEcToDb() throws IOException {
         List<PtCustomerGroup> groupList = ptCustomerGroupManager.findAll();
         for (PtCustomerGroup ptCustomerGroup : groupList) {

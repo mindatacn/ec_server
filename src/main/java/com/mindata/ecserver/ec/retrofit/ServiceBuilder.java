@@ -1,15 +1,16 @@
 package com.mindata.ecserver.ec.retrofit;
 
 import com.mindata.ecserver.ec.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author wuweifeng wrote on 2017/10/23.
  */
 @Component
 public class ServiceBuilder {
-    @Autowired
+    @Resource
     private RetrofitBuilder retrofitBuilder;
 
     public AuthService getAuthService() {

@@ -5,13 +5,13 @@ package com.mindata.ecserver.ec.model.request;
  *
  */
 public class CustomerGroupRequest {
-    private String userId;
+    private Long userId;
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

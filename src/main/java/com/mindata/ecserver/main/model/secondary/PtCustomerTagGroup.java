@@ -29,6 +29,18 @@ public class PtCustomerTagGroup extends BaseEntity {
      * 类型
      */
     private Integer type;
+    /**
+     * 公司id
+     */
+    private Long companyId;
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
     public Integer getType() {
         return type;

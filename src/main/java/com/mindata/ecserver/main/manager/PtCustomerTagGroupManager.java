@@ -2,6 +2,7 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CustomerOneTagBean;
 import com.mindata.ecserver.ec.model.response.CustomerTagDataBean;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.model.secondary.PtCustomerTagGroup;
 import com.mindata.ecserver.main.repository.secondary.PtCustomerTagGroupRepository;
 import com.mindata.ecserver.util.CommonUtil;
@@ -30,7 +31,7 @@ public class PtCustomerTagGroupManager {
      *         是否强制更新
      * @return 数据库结果
      */
-    public PtCustomerTagGroup add(CustomerTagDataBean customerTagDataBean, boolean force) {
+    public PtCustomerTagGroup add(CustomerTagDataBean customerTagDataBean, Long companyId, boolean force) {
         PtCustomerTagGroup ptCustomerGroup = ptCustomerTagGroupRepository.findByGroupId(customerTagDataBean
                 .getGroupId());
         if (ptCustomerGroup != null && !force) {
@@ -46,6 +47,7 @@ public class PtCustomerTagGroupManager {
         ptCustomerGroup.setType(customerTagDataBean.getType());
         ptCustomerGroup.setCreateTime(CommonUtil.getNow());
         ptCustomerGroup.setUpdateTime(CommonUtil.getNow());
+        ptCustomerGroup.setCompanyId(companyId);
         ptCustomerGroup = ptCustomerTagGroupRepository.save(ptCustomerGroup);
 
         //添加单条标签信息
@@ -64,7 +66,9 @@ public class PtCustomerTagGroupManager {
      * @return 结果
      */
     public List<PtCustomerTagGroup> addAll(List<CustomerTagDataBean> customerTagDataBeans, boolean force) {
-        return customerTagDataBeans.stream().map(customerTagDataBean -> add(customerTagDataBean, force)).collect
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        return customerTagDataBeans.stream().map(customerTagDataBean -> add(customerTagDataBean, companyId, force))
+                .collect
                 (Collectors.toList());
     }
 }

@@ -53,5 +53,7 @@ public interface PtUserRepository extends JpaRepository<PtUser, Long> {
      */
     List<PtUser> findByDepartmentIdAndStateAndNameLike(Long deptId, Integer state, String name);
 
+    List<PtUser> findByStateAndNameLike(Integer state,String name);
 
+    List<PtUser> findByState(Integer state);
 }

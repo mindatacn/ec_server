@@ -1,7 +1,9 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -51,4 +55,26 @@ public class EcContactManager {
         return contactRepository.save(ecContactEntity);
     }
 
+    /**
+     * 根据Id和状态查找结果
+     * @param id
+     * @param state
+     * @return
+     */
+    public EcContactEntity findByIdAndState(Long id, Integer state) {
+        return contactRepository.findByIdAndState(id, state);
+    }
+
+    /**
+     *根据状态和名称模糊查询结果
+     * @param state
+     * @param company
+     * @return
+     */
+    public List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company) {
+        if(StrUtil.isEmpty(company)){
+            return contactRepository.findByState(state);
+        }
+        return contactRepository.findByStateAndCompanyLike(state,"%" + company + "%");
+    }
 }

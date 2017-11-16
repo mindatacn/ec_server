@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.repository.primary;
 
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -44,4 +45,11 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
      * 结果
      */
     //Page<EcContactEntity> findByPushed(boolean pushed, Specification var1, Pageable var2);
+
+    EcContactEntity findByIdAndState(Long id, Integer state);
+
+
+    List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company);
+
+    List<EcContactEntity> findByState(Integer state);
 }

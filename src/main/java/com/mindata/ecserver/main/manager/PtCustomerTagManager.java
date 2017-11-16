@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CustomerOneTagBean;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.model.secondary.PtCustomerTag;
 import com.mindata.ecserver.main.repository.secondary.PtCustomerTagRepository;
 import com.mindata.ecserver.util.CommonUtil;
@@ -24,7 +25,8 @@ public class PtCustomerTagManager {
      * @param customerOneTagBean ec返回的结果
      * @return 数据库结果
      */
-    public PtCustomerTag add(Long groupId, String groupName, CustomerOneTagBean customerOneTagBean, boolean force) {
+    public PtCustomerTag add(Long groupId, String groupName, Long companyId, CustomerOneTagBean customerOneTagBean,
+                             boolean force) {
         PtCustomerTag ptCustomerTag = ptCustomerTagRepository.findByClassId(customerOneTagBean.getClassId());
         if (ptCustomerTag != null && !force) {
             return ptCustomerTag;
@@ -36,17 +38,18 @@ public class PtCustomerTagManager {
         ptCustomerTag.setClassName(customerOneTagBean.getClassName());
         ptCustomerTag.setSort(customerOneTagBean.getSort());
         ptCustomerTag.setGroupId(groupId);
+        ptCustomerTag.setCompanyId(companyId);
         ptCustomerTag.setGroupName(groupName);
         ptCustomerTag.setCreateTime(CommonUtil.getNow());
         ptCustomerTag.setUpdateTime(CommonUtil.getNow());
-        ptCustomerTag = ptCustomerTagRepository.save(ptCustomerTag);
-        return ptCustomerTag;
+        return ptCustomerTagRepository.save(ptCustomerTag);
     }
 
     public List<PtCustomerTag> addAll(Long groupId, String groupName, List<CustomerOneTagBean>
             customerOneTagBeans, boolean force) {
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         return customerOneTagBeans.stream().map(customerOneTagBean -> add(groupId, groupName,
-                customerOneTagBean, force))
+                companyId, customerOneTagBean, force))
                 .collect(Collectors.toList());
     }
 }

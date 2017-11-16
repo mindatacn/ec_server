@@ -31,6 +31,18 @@ public class PtCustomerTag extends BaseEntity {
      * 标签分类
      */
     private String groupName;
+    /**
+     * 公司id
+     */
+    private Long companyId;
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
     public Long getClassId() {
         return classId;

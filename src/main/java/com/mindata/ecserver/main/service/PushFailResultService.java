@@ -59,20 +59,20 @@ public class PushFailResultService {
         //推送团队模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getPushTeam())) {
             List<PtUser> userList = ptUserManager.findByNameLike(pushFailRequestBody.getPushTeam());
-            List<Long> teamList = new ArrayList<>();
+            List<Long> list = new ArrayList<>();
             for (PtUser ptUser : userList) {
-                teamList.add(ptUser.getId());
+                list.add(ptUser.getId());
             }
-            criteria.add(Restrictions.in("followUserId", teamList, true));
+            criteria.add(Restrictions.in("followUserId", list, true));
         }
         //推送人模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getPushName())) {
             List<PtUser> userList = ptUserManager.findByNameLike(pushFailRequestBody.getPushName());
-            List<Long> teamList = new ArrayList<>();
+            List<Long> list = new ArrayList<>();
             for (PtUser ptUser : userList) {
-                teamList.add(ptUser.getId());
+                list.add(ptUser.getId());
             }
-            criteria.add(Restrictions.in("optUserId", teamList, true));
+            criteria.add(Restrictions.in("optUserId", list, true));
         }
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {

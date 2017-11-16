@@ -12,11 +12,11 @@ public class PushFailRequestBody {
     /**
      * 推送团队
      */
-    private String pushTeam;
+    private Long deptId;
     /**
      * 推送人
      */
-    private String pushName;
+    private Long userId;
 
     /**
      * 开始时间
@@ -52,20 +52,20 @@ public class PushFailRequestBody {
         this.companyName = companyName;
     }
 
-    public String getPushTeam() {
-        return pushTeam;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setPushTeam(String pushTeam) {
-        this.pushTeam = pushTeam;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
-    public String getPushName() {
-        return pushName;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPushName(String pushName) {
-        this.pushName = pushName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getBeginTime() {

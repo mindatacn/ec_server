@@ -24,8 +24,9 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.mindata.ecserver.global.constant.Constant.STATE_FAIL;
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
  * @author hanliqiang wrote on 2017/11/16
@@ -41,6 +42,7 @@ public class PushFailResultService {
 
     /**
      * 查找所有推送失败的记录
+     *
      * @param pushFailRequestBody
      * @return
      */
@@ -49,30 +51,18 @@ public class PushFailResultService {
 
         //公司名称模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getCompanyName())) {
-            List<EcContactEntity> contactEntityList = ecContactManager.findByStateAndCompanyLike(STATE_FAIL, pushFailRequestBody.getCompanyName());
-            List<Long> list = new ArrayList<>();
-            for (EcContactEntity ecContactEntity : contactEntityList) {
-                list.add(ecContactEntity.getId());
-            }
-            criteria.add(Restrictions.in("contactId", list, true));
+            criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));
         }
         //推送团队模糊查询
-        if (StrUtil.isNotEmpty(pushFailRequestBody.getPushTeam())) {
-            List<PtUser> userList = ptUserManager.findByNameLike(pushFailRequestBody.getPushTeam());
-            List<Long> list = new ArrayList<>();
-            for (PtUser ptUser : userList) {
-                list.add(ptUser.getId());
-            }
+        if (pushFailRequestBody.getDeptId() != null) {
+            List<PtUser> userList = ptUserManager.findByDeptIdAndState(pushFailRequestBody.getDeptId(), STATE_NORMAL);
+            List<Long> list = userList.stream().map(PtUser::getId).collect(Collectors.toList());
             criteria.add(Restrictions.in("followUserId", list, true));
         }
         //推送人模糊查询
-        if (StrUtil.isNotEmpty(pushFailRequestBody.getPushName())) {
-            List<PtUser> userList = ptUserManager.findByNameLike(pushFailRequestBody.getPushName());
-            List<Long> list = new ArrayList<>();
-            for (PtUser ptUser : userList) {
-                list.add(ptUser.getId());
-            }
-            criteria.add(Restrictions.in("optUserId", list, true));
+        if (pushFailRequestBody.getUserId() != null) {
+            PtUser ptUser = ptUserManager.findByUserId(pushFailRequestBody.getUserId());
+            criteria.add(Restrictions.eq("followUserId", ptUser.getId(), true));
         }
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {
@@ -87,24 +77,13 @@ public class PushFailResultService {
         if (pushFailRequestBody.getPage() != null) {
             page = pushFailRequestBody.getPage();
         }
-        int size = Constant.PAGE_SIZE;
-        if (pushFailRequestBody.getSize() != null) {
-            size = pushFailRequestBody.getSize();
-        }
-        Sort.Direction direction = Constant.DIRECTION;
-        if (pushFailRequestBody.getOrder() != null && pushFailRequestBody.getOrder()) {
-            direction = Sort.Direction.ASC;
-        }
-        String orderBy = "createTime";
-        if (pushFailRequestBody.getOrderBy() != null) {
-            orderBy = pushFailRequestBody.getOrderBy();
-        }
-        Pageable pageable = new PageRequest(page, size, direction, orderBy);
+        String orderBy = "id";
+        Pageable pageable = new PageRequest(page, Constant.PAGE_SIZE, Sort.Direction.DESC, orderBy);
         Page<PtPushFailureResult> pageFailResults = ptPushResultManager.findFailAll(criteria, pageable);
         List<PushFailResultVO> resultVOS = new ArrayList<>(pageFailResults.getContent().size());
         for (PtPushFailureResult failureResult : pageFailResults) {
             PushFailResultVO failResultVO = new PushFailResultVO();
-            EcContactEntity ecContactEntity = ecContactManager.findByIdAndState(failureResult.getContactId(), STATE_FAIL);
+            EcContactEntity ecContactEntity = ecContactManager.findById(failureResult.getContactId());
             if (ecContactEntity != null) {
                 failResultVO.setCompanyName(ecContactEntity.getCompany());
                 failResultVO.setId(failureResult.getId());

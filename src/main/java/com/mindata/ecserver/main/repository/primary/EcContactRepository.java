@@ -46,7 +46,7 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
      */
     //Page<EcContactEntity> findByPushed(boolean pushed, Specification var1, Pageable var2);
 
-    EcContactEntity findByIdAndState(Long id, Integer state);
+    EcContactEntity findById(Long id);
 
 
     List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company);

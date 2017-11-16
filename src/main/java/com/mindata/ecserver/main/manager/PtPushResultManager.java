@@ -67,6 +67,7 @@ public class PtPushResultManager {
             PtPushFailureResult pushFailureResult = new PtPushFailureResult();
             //设置失败的线索id
             pushFailureResult.setContactId(contactId);
+            pushFailureResult.setCompanyName(ecContactManager.findOne(contactId).getCompany());
             pushFailureResult.setExistedCustomerName(record.getExistedCustomerName());
             pushFailureResult.setExistedFollowUserName(record.getExistedFollowUserName());
             pushFailureResult.setFailureCause(record.getFailureCause());

@@ -177,4 +177,16 @@ public class PtUserManager {
     public List<PtUser> findAll(){
         return  userRepository.findAll();
     }
+
+    /**
+     * 根据名字模糊查询
+     * @param name 名字
+     * @return
+     */
+    public List<PtUser> findByNameLike(String name) {
+        if (StrUtil.isEmpty(name)) {
+            return userRepository.findByState(STATE_NORMAL);
+        }
+        return userRepository.findByStateAndNameLike(STATE_NORMAL, "%" + name + "%");
+    }
 }

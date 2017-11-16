@@ -10,7 +10,9 @@ import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
+import com.mindata.ecserver.main.requestbody.PushFailRequestBody;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
+import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -36,14 +38,16 @@ public class PushController {
     private PtUserPushThresholdManager ptUserPushThresholdManager;
     @Resource
     private PushSuccessResultService pushSuccessResultService;
+    @Resource
+    private PushFailResultService pushFailResultService;
 
     private static final int MAX_SIZE = 50;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
+
     /**
      * 推送指定的id集合到ec
      *
-     * @param pushBody
-     *         id集合
+     * @param pushBody id集合
      * @return 结果
      */
     @PostMapping({"", "/"})
@@ -73,8 +77,7 @@ public class PushController {
     /**
      * 查看推送成功的历史
      *
-     * @param pushResultRequestBody
-     *         body
+     * @param pushResultRequestBody body
      * @return 结果
      */
     @GetMapping("/success")
@@ -82,6 +85,13 @@ public class PushController {
         return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
     }
 
+    /**
+     * 查看推送失败的历史
+     */
+    @GetMapping("/fail")
+    public BaseData get(PushFailRequestBody pushFailRequestBody) {
+        return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
+    }
 
     @CheckEcAnnotation
     @RequestMapping("/push")

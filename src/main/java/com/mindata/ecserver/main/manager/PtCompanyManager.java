@@ -49,4 +49,6 @@ public class PtCompanyManager {
     public PtCompany findOne(Long id) {
         return companyRepository.findOne(id);
     }
+
+
 }

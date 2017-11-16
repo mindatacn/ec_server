@@ -11,6 +11,7 @@ import com.mindata.ecserver.main.repository.secondary.PtPushSuccessResultReposit
 import com.mindata.ecserver.main.vo.PushResultVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -197,5 +199,20 @@ public class PtPushResultManager {
         return ptPushFailureResultRepository.findAll(var1,var2);
     }
 
+    @PostConstruct
+    public void addName(){
+        PtPushFailureResult ptPushFailureResult = ptPushFailureResultRepository.findOne(1L);
+        if(StrUtil.isEmpty(ptPushFailureResult.getCompanyName())){
+            List<PtPushFailureResult> failureResultList = ptPushFailureResultRepository.findAll();
+            for(PtPushFailureResult ptPushFailure:failureResultList){
+                if(ecContactManager.findOne(ptPushFailure.getContactId())==null){
+                    ptPushFailure.setCompanyName("");
+                }else{
+                    ptPushFailure.setCompanyName(ecContactManager.findOne(ptPushFailure.getContactId()).getCompany());
+                }
+                ptPushFailureResultRepository.save(ptPushFailure);
+            }
+        }
+    }
 
 }

@@ -43,6 +43,10 @@ public class PtPushFailureResult extends BaseEntity {
      * 当导入客户发生撞单时，该字段表示撞单客户在DB 中记录的跟进人，默认值为空
      */
     private String existedFollowUserName;
+    /**
+     * 公司名称
+     */
+    private String companyName;
 
     public Long getContactId() {
         return contactId;
@@ -98,6 +102,14 @@ public class PtPushFailureResult extends BaseEntity {
 
     public void setExistedFollowUserName(String existedFollowUserName) {
         this.existedFollowUserName = existedFollowUserName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     @Override

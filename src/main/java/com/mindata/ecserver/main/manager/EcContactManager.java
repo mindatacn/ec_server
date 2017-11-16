@@ -58,11 +58,10 @@ public class EcContactManager {
     /**
      * 根据Id和状态查找结果
      * @param id
-     * @param state
      * @return
      */
-    public EcContactEntity findByIdAndState(Long id, Integer state) {
-        return contactRepository.findByIdAndState(id, state);
+    public EcContactEntity findById(Long id) {
+        return contactRepository.findById(id);
     }
 
     /**

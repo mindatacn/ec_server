@@ -11,6 +11,7 @@ public interface PtCustomerTagRepository extends JpaRepository<PtCustomerTag, Lo
      * 根据标签Id查找标签
      * @param classId 标签Id
      * @return
+     * tag
      */
     PtCustomerTag findByClassId(Long classId);
 }

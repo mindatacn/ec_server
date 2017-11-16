@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEvent;
  * @author wuweifeng wrote on 2017/11/15.
  */
 public class CompanySyncEvent extends ApplicationEvent {
-    public CompanySyncEvent(Object source) {
+    public CompanySyncEvent(Boolean source) {
         super(source);
     }
 }

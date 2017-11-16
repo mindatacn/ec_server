@@ -9,9 +9,9 @@ import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
@@ -61,27 +61,30 @@ public class PtUserManager {
      *         ec的user信息
      * @return 本地的user
      */
-    public PtUser add(CompanyUserBean companyUserBean, Long companyId) {
+    public PtUser add(CompanyUserBean companyUserBean, Long companyId, boolean force) {
         PtUser ptUser = userRepository.findByEcUserId(companyUserBean.getUserId());
-        if (ptUser != null) {
+        if (ptUser != null && !force) {
             return ptUser;
         }
-        ptUser = new PtUser();
+        if (ptUser == null) {
+            ptUser = new PtUser();
+            ptUser.setState(STATE_NORMAL);
+            ptUser.setCompanyId(companyId);
+            ptUser.setPassword(CommonUtil.password("123456"));
+            //添加role信息
+            userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
+        }
         ptUser.setCreateTime(CommonUtil.getNow());
         ptUser.setUpdateTime(CommonUtil.getNow());
-        ptUser.setCompanyId(companyId);
-        ptUser.setState(STATE_NORMAL);
         ptUser.setEcUserId(companyUserBean.getUserId());
         ptUser.setTitle(companyUserBean.getTitle());
         ptUser.setDepartmentId(departmentManager.findByEcDeptId(companyUserBean.getDeptId()).getId());
         ptUser.setName(companyUserBean.getUserName());
         ptUser.setAccount(companyManager.findOne(companyId).getPrefix() + "_" + companyUserBean.getAccount());
-        ptUser.setPassword(CommonUtil.password("123456"));
         ptUser.setMobile(companyUserBean.getAccount());
 
         ptUser = userRepository.save(ptUser);
-        //添加role信息
-        userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
+
         return ptUser;
     }
 
@@ -92,12 +95,9 @@ public class PtUserManager {
      *         ec用户集合
      * @return 本地集合
      */
-    public List<PtUser> addUsers(List<CompanyUserBean> userBeanList, Long companyId) {
-        List<PtUser> ptUsers = new ArrayList<>();
-        for (CompanyUserBean userBean : userBeanList) {
-            ptUsers.add(add(userBean, companyId));
-        }
-        return ptUsers;
+    public List<PtUser> addUsers(List<CompanyUserBean> userBeanList, Long companyId, boolean force) {
+        return userBeanList.stream().map(companyUserBean -> add(companyUserBean, companyId, force)).collect(Collectors
+                .toList());
     }
 
     /**
@@ -126,12 +126,12 @@ public class PtUserManager {
     /**
      * 统计某个部门的人员数量
      *
-     * @param deparmentId
+     * @param departmentId
      *         部门id
      * @return 数量
      */
-    public Integer countByDepartmentId(Long deparmentId) {
-        return userRepository.countByDepartmentIdAndState(deparmentId, STATE_NORMAL);
+    public Integer countByDepartmentId(Long departmentId) {
+        return userRepository.countByDepartmentIdAndState(departmentId, STATE_NORMAL);
     }
 
     /**

@@ -41,8 +41,9 @@ public class CustomerGroupService {
      * 将从ec查出的员工客户库分组信息添加到数据库
      */
     @EventListener(CompanySyncEvent.class)
-    public void syncFromEcToDb() throws IOException {
+    public void syncFromEcToDb(CompanySyncEvent companySyncEvent) throws IOException {
         logger.info("从EC获取客户分组信息");
+        Boolean force = (Boolean) companySyncEvent.getSource();
         List<PtUser> userList = ptUserManager.findByCompanyIdAndState(ShiroKit.getCurrentUser().getCompanyId(),
                 Constant.STATE_NORMAL);
         for (PtUser user : userList) {
@@ -55,7 +56,7 @@ public class CustomerGroupService {
             CustomerGroupData groupData = (CustomerGroupData) callManager.execute(infoService
                     .getCustomerGroupInfo(request));
             logger.info("用户" + user.getId() + "的分组信息为：");
-            logger.info(ptCustomerGroupManager.addAll(user.getId(), groupData.getData()).toString());
+            logger.info(ptCustomerGroupManager.addAll(user.getId(), groupData.getData(), force).toString());
         }
 
     }

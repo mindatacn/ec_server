@@ -85,8 +85,11 @@ public class CompanyService extends BaseService {
      *         异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public Object syncFromEc() throws IOException {
-        eventPublisher.publishEvent(new CompanySyncEvent(ShiroKit.getCurrentUser().getCompanyId()));
+    public Object syncFromEc(Boolean force) throws IOException {
+        if (force == null) {
+            force = false;
+        }
+        eventPublisher.publishEvent(new CompanySyncEvent(force));
         return null;
     }
 
@@ -97,14 +100,15 @@ public class CompanyService extends BaseService {
      *         EC
      */
     @EventListener(CompanySyncEvent.class)
-    public void listen() throws IOException {
+    public void listen(CompanySyncEvent syncEvent) throws IOException {
+        Boolean force = (Boolean) syncEvent.getSource();
         CompanyInfoService companyInfoService = serviceBuilder.getCompanyInfoService();
         CompanyData companyData = (CompanyData) callManager.execute(companyInfoService.getCompanyInfo());
         //根据CompanyData往本地Company插值
         List<CompanyDeptBean> deptBeanList = companyData.getData().getDepts();
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
-        ptDepartmentManager.addDepts(deptBeanList, companyId);
-        ptUserManager.addUsers(userBeanList, companyId);
+        ptDepartmentManager.addDepts(deptBeanList, companyId, force);
+        ptUserManager.addUsers(userBeanList, companyId, force);
     }
 }

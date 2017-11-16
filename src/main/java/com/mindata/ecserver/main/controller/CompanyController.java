@@ -44,7 +44,7 @@ public class CompanyController {
     @GetMapping("/sync")
     @RequiresRoles(value = ROLE_MANAGER)
     @CheckEcAnnotation
-    public BaseData sync() throws IOException {
-        return ResultGenerator.genSuccessResult(companyService.syncFromEc());
+    public BaseData sync(Boolean force) throws IOException {
+        return ResultGenerator.genSuccessResult(companyService.syncFromEc(force));
     }
 }

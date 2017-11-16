@@ -25,12 +25,14 @@ public class PtCustomerGroupManager {
      *         ec返回的结果
      * @return 数据库结果
      */
-    public PtCustomerGroup add(Long userId, CustomerGroupBean customerGroupBean) {
+    public PtCustomerGroup add(Long userId, CustomerGroupBean customerGroupBean, boolean force) {
         PtCustomerGroup ptCustomerGroup = ptCustomerGroupRepository.findByGroupId(customerGroupBean.getGroupId());
-        if (ptCustomerGroup != null) {
+        if (ptCustomerGroup != null && !force) {
             return ptCustomerGroup;
         }
-        ptCustomerGroup = new PtCustomerGroup();
+        if (ptCustomerGroup == null) {
+            ptCustomerGroup = new PtCustomerGroup();
+        }
         ptCustomerGroup.setUserId(userId);
         ptCustomerGroup.setGroupId(customerGroupBean.getGroupId());
         ptCustomerGroup.setGroupName(customerGroupBean.getGroupName());
@@ -48,12 +50,19 @@ public class PtCustomerGroupManager {
      *         一批
      * @return 结果
      */
-    public List<PtCustomerGroup> addAll(Long userId, List<CustomerGroupBean> customerGroupBeans) {
-        return customerGroupBeans.stream().map(customerGroupBean -> add(userId, customerGroupBean)).collect
+    public List<PtCustomerGroup> addAll(Long userId, List<CustomerGroupBean> customerGroupBeans, boolean force) {
+        return customerGroupBeans.stream().map(customerGroupBean -> add(userId, customerGroupBean, force)).collect
                 (Collectors.toList());
     }
 
-    public List<PtCustomerGroup> findAll() {
-        return ptCustomerGroupRepository.findAll();
+    /**
+     * 查询某个用户的分组集合
+     *
+     * @param userId
+     *         用户id
+     * @return 集合
+     */
+    public List<PtCustomerGroup> findByUserId(Long userId) {
+        return ptCustomerGroupRepository.findByUserId(userId);
     }
 }

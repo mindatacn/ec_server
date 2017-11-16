@@ -6,9 +6,11 @@ import com.mindata.ecserver.ec.model.response.CustomerTagDataBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CustomerTagInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
-import com.mindata.ecserver.main.manager.PtCustomerGroupManager;
-import com.mindata.ecserver.main.manager.PtCustomerTagManager;
-import com.mindata.ecserver.main.model.secondary.PtCustomerGroup;
+import com.mindata.ecserver.main.event.CompanySyncEvent;
+import com.mindata.ecserver.main.manager.PtCustomerTagGroupManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,28 +25,25 @@ public class CustomerTagService {
     @Resource
     private ServiceBuilder serviceBuilder;
     @Resource
-    private PtCustomerGroupManager ptCustomerGroupManager;
-    @Resource
     private CallManager callManager;
     @Resource
-    private PtCustomerTagManager ptCustomerTagManager;
+    private PtCustomerTagGroupManager ptCustomerTagGroupManager;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 将标签同步到数据库
-     *
-     * @throws IOException
      */
-    //@EventListener(CompanySyncEvent.class)
-    public void syncFromEcToDb() throws IOException {
-        List<PtCustomerGroup> groupList = ptCustomerGroupManager.findAll();
-        for (PtCustomerGroup ptCustomerGroup : groupList) {
-            CustomerTagRequest customerTagRequest = new CustomerTagRequest();
-            customerTagRequest.setGroupValue(ptCustomerGroup.getGroupId());
-            CustomerTagInfoService customerTagInfoService = serviceBuilder.getClassInfoService();
-            CustomerTagData customerTagData = (CustomerTagData) callManager.execute(customerTagInfoService.getLabelInfo(customerTagRequest));
-            for (CustomerTagDataBean customerTagDataBean : customerTagData.getClassBeanList()) {
-                ptCustomerTagManager.add(customerTagDataBean);
-            }
-        }
+    @EventListener(CompanySyncEvent.class)
+    public void syncFromEcToDb(CompanySyncEvent companySyncEvent) throws IOException {
+        logger.info("从EC获取客户标签信息");
+        CustomerTagRequest customerTagRequest = new CustomerTagRequest();
+        customerTagRequest.setGroupValue("");
+        CustomerTagInfoService customerTagInfoService = serviceBuilder.getClassInfoService();
+        CustomerTagData customerTagData = (CustomerTagData) callManager.execute(customerTagInfoService
+                .getLabelInfo(customerTagRequest));
+        List<CustomerTagDataBean> customerTagDataBeans = customerTagData.getData();
+        logger.info("从EC获取客户标签信息如下：");
+        ptCustomerTagGroupManager.addAll(customerTagDataBeans, (Boolean) companySyncEvent.getSource());
     }
 }

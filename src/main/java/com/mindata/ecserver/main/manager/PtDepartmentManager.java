@@ -11,8 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
@@ -71,23 +71,26 @@ public class PtDepartmentManager extends BaseService {
      *         ec的dept结构
      * @return 本地的部门数据
      */
-    public PtDepartment add(CompanyDeptBean companyDeptBean, Long companyId) {
+    public PtDepartment add(CompanyDeptBean companyDeptBean, Long companyId, boolean force) {
         //deptId是唯一的
         PtDepartment ptDepartment = findByEcDeptId(companyDeptBean.getDeptId());
-        if (ptDepartment != null) {
+        if (ptDepartment != null && !force) {
             return ptDepartment;
         }
-        ptDepartment = new PtDepartment();
+        if (ptDepartment == null) {
+            ptDepartment = new PtDepartment();
+            ptDepartment.setState(STATE_NORMAL);
+            ptDepartment.setMemo("");
+            ptDepartment.setThreshold(companyManager.findOne(companyId).getThreshold());
+            ptDepartment.setCompanyId(companyId);
+        }
         ptDepartment.setEcDeptId(companyDeptBean.getDeptId());
         ptDepartment.setName(companyDeptBean.getDeptName());
         ptDepartment.setEcParentDeptId(companyDeptBean.getParentDeptId());
-        ptDepartment.setCompanyId(companyId);
-        ptDepartment.setThreshold(companyManager.findOne(companyId).getThreshold());
         ptDepartment.setSort(companyDeptBean.getSort());
         ptDepartment.setCreateTime(CommonUtil.getNow());
         ptDepartment.setUpdateTime(CommonUtil.getNow());
-        ptDepartment.setState(STATE_NORMAL);
-        ptDepartment.setMemo("");
+
         return departmentRepository.save(ptDepartment);
     }
 
@@ -101,11 +104,10 @@ public class PtDepartmentManager extends BaseService {
      * @param companyDeptBeans
      *         一批部门信息
      */
-    public List<PtDepartment> addDepts(List<CompanyDeptBean> companyDeptBeans, Long companyId) {
-        List<PtDepartment> ptDepartments = new ArrayList<>();
-        for (CompanyDeptBean bean : companyDeptBeans) {
-            ptDepartments.add(add(bean, companyId));
-        }
+    public List<PtDepartment> addDepts(List<CompanyDeptBean> companyDeptBeans, Long companyId, boolean force) {
+        List<PtDepartment> ptDepartments = companyDeptBeans.stream().map(companyDeptBean -> add(companyDeptBean,
+                companyId, force)).collect(Collectors
+                .toList());
         //然后根据ec的父部门信息，设置本地的父部门信息
         for (PtDepartment department : ptDepartments) {
             //取到本地的ec父部门信息

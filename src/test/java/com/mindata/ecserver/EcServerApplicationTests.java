@@ -41,6 +41,16 @@ public class EcServerApplicationTests {
         //Date tempEnd = DateUtil.endOfDay(date);
         //List<Object[]> list = ptPhoneHistoryRepository.findCount(1L, tempBegin, tempEnd);
         //Object[] objects = list.get(0);
+        //List<PtUser> ptUsers = ptUserManager.findAll();
+        //for (PtUser ptUser : ptUsers) {
+        //     Long ecUserId = ptUser.getEcUserId();
+        //     if (ecUserId == null) {
+        //         continue;
+        //     }
+        //     String pass = CommonUtil.password(ecUserId + "");
+        //     ptUser.setPassword(pass);
+        //    ptUserManager.update(ptUser);
+        //}
         //
         //System.out.println(objects[0].equals(0L));
         //phoneHistoryCompanyService.fetchAllHistoryData(1L, "2017-11-03", "2017-11-15", new PageRequest(0, 10));

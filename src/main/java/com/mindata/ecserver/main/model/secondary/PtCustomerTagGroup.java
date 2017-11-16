@@ -10,13 +10,9 @@ import javax.persistence.Table;
  * @author hanliqiang wrote on 2017/11/15
  */
 @Entity
-@Table(name = "pt_customer_group", indexes = {@Index(name = "user_id", columnList =
-        "userId")})
-public class PtCustomerGroup extends BaseEntity {
-    /**
-     * 用户id
-     */
-    private Long userId;
+@Table(name = "pt_customer_tag_group", indexes = {@Index(name = "group_id", columnList =
+        "groupId")})
+public class PtCustomerTagGroup extends BaseEntity {
     /**
      * 分组ID
      */
@@ -29,14 +25,17 @@ public class PtCustomerGroup extends BaseEntity {
      * 分组排序
      */
     private Integer sort;
+    /**
+     * 类型
+     */
+    private Integer type;
 
-
-    public Long getUserId() {
-        return userId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Long getGroupId() {

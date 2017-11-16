@@ -8,23 +8,13 @@ import java.util.List;
  * @author hanliqiang wrote on 2017/11/15
  */
 public class CustomerTagData extends BaseEcData{
-    private CustomerGroupBean customerGroupBean;
+    private List<CustomerTagDataBean> data;
 
-    private List<CustomerTagDataBean> classBeanList;
-
-    public CustomerGroupBean getCustomerGroupBean() {
-        return customerGroupBean;
+    public List<CustomerTagDataBean> getData() {
+        return data;
     }
 
-    public void setCustomerGroupBean(CustomerGroupBean customerGroupBean) {
-        this.customerGroupBean = customerGroupBean;
-    }
-
-    public List<CustomerTagDataBean> getClassBeanList() {
-        return classBeanList;
-    }
-
-    public void setClassBeanList(List<CustomerTagDataBean> classBeanList) {
-        this.classBeanList = classBeanList;
+    public void setData(List<CustomerTagDataBean> data) {
+        this.data = data;
     }
 }

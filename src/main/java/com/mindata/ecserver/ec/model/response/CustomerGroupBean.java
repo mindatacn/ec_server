@@ -8,7 +8,7 @@ public class CustomerGroupBean {
     /**
      * 分组ID
      */
-    private String groupId;
+    private Long groupId;
     /**
      * 分组名称
      */
@@ -18,11 +18,11 @@ public class CustomerGroupBean {
      */
     private Integer sort;
 
-    public String getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 

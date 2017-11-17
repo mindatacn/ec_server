@@ -37,5 +37,15 @@ public class ContactController {
     public BaseData findCountByProvince(){
         return ResultGenerator.genSuccessResult(contactService.findCountByProvince());
     }
+
+    /**
+     * 查询某段时间每天的新增
+     *
+     * @return 结果
+     */
+    @GetMapping("/dayCount")
+    public BaseData findCountByDay(String begin, String end) {
+        return ResultGenerator.genSuccessResult(contactService.findCountByDateBetween(begin, end));
+    }
 }
 

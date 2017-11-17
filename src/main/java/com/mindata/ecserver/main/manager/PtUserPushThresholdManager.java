@@ -4,11 +4,9 @@ import com.mindata.ecserver.main.event.ContactPushResultEvent;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.repository.secondary.PtUserPushCountRepository;
-import com.mindata.ecserver.main.requestbody.PushCountRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushResultVO;
 import com.mindata.ecserver.util.CommonUtil;
-import com.xiaoleilu.hutool.date.DateUnit;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
@@ -17,7 +15,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -98,10 +95,19 @@ public class PtUserPushThresholdManager extends BaseService {
         return ptUserPushCountRepository.save(ptUserPushCount);
     }
 
-    public List<Map<String, Object>> findByPushDateTime(PushCountRequestBody pushCountRequestBody) throws ParseException {
+    /**
+     * 按天查询每天的累计
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 结果
+     */
+    public List<Map<String, Object>> findByPushDateTime(String begin, String end) {
         List<Map<String, Object>> list = new ArrayList<>();
-        Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(pushCountRequestBody.getBeginTime()));
-        Date endTime = DateUtil.endOfDay(DateUtil.parseDate(pushCountRequestBody.getEndTime()));
+        Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));
+        Date endTime = DateUtil.endOfDay(DateUtil.parseDate(end));
         for (; beginTime.before(endTime); beginTime = DateUtil.offsetDay(beginTime, 1)) {
             //查一天的统计
             Date oneDayEnd = DateUtil.endOfDay(beginTime);
@@ -116,7 +122,6 @@ public class PtUserPushThresholdManager extends BaseService {
             map.put("user", objects.get(0)[1]);
             list.add(map);
         }
-        System.out.println(list.size());
         return list;
     }
 

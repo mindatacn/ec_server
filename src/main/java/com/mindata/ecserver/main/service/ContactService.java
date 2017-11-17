@@ -12,6 +12,7 @@ import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
+import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static com.mindata.ecserver.global.constant.Constant.STATE_NO_PUSH;
+import java.util.*;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -132,18 +129,46 @@ public class ContactService extends BaseService {
     }
 
     /**
-     * 查询每个省份下的数量综合
+     * 查询每个省份下的数量
      *
      * @return
+     * list
      */
-    public List<HashMap<String,Integer>> findCountByProvince() {
-        List<Object[]> objList = contactRepository.findCountByProvince(STATE_NO_PUSH);
-//        HashMap<String,Integer> map  = objList.get(0);
-//        for(String key:map.keySet()){
-//            map.put("未知", map.get(0));
-//        }
-//        return objList;
-        return null;
+    public List<Map<String, Object>> findCountByProvince() {
+        List<Object[]> objList = contactRepository.findCountByProvince();
+        List<Map<String, Object>> list = new ArrayList<>(50);
+        for (Object[] objects : objList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("province", objects[0]);
+            map.put("count", objects[1]);
+            list.add(map);
+        }
+        return list;
+    }
+
+    /**
+     * 查询某段时间每天的线索新增
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return list结果集
+     */
+    public List<Map<String, Object>> findCountByDateBetween(String begin, String end) {
+        Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));
+        Date endTime = DateUtil.endOfDay(DateUtil.parseDate(end));
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (; beginTime.before(endTime); beginTime = DateUtil.offsetDay(beginTime, 1)) {
+            //查一天的统计
+            Date oneDayEnd = DateUtil.endOfDay(beginTime);
+            Integer count = contactRepository.countByCreateTimeBetween(beginTime, oneDayEnd);
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", beginTime);
+            map.put("count", count);
+            list.add(map);
+        }
+        return list;
     }
 
 }

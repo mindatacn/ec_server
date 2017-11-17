@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.repository.secondary;
 
-import com.mindata.ecserver.main.model.secondary.PtAnalyContactCount;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,19 +16,18 @@ public interface PtUserPushCountRepository extends JpaRepository<PtUserPushCount
      */
     PtUserPushCount findByUserIdAndPushDateBetween(Long userId, Date begin, Date end);
 
-    /**
-     * @param beginTime
-     * @param endTime
-     * @return
-     */
-//    @Query(value = "SELECT pushedCount, COUNT(userId) FROM PtUserPushCount WHERE pushedCount>0 AND pushDate BETWEEN ?1 AND ?2")
-//    List<Object[]> findByAnalyDateBetween(Date beginTime, Date endTime);
-
-    @Query(value = "SELECT sum(pushedCount) FROM PtUserPushCount WHERE pushDate BETWEEN ?1 AND ?2")
-    Integer findCountByPushDate(Date beginTime, Date endTime);
 
     List<PtUserPushCount> findByPushDateBetween(Date begin, Date end);
 
+    /**
+     * 查询每天的统计
+     *
+     * @param beginTime
+     *         开始
+     * @param endTime
+     *         结束
+     * @return 统计
+     */
     @Query("SELECT sum(pushedCount),count(userId) from PtUserPushCount where pushedCount > 0 and pushDate between ?1 and ?2")
     List<Object[]> findByOneDayBetween(Date beginTime, Date endTime);
 }

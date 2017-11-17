@@ -4,9 +4,11 @@ import com.mindata.ecserver.main.event.ContactPushResultEvent;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.repository.secondary.PtUserPushCountRepository;
+import com.mindata.ecserver.main.requestbody.PushCountRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushResultVO;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.date.DateUnit;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
@@ -15,8 +17,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * @author wuweifeng wrote on 2017/11/1.
@@ -36,8 +38,7 @@ public class PtUserPushThresholdManager extends BaseService {
     /**
      * 处理线索推送成功结果
      *
-     * @param event
-     *         结果vo
+     * @param event 结果vo
      */
     @EventListener
     public void pushSuccessResult(ContactPushResultEvent event) {
@@ -58,10 +59,8 @@ public class PtUserPushThresholdManager extends BaseService {
     /**
      * 查询某天某用户的推送数量
      *
-     * @param userId
-     *         用户id
-     * @param date
-     *         日期
+     * @param userId 用户id
+     * @param date   日期
      * @return 结果
      */
     public PtUserPushCount findCountByUserId(Long userId, Date date) {
@@ -98,4 +97,27 @@ public class PtUserPushThresholdManager extends BaseService {
         ptUserPushCount.setThreshold(ptDepartmentManager.findByDeptId(ptUser.getDepartmentId()).getThreshold());
         return ptUserPushCountRepository.save(ptUserPushCount);
     }
+
+    public List<Map<String, Object>> findByPushDateTime(PushCountRequestBody pushCountRequestBody) throws ParseException {
+        List<Map<String, Object>> list = new ArrayList<>();
+        Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(pushCountRequestBody.getBeginTime()));
+        Date endTime = DateUtil.endOfDay(DateUtil.parseDate(pushCountRequestBody.getEndTime()));
+        for (; beginTime.before(endTime); beginTime = DateUtil.offsetDay(beginTime, 1)) {
+            //查一天的统计
+            Date oneDayEnd = DateUtil.endOfDay(beginTime);
+            List<Object[]> objects = ptUserPushCountRepository.findByOneDayBetween(beginTime, oneDayEnd);
+            Map<String, Object> map = new HashMap<>();
+            map.put("pushDate", beginTime);
+            if (objects.get(0)[0] == null) {
+                map.put("total", 0);
+            } else {
+                map.put("total", CommonUtil.parseObject(objects.get(0)[0]));
+            }
+            map.put("user", objects.get(0)[1]);
+            list.add(map);
+        }
+        System.out.println(list.size());
+        return list;
+    }
+
 }

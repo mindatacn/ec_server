@@ -32,5 +32,10 @@ public class ContactController {
     public BaseData queryOne(@PathVariable Long id) {
         return ResultGenerator.genSuccessResult(contactService.findById(id));
     }
+
+    @GetMapping("/province")
+    public BaseData findCountByProvince(){
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince());
+    }
 }
 

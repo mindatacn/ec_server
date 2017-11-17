@@ -10,6 +10,7 @@ import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
+import com.mindata.ecserver.main.requestbody.PushCountRequestBody;
 import com.mindata.ecserver.main.requestbody.PushFailRequestBody;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,4 +146,10 @@ public class PushController {
         }
         return "success";
     }
+
+    @GetMapping("/count")
+    public BaseData getCount(PushCountRequestBody pushCountRequestBody) throws ParseException {
+        return ResultGenerator.genSuccessResult(ptUserPushThresholdManager.findByPushDateTime(pushCountRequestBody));
+    }
+
 }

@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.mindata.ecserver.global.constant.Constant.STATE_NO_PUSH;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -126,6 +129,21 @@ public class ContactService extends BaseService {
             contactVOS.add(vo);
         }
         return new SimplePage<>(ecContactEntities.getTotalPages(), ecContactEntities.getTotalElements(), contactVOS);
+    }
+
+    /**
+     * 查询每个省份下的数量综合
+     *
+     * @return
+     */
+    public List<HashMap<String,Integer>> findCountByProvince() {
+        List<Object[]> objList = contactRepository.findCountByProvince(STATE_NO_PUSH);
+//        HashMap<String,Integer> map  = objList.get(0);
+//        for(String key:map.keySet()){
+//            map.put("未知", map.get(0));
+//        }
+//        return objList;
+        return null;
     }
 
 }

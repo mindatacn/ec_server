@@ -4,8 +4,10 @@ import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,4 +54,11 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
     List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company);
 
     List<EcContactEntity> findByState(Integer state);
+
+    /**
+     *
+     * @return
+     */
+    @Query(value = "SELECT province, COUNT(*) FROM ec_contact_no_push WHERE state =?1 GROUP BY province",nativeQuery = true)
+    List<Object[]> findCountByProvince(Integer state);
 }

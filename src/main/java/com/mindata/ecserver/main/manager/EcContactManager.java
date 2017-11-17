@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
+import static com.mindata.ecserver.global.constant.Constant.STATE_NO_PUSH;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -76,4 +77,6 @@ public class EcContactManager {
         }
         return contactRepository.findByStateAndCompanyLike(state,"%" + company + "%");
     }
+
+
 }

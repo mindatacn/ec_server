@@ -8,7 +8,13 @@ import org.springframework.context.ApplicationEvent;
  * @author wuweifeng wrote on 2017/11/15.
  */
 public class CompanySyncEvent extends ApplicationEvent {
-    public CompanySyncEvent(Boolean source) {
-        super(source);
+    /**
+     * 是否是强制同步，默认不强制，即不覆盖更新
+     *
+     * @param force
+     *         是否强制
+     */
+    public CompanySyncEvent(Boolean force) {
+        super(force);
     }
 }

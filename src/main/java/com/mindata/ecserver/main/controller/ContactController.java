@@ -33,6 +33,11 @@ public class ContactController {
         return ResultGenerator.genSuccessResult(contactService.findById(id));
     }
 
+    /**
+     * 按省份来查询不同省份的线索数据
+     *
+     * @return 按省份区分后的聚合分组数据
+     */
     @GetMapping("/province")
     public BaseData findCountByProvince(){
         return ResultGenerator.genSuccessResult(contactService.findCountByProvince());

@@ -11,7 +11,7 @@ import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
-import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
+import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -42,7 +42,7 @@ public class UserService extends BaseService {
     @Resource
     private PtUserManager userManager;
     @Resource
-    private PtUserPushThresholdManager ptUserPushThresholdManager;
+    private PtUserPushCountManager ptUserPushCountManager;
     @Resource
     private UserTokenCache userTokenCache;
     @Resource
@@ -227,7 +227,7 @@ public class UserService extends BaseService {
      * @return 类
      */
     public PtUserPushCount findPushCount() {
-        return ptUserPushThresholdManager.findCountByUserId(ShiroKit.getCurrentUser().getId()
+        return ptUserPushCountManager.findCountByUserId(ShiroKit.getCurrentUser().getId()
                 , null);
     }
 }

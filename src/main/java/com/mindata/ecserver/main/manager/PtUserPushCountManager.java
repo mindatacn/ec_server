@@ -19,10 +19,10 @@ import java.util.*;
 
 /**
  * @author wuweifeng wrote on 2017/11/1.
- * 用户每日推送数量阈值管理器
+ * 用户每日推送数量管理器
  */
 @Service
-public class PtUserPushThresholdManager extends BaseService {
+public class PtUserPushCountManager extends BaseService {
     @Resource
     private PtUserPushCountRepository ptUserPushCountRepository;
     @Resource
@@ -112,7 +112,7 @@ public class PtUserPushThresholdManager extends BaseService {
             //查一天的统计
             Date oneDayEnd = DateUtil.endOfDay(beginTime);
             List<Object[]> objects = ptUserPushCountRepository.findByOneDayBetween(beginTime, oneDayEnd);
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>(4);
             map.put("pushDate", beginTime);
             if (objects.get(0)[0] == null) {
                 map.put("total", 0);

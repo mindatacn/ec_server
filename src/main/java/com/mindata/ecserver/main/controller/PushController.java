@@ -6,7 +6,7 @@ import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
-import com.mindata.ecserver.main.manager.PtUserPushThresholdManager;
+import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
@@ -35,7 +35,7 @@ public class PushController {
     @Resource
     private PushService pushService;
     @Resource
-    private PtUserPushThresholdManager ptUserPushThresholdManager;
+    private PtUserPushCountManager ptUserPushCountManager;
     @Resource
     private PushSuccessResultService pushSuccessResultService;
     @Resource
@@ -67,7 +67,7 @@ public class PushController {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_TO_LARGE, "一次最多推送50条");
         }
         //检查被推送的用户每日上限
-        PtUserPushCount userCount = ptUserPushThresholdManager.findCountByUserId(pushBody.getFollowUserId(), null);
+        PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);
         if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日最大限制");
         }
@@ -145,9 +145,18 @@ public class PushController {
         return "success";
     }
 
+    /**
+     * 查询某段时间内每天共有多少人推送了多少条数据
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 每天的聚合数据[{"date":2017-08-09, "total":203, "user":14}]
+     */
     @GetMapping("/count")
     public BaseData getCount(String begin, String end) {
-        return ResultGenerator.genSuccessResult(ptUserPushThresholdManager.findByPushDateTime(begin, end));
+        return ResultGenerator.genSuccessResult(ptUserPushCountManager.findByPushDateTime(begin, end));
     }
 
 }

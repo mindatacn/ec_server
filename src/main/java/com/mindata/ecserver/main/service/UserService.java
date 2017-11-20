@@ -58,13 +58,21 @@ public class UserService extends BaseService {
      * @return 权限集合
      */
     public Set<String> findPermissionsByUser(PtUser user) {
-        List<PtRole> roles = roleManager.findByUserId(user.getId());
+        List<PtRole> roles = roleManager.findRolesByUser(user);
         List<PtMenu> menus = menuManager.findAllByRoles(roles);
         return menus.stream().map(PtMenu::getPermission).collect(Collectors.toSet());
     }
 
+    /**
+     * 获取用户的所有角色字符串
+     *
+     * @param user
+     *         user
+     * @return 用户角色
+     */
     public Set<String> findRolesByUser(PtUser user) {
-        List<PtRole> roles = roleManager.findByUserId(user.getId());
+        //从缓存获取
+        List<PtRole> roles = roleManager.findRolesByUser(user);
         return roles.stream().map(PtRole::getName).collect(Collectors.toSet());
     }
 
@@ -75,7 +83,7 @@ public class UserService extends BaseService {
      * 角色
      */
     public List<RoleVO> findRole() {
-        List<PtRole> roles = roleManager.findByUserId(ShiroKit.getCurrentUser().getId());
+        List<PtRole> roles = roleManager.findRolesByUser(getCurrentUser());
         return roles.stream().map(ptRole -> new RoleVO(ptRole.getName())).collect(Collectors.toList());
     }
 

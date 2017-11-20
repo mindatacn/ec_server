@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.shiro.ShiroKit;
-import com.mindata.ecserver.main.event.MenuCrudEvent;
+import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
@@ -34,10 +34,8 @@ public class MenuService extends BaseService {
     public PtMenu add(PtMenu ptMenu) {
         ptMenu.setCreateTime(CommonUtil.getNow());
         ptMenu.setUpdateTime(CommonUtil.getNow());
-        //发布菜单事件
-        PtMenu menu = ptMenuManager.save(ptMenu);
-        eventPublisher.publishEvent(new MenuCrudEvent(ptMenu));
-        return menu;
+
+        return ptMenuManager.save(ptMenu);
     }
 
     /**
@@ -51,14 +49,37 @@ public class MenuService extends BaseService {
         ptMenu.setUpdateTime(CommonUtil.getNow());
         //发布菜单事件
         PtMenu menu = ptMenuManager.save(ptMenu);
-        eventPublisher.publishEvent(new MenuCrudEvent(ptMenu));
+
+        notifyMenuChangeEvent(ptMenu.getId());
         return menu;
     }
 
+    /**
+     * 删除菜单
+     *
+     * @param id
+     *         菜单id
+     */
     public void delete(Long id) {
         ptMenuManager.delete(id);
+        notifyMenuChangeEvent(id);
+        //删除MenuRole中关于该menu的记录
+        ptMenuManager.deleteMenuRoleByMenuId(id);
+    }
+
+    /**
+     * 当菜单信息变更时，通知所有拥有该菜单的role
+     *
+     * @param menuId
+     *         菜单id
+     */
+    private void notifyMenuChangeEvent(Long menuId) {
+        //查询有该菜单的所有role
+        List<PtRole> roles = ptRoleManager.findRolesByMenu(menuId);
+
         //发布菜单事件
-        eventPublisher.publishEvent(new MenuCrudEvent(null));
+        eventPublisher.publishEvent(new RoleMenuChangeEvent(roles.stream().map(PtRole::getId).collect(Collectors
+                .toList())));
     }
 
     /**

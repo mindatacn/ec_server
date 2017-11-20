@@ -1,6 +1,5 @@
 package com.mindata.ecserver.global.shiro;
 
-import com.mindata.ecserver.global.cache.AuthorizationCache;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -25,8 +24,6 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
     private PtCompanyManager ptCompanyManager;
     @Resource
     private UserService userService;
-    @Resource
-    private AuthorizationCache cache;
 
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
@@ -55,19 +52,11 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         PtUser user = (PtUser) principalCollection.getPrimaryPrincipal();
-        String key = user.getAccount();
-        //从redis获取缓存的信息
-        SimpleAuthorizationInfo authorizationInfo = cache.getAuthorizationInfoByAccount(key);
-        if (authorizationInfo != null) {
-            return authorizationInfo;
-        }
         //配置权限
-        authorizationInfo = new SimpleAuthorizationInfo();
-
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        //添加角色信息
         authorizationInfo.addRoles(userService.findRolesByUser(user));
         authorizationInfo.addStringPermissions(userService.findPermissionsByUser(user));
-        //将权限缓存到redis
-        cache.setAccountAuthorizationInfo(key, authorizationInfo);
 
         return authorizationInfo;
     }

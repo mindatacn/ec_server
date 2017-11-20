@@ -38,6 +38,16 @@ public class PtMenuManager {
         ptMenuRepository.delete(id);
     }
 
+    /**
+     * 根据菜单id删除menuRole表的记录
+     *
+     * @param menuId
+     *         menuId
+     */
+    public void deleteMenuRoleByMenuId(Long menuId) {
+        ptMenuRoleRepository.deleteByMenuId(menuId);
+    }
+
     public List<PtMenu> findByRoleId(Long roleId) {
         //读缓存
         List<PtMenu> menuList = roleMenuCache.findMenuByRoleId(roleId);
@@ -47,7 +57,7 @@ public class PtMenuManager {
         List<PtMenuRole> menuRoles = ptMenuRoleRepository.findByRoleId(roleId);
         menuList = menuRoles.stream().map(ptMenuRole -> ptMenuRepository.findOne(ptMenuRole.getMenuId())).collect
                 (Collectors.toList());
-        roleMenuCache.setMenuByRoleId(roleId, menuList);
+        roleMenuCache.saveMenusByRoleId(roleId, menuList);
         return menuList;
     }
 
@@ -58,6 +68,5 @@ public class PtMenuManager {
         }
         return menus;
     }
-
 
 }

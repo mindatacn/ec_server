@@ -13,13 +13,13 @@ public interface CacheConstant {
      */
     int CACHE_SHIRO_PASS_COUNT_EXPIE = 10;
     /**
-     * shiro保存用户权限
+     * 用户角色
      */
-    String CACHE_SHIRO_USER_PERMISSION_KEY = "shiro_user_permission";
+    String CACHE_USER_ROLE_KEY = "user_role_key";
     /**
      * 权限保存10个小时，redis存储的user权限
      */
-    int CACHE_SHIRO_USER_PERMISSION_EXPIE = 10;
+    int CACHE_USER_ROLE_EXPIE = 10;
     /**
      * token的key名，key为token
      */

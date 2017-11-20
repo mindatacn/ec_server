@@ -37,4 +37,26 @@ public class PtRole extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        PtRole ptRole = (PtRole) o;
+
+        if (name != null ? !name.equals(ptRole.name) : ptRole.name != null) return false;
+        return sign != null ? sign.equals(ptRole.sign) : ptRole.sign == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (sign != null ? sign.hashCode() : 0);
+        return result;
+    }
 }

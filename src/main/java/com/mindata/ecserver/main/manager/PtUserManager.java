@@ -71,8 +71,6 @@ public class PtUserManager {
             ptUser.setState(STATE_NORMAL);
             ptUser.setCompanyId(companyId);
             ptUser.setPassword(CommonUtil.password("123456"));
-            //添加role信息
-            userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
         }
         ptUser.setCreateTime(CommonUtil.getNow());
         ptUser.setUpdateTime(CommonUtil.getNow());
@@ -84,6 +82,9 @@ public class PtUserManager {
         ptUser.setMobile(companyUserBean.getAccount());
 
         ptUser = userRepository.save(ptUser);
+
+        //添加role信息
+        userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
 
         return ptUser;
     }

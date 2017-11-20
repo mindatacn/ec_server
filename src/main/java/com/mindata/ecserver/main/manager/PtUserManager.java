@@ -70,7 +70,7 @@ public class PtUserManager {
             ptUser = new PtUser();
             ptUser.setState(STATE_NORMAL);
             ptUser.setCompanyId(companyId);
-            ptUser.setPassword(CommonUtil.password("123456"));
+            ptUser.setPassword(CommonUtil.password(companyUserBean.getUserId() + ""));
         }
         ptUser.setCreateTime(CommonUtil.getNow());
         ptUser.setUpdateTime(CommonUtil.getNow());

@@ -103,7 +103,7 @@ public class PushSuccessResultService extends BaseService {
         if (pushResultRequestBody.getOrder() != null && pushResultRequestBody.getOrder()) {
             direction = Sort.Direction.ASC;
         }
-        String orderBy = "createTime";
+        String orderBy = "id";
         if (pushResultRequestBody.getOrderBy() != null) {
             orderBy = pushResultRequestBody.getOrderBy();
         }

@@ -7,7 +7,6 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.*;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;
-import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -58,17 +57,17 @@ public class PushSuccessResultService extends BaseService {
         //管理员
         if (roleName.equals(ROLE_MANAGER)) {
             Long companyId = ShiroKit.getCurrentUser().getCompanyId();
-            criteria.add(Restrictions.eq("companyId",companyId,true));
+            criteria.add(Restrictions.eq("companyId", companyId, true));
         }
         //部门领导
         if (roleName.equals(ROLE_LEADER)) {
             Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
-            criteria.add(Restrictions.eq("departmentId",deptId,true));
+            criteria.add(Restrictions.eq("departmentId", deptId, true));
         }
         //职员
-        if(roleName.equals(ROLE_USER)){
+        if (roleName.equals(ROLE_USER)) {
             Long userId = ShiroKit.getCurrentUser().getId();
-            criteria.add(Restrictions.eq("followUserId", userId,true));
+            criteria.add(Restrictions.eq("followUserId", userId, true));
         }
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {

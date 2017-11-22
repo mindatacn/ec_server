@@ -22,14 +22,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.mindata.ecserver.global.constant.Constant.ROLE_USER;
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
@@ -54,12 +52,9 @@ public class PushFailResultService {
      */
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
         Criteria<PtPushFailureResult> criteria = new Criteria<>();
-        String roleName = ptRoleManager.getRoleStr(ShiroKit.getCurrentUser());
-        //职员
-        if(roleName.equals(ROLE_USER)){
-            Long userId = ShiroKit.getCurrentUser().getId();
-            criteria.add(Restrictions.eq("followUserId", userId,true));
-        }
+
+        Long userId = ShiroKit.getCurrentUser().getId();
+        criteria.add(Restrictions.eq("followUserId", userId, true));
         //公司名称模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getCompanyName())) {
             criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));

@@ -6,11 +6,7 @@ import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
-import com.mindata.ecserver.main.manager.PtDepartmentManager;
-import com.mindata.ecserver.main.manager.PtRoleManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.manager.PtUserPushCountManager;
-import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
@@ -19,9 +15,6 @@ import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
-import com.mindata.ecserver.main.service.UserService;
-import com.mindata.ecserver.main.vo.RoleVO;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
@@ -32,9 +25,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.

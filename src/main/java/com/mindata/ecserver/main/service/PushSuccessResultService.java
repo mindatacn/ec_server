@@ -6,7 +6,6 @@ import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.*;
-import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -26,7 +25,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.constant.Constant.*;
 
@@ -73,7 +71,7 @@ public class PushSuccessResultService extends BaseService {
             //职员
             if(list.contains(ROLE_USER)){
                 Long userId = ShiroKit.getCurrentUser().getId();
-                criteria.add(Restrictions.eq("followUserId",userId,true));
+                criteria.add(Restrictions.eq("followUserId", userId,true));
             }
         }
         //开始时间

@@ -16,6 +16,14 @@ public class PushResultRequestBody {
      */
     private String mobile;
     /**
+     * 跟进人员
+     */
+    private List<Long> followUserIds;
+    /**
+     * 跟进团队
+     */
+    private List<Long> deptIds;
+    /**
      * 开始时间
      */
     private String beginTime;
@@ -162,6 +170,22 @@ public class PushResultRequestBody {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public List<Long> getFollowUserIds() {
+        return followUserIds;
+    }
+
+    public void setFollowUserIds(List<Long> followUserIds) {
+        this.followUserIds = followUserIds;
+    }
+
+    public List<Long> getDeptIds() {
+        return deptIds;
+    }
+
+    public void setDeptIds(List<Long> deptIds) {
+        this.deptIds = deptIds;
     }
 
     @Override

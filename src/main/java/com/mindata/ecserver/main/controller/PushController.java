@@ -6,7 +6,9 @@ import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtUserPushCountManager;
+import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
@@ -15,6 +17,8 @@ import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
+import com.mindata.ecserver.main.service.UserService;
+import com.mindata.ecserver.main.vo.RoleVO;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
@@ -25,6 +29,9 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -40,6 +47,10 @@ public class PushController {
     private PushSuccessResultService pushSuccessResultService;
     @Resource
     private PushFailResultService pushFailResultService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private PtDepartmentManager ptDepartmentManager;
 
     private static final int MAX_SIZE = 50;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -82,6 +93,31 @@ public class PushController {
      */
     @GetMapping("/success")
     public BaseData get(PushResultRequestBody pushResultRequestBody) {
+        //获取当前登录人员的角色
+        List<RoleVO> roles = userService.findRole();
+        for (RoleVO roleVO : roles) {
+            //管理员
+            if(roleVO.getName().equals("manager")){
+                Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+                List<PtDepartment> departments = ptDepartmentManager.findByCompanyIdAndState(companyId,STATE_NORMAL);
+                List<Long> ids = departments.stream().map(PtDepartment::getId).collect(Collectors.toList());
+                pushResultRequestBody.setDeptIds(ids);
+            }
+            //部门领导
+            if(roleVO.getName().equals("leader")){
+                Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
+                List<Long> ids = new ArrayList<>();
+                ids.add(deptId);
+                pushResultRequestBody.setDeptIds(ids);
+            }
+            //职员
+            if(roleVO.getName().equals("user")){
+                Long userId = ShiroKit.getCurrentUser().getId();
+                List<Long> ids = new ArrayList<>();
+                ids.add(userId);
+                pushResultRequestBody.setFollowUserIds(ids);
+            }
+        }
         return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
     }
 
@@ -148,10 +184,8 @@ public class PushController {
     /**
      * 查询某段时间内每天共有多少人推送了多少条数据
      *
-     * @param begin
-     *         开始时间
-     * @param end
-     *         结束时间
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return 每天的聚合数据[{"date":2017-08-09, "total":203, "user":14}]
      */
     @GetMapping("/count")

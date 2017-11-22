@@ -60,6 +60,14 @@ public class PushSuccessResultService extends BaseService {
             Date date = DateUtil.endOfDay(DateUtil.parseDate(pushResultRequestBody.getEndTime()));
             criteria.add(Restrictions.lt("createTime", date, true));
         }
+        //跟进人查询
+        if (CollectionUtil.isNotEmpty(pushResultRequestBody.getFollowUserIds())) {
+            criteria.add(Restrictions.in("followUserId", pushResultRequestBody.getFollowUserIds(), true));
+        }
+        //跟进团队查询
+        if (CollectionUtil.isNotEmpty(pushResultRequestBody.getDeptIds())) {
+            criteria.add(Restrictions.in("departmentId", pushResultRequestBody.getDeptIds(), true));
+        }
         //公司名称模糊查询
         if (!StrUtil.isEmpty(pushResultRequestBody.getCompanyName())) {
             criteria.add(Restrictions.like("companyName", pushResultRequestBody.getCompanyName(), true));

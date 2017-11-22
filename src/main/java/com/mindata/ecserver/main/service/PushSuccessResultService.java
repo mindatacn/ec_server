@@ -54,25 +54,21 @@ public class PushSuccessResultService extends BaseService {
     public SimplePage<PushSuccessResultVO> findByConditions(PushResultRequestBody
                                                                     pushResultRequestBody) {
         Criteria<PtPushSuccessResult> criteria = new Criteria<>();
-        List<PtRole> roles = ptRoleManager.findRolesByUser(ShiroKit.getCurrentUser());
-        List<String> list = new ArrayList<>();
-        for (PtRole ptRole : roles) {
-            list.add(ptRole.getName());
-            //管理员
-            if (list.contains(ROLE_MANAGER)) {
-                Long companyId = ShiroKit.getCurrentUser().getCompanyId();
-                criteria.add(Restrictions.eq("companyId",companyId,true));
-            }
-            //部门领导
-            if (list.contains(ROLE_LEADER)) {
-                Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
-                criteria.add(Restrictions.eq("departmentId",deptId,true));
-            }
-            //职员
-            if(list.contains(ROLE_USER)){
-                Long userId = ShiroKit.getCurrentUser().getId();
-                criteria.add(Restrictions.eq("followUserId", userId,true));
-            }
+        String roleName = ptRoleManager.getRoleStr(ShiroKit.getCurrentUser());
+        //管理员
+        if (roleName.equals(ROLE_MANAGER)) {
+            Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+            criteria.add(Restrictions.eq("companyId",companyId,true));
+        }
+        //部门领导
+        if (roleName.equals(ROLE_LEADER)) {
+            Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
+            criteria.add(Restrictions.eq("departmentId",deptId,true));
+        }
+        //职员
+        if(roleName.equals(ROLE_USER)){
+            Long userId = ShiroKit.getCurrentUser().getId();
+            criteria.add(Restrictions.eq("followUserId", userId,true));
         }
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {

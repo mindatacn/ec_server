@@ -2,10 +2,12 @@ package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.PtPushResultManager;
+import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;
@@ -27,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mindata.ecserver.global.constant.Constant.ROLE_USER;
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
@@ -40,6 +43,8 @@ public class PushFailResultService {
     private EcContactManager ecContactManager;
     @Resource
     private PtUserManager ptUserManager;
+    @Resource
+    private PtRoleManager ptRoleManager;
 
     /**
      * 查找所有推送失败的记录
@@ -49,7 +54,12 @@ public class PushFailResultService {
      */
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
         Criteria<PtPushFailureResult> criteria = new Criteria<>();
-
+        String roleName = ptRoleManager.getRoleStr(ShiroKit.getCurrentUser());
+        //职员
+        if(roleName.equals(ROLE_USER)){
+            Long userId = ShiroKit.getCurrentUser().getId();
+            criteria.add(Restrictions.eq("followUserId", userId,true));
+        }
         //公司名称模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getCompanyName())) {
             criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));

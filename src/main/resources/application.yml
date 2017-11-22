@@ -15,7 +15,7 @@ spring:
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy #命名策略，加分隔线"_"
   profiles:
-    active: ${ENV:dev}
+    active: ${ENV:local}
 ecServer:
   ecBaseUri: https://open.workec.com/
 logging:

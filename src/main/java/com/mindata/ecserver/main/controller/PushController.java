@@ -88,7 +88,7 @@ public class PushController {
     /**
      * 查看推送失败的历史
      */
-    @GetMapping("/fail")
+    @GetMapping("/failure")
     public BaseData get(PushFailRequestBody pushFailRequestBody) {
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }

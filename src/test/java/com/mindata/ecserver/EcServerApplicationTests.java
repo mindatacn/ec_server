@@ -2,6 +2,7 @@ package com.mindata.ecserver;
 
 import com.mindata.ecserver.main.manager.EcCodeAreaManager;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.PtSearchConditionManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
@@ -29,9 +30,12 @@ public class EcServerApplicationTests {
     private PhoneHistoryCompanyService phoneHistoryCompanyService;
     @Resource
     private PtUserManager ptUserManager;
+    @Resource
+    private PtSearchConditionManager ptSearchConditionManager;
 
     @Test
     public void contextLoads() throws IOException {
+        //List<PtSearchCondition> conditions = ptSearchConditionManager.find();
         //System.out.println(codeAreaManager.findCitiesByProvince("110000"));
         //System.out.println(codeAreaRepository.findAll());
         //System.out.println(ecVocationCodeManager.findAll());

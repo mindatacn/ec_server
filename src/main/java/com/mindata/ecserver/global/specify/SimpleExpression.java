@@ -3,6 +3,9 @@ package com.mindata.ecserver.global.specify;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 简单条件表达式
@@ -10,10 +13,18 @@ import javax.persistence.criteria.*;
  * @author lee
  */
 public class SimpleExpression implements Criterion {
-
-    private String fieldName;        //属性名
-    private Object value;            //对应值
-    private Operator operator;        //计算符
+    /**
+     * 属性名
+     */
+    private String fieldName;
+    /**
+     * 对应值
+     */
+    private Object value;
+    /**
+     * 计算符
+     */
+    private Operator operator;
 
     protected SimpleExpression(String fieldName, Object value, Operator operator) {
         this.fieldName = fieldName;
@@ -21,30 +32,35 @@ public class SimpleExpression implements Criterion {
         this.operator = operator;
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
-
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Predicate toPredicate(Root<?> root, CriteriaQuery<?> query,
                                  CriteriaBuilder builder) {
-        Path expression = null;
+        Path expression;
+
+        //此处是表关联数据，注意仅限一层关联，如user.address，
+        //查询user的address集合中，address的name为某个值
         if (fieldName.contains(".")) {
             String[] names = StringUtils.split(fieldName, ".");
+            //获取该属性的类型，Set？List？Map？
             expression = root.get(names[0]);
-            for (int i = 1; i < names.length; i++) {
-                expression = expression.get(names[i]);
+            Class clazz = expression.getJavaType();
+            if (clazz.equals(Set.class)) {
+                SetJoin setJoin = root.joinSet(names[0]);
+                expression = setJoin.get(names[1]);
+            } else if (clazz.equals(List.class)) {
+                ListJoin listJoin = root.joinList(names[0]);
+                expression = listJoin.get(names[1]);
+            } else if (clazz.equals(Map.class)) {
+                MapJoin mapJoin = root.joinMap(names[0]);
+                expression = mapJoin.get(names[1]);
+            } else {
+                //是many to one时
+                expression = expression.get(names[1]);
             }
+
         } else {
+            //单表查询
             expression = root.get(fieldName);
         }
 
@@ -63,6 +79,10 @@ public class SimpleExpression implements Criterion {
                 return builder.lessThanOrEqualTo(expression, (Comparable) value);
             case GTE:
                 return builder.greaterThanOrEqualTo(expression, (Comparable) value);
+            case IS_MEMBER:
+                return builder.isMember(value, expression);
+            case IS_NOT_MEMBER:
+                return builder.isNotMember(value, expression);
             default:
                 return null;
         }

@@ -2,11 +2,13 @@ package com.mindata.ecserver.main.controller.base;
 
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.PtSearchConditionManager;
 import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.ContactService;
 import com.mindata.ecserver.main.service.PushService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +29,19 @@ public class TestController {
     private PushService pushService;
     @Resource
     private ContactService contactService;
+    @Resource
+    private PtSearchConditionManager conditionManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
     @RequestMapping("")
     public Object getVocation() {
         return ecVocationCodeManager.findAll();
+    }
+
+    @GetMapping("/search")
+    public Object search() {
+        Object object = conditionManager.find();
+        return object;
     }
 
     @CheckEcAnnotation

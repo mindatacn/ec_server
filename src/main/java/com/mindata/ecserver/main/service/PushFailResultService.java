@@ -7,7 +7,6 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.PtPushResultManager;
-import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;
@@ -41,14 +40,14 @@ public class PushFailResultService {
     private EcContactManager ecContactManager;
     @Resource
     private PtUserManager ptUserManager;
-    @Resource
-    private PtRoleManager ptRoleManager;
 
     /**
      * 查找所有推送失败的记录
      *
      * @param pushFailRequestBody
+     * body
      * @return
+     * SimplePage
      */
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
         Criteria<PtPushFailureResult> criteria = new Criteria<>();

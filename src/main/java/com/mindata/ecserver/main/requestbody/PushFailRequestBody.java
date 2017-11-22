@@ -14,7 +14,7 @@ public class PushFailRequestBody {
     /**
      * 跟进团队
      */
-    private List<Long> deptIds;
+    private Long deptId;
     /**
      * 推送人
      */
@@ -54,12 +54,12 @@ public class PushFailRequestBody {
         this.companyName = companyName;
     }
 
-    public List<Long> getDeptIds() {
-        return deptIds;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setDeptIds(List<Long> deptIds) {
-        this.deptIds = deptIds;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public Long getUserId() {

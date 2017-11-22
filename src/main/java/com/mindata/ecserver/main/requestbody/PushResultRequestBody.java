@@ -24,6 +24,10 @@ public class PushResultRequestBody {
      */
     private List<Long> deptIds;
     /**
+     * 公司Id
+     */
+    private Long companyId;
+    /**
      * 开始时间
      */
     private String beginTime;
@@ -186,6 +190,14 @@ public class PushResultRequestBody {
 
     public void setDeptIds(List<Long> deptIds) {
         this.deptIds = deptIds;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override

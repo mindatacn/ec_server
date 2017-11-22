@@ -7,8 +7,10 @@ import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtDepartmentManager;
+import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.manager.PtUserPushCountManager;
+import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
@@ -48,12 +50,7 @@ public class PushController {
     private PushSuccessResultService pushSuccessResultService;
     @Resource
     private PushFailResultService pushFailResultService;
-    @Resource
-    private UserService userService;
-    @Resource
-    private PtDepartmentManager ptDepartmentManager;
-    @Resource
-    private PtUserManager ptUserManager;
+
 
     private static final int MAX_SIZE = 50;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -96,31 +93,6 @@ public class PushController {
      */
     @GetMapping("/success")
     public BaseData get(PushResultRequestBody pushResultRequestBody) {
-        List<RoleVO> roles = userService.findRole();
-        //默认查询
-        for (RoleVO roleVO : roles) {
-            //管理员
-            if (roleVO.getName().equals("manager") && CollectionUtil.isEmpty(pushResultRequestBody.getFollowUserIds())) {
-                Long companyId = ShiroKit.getCurrentUser().getCompanyId();
-                List<PtUser> users = ptUserManager.findByCompanyIdAndState(companyId, STATE_NORMAL);
-                List<Long> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
-                pushResultRequestBody.setFollowUserIds(ids);
-                return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
-            }
-            //部门领导
-            if (roleVO.getName().equals("leader") && CollectionUtil.isEmpty(pushResultRequestBody.getFollowUserIds())) {
-                Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
-                List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, STATE_NORMAL);
-                List<Long> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
-                pushResultRequestBody.setFollowUserIds(ids);
-                return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
-            }
-            //职员
-                Long userId = ShiroKit.getCurrentUser().getId();
-                List<Long> ids = new ArrayList<>();
-                ids.add(userId);
-                pushResultRequestBody.setFollowUserIds(ids);
-        }
         return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
     }
 
@@ -129,6 +101,7 @@ public class PushController {
      */
     @GetMapping("/failure")
     public BaseData get(PushFailRequestBody pushFailRequestBody) {
+
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }
 

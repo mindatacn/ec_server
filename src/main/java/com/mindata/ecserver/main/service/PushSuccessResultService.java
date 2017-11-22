@@ -2,13 +2,12 @@ package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
-import com.mindata.ecserver.main.manager.PtDepartmentManager;
-import com.mindata.ecserver.main.manager.PtPhoneHistoryManager;
-import com.mindata.ecserver.main.manager.PtPushResultManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
+import com.mindata.ecserver.main.manager.*;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;
+import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.mindata.ecserver.global.constant.Constant.*;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  * 条件查询联系人数据（推送成功的）
@@ -41,6 +42,8 @@ public class PushSuccessResultService extends BaseService {
     private PtUserManager ptUserManager;
     @Resource
     private PtDepartmentManager ptDepartmentManager;
+    @Resource
+    private PtRoleManager ptRoleManager;
 
 
     public PtPushSuccessResult findById(Long id) {
@@ -51,6 +54,26 @@ public class PushSuccessResultService extends BaseService {
     public SimplePage<PushSuccessResultVO> findByConditions(PushResultRequestBody
                                                                     pushResultRequestBody) {
         Criteria<PtPushSuccessResult> criteria = new Criteria<>();
+        List<PtRole> roles = ptRoleManager.findRolesByUser(ShiroKit.getCurrentUser());
+        List<String> list = new ArrayList<>();
+        for (PtRole ptRole : roles) {
+            list.add(ptRole.getName());
+            //管理员
+            if (list.contains(ROLE_MANAGER)) {
+                Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+                criteria.add(Restrictions.eq("companyId",companyId,true));
+            }
+            //部门领导
+            if (list.contains(ROLE_LEADER)) {
+                Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
+                criteria.add(Restrictions.eq("departmentId",deptId,true));
+            }
+            //职员
+            if(list.contains(ROLE_USER)){
+                Long userId = ShiroKit.getCurrentUser().getId();
+                criteria.add(Restrictions.eq("followUserId", userId,true));
+            }
+        }
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {
             Date date = DateUtil.beginOfDay(DateUtil.parseDate(pushResultRequestBody.getBeginTime()));
@@ -59,6 +82,14 @@ public class PushSuccessResultService extends BaseService {
         if (!StrUtil.isEmpty(pushResultRequestBody.getEndTime())) {
             Date date = DateUtil.endOfDay(DateUtil.parseDate(pushResultRequestBody.getEndTime()));
             criteria.add(Restrictions.lt("createTime", date, true));
+        }
+        //跟进人查询
+        if (CollectionUtil.isNotEmpty(pushResultRequestBody.getFollowUserIds())) {
+            criteria.add(Restrictions.in("followUserId", pushResultRequestBody.getFollowUserIds(), true));
+        }
+        //跟进团队查询
+        if (CollectionUtil.isNotEmpty(pushResultRequestBody.getDeptIds())) {
+            criteria.add(Restrictions.in("departmentId", pushResultRequestBody.getDeptIds(), true));
         }
         //公司名称模糊查询
         if (!StrUtil.isEmpty(pushResultRequestBody.getCompanyName())) {

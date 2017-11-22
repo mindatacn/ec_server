@@ -53,8 +53,7 @@ public class UserService extends BaseService {
     /**
      * 查询用户的所有权限集合
      *
-     * @param user
-     *         user
+     * @param user user
      * @return 权限集合
      */
     public Set<String> findPermissionsByUser(PtUser user) {
@@ -66,8 +65,7 @@ public class UserService extends BaseService {
     /**
      * 获取用户的所有角色字符串
      *
-     * @param user
-     *         user
+     * @param user user
      * @return 用户角色
      */
     public Set<String> findRolesByUser(PtUser user) {
@@ -79,8 +77,7 @@ public class UserService extends BaseService {
     /**
      * 获取用户的角色
      *
-     * @return
-     * 角色
+     * @return 角色
      */
     public List<RoleVO> findRole() {
         List<PtRole> roles = roleManager.findRolesByUser(getCurrentUser());
@@ -96,8 +93,7 @@ public class UserService extends BaseService {
     /**
      * 根据token获取user
      *
-     * @param token
-     *         token
+     * @param token token
      * @return User
      */
     public PtUser findUserByHeaderToken(String token) {
@@ -161,14 +157,10 @@ public class UserService extends BaseService {
     /**
      * 修改个人信息
      *
-     * @param name
-     *         名字
-     * @param mobile
-     *         电话
-     * @param email
-     *         邮箱
-     * @return
-     * user
+     * @param name   名字
+     * @param mobile 电话
+     * @param email  邮箱
+     * @return user
      */
     public PtUser modifyInfo(String name, String mobile, String email) {
         PtUser ptUser = getCurrentUser();

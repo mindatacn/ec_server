@@ -41,6 +41,7 @@ public class PushController {
     @Resource
     private PushFailResultService pushFailResultService;
 
+
     private static final int MAX_SIZE = 50;
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -90,6 +91,7 @@ public class PushController {
      */
     @GetMapping("/failure")
     public BaseData get(PushFailRequestBody pushFailRequestBody) {
+
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }
 
@@ -148,10 +150,8 @@ public class PushController {
     /**
      * 查询某段时间内每天共有多少人推送了多少条数据
      *
-     * @param begin
-     *         开始时间
-     * @param end
-     *         结束时间
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return 每天的聚合数据[{"date":2017-08-09, "total":203, "user":14}]
      */
     @GetMapping("/count")

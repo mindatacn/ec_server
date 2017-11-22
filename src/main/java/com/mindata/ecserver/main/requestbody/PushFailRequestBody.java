@@ -1,5 +1,7 @@
 package com.mindata.ecserver.main.requestbody;
 
+import java.util.List;
+
 /**
  * @author hanliqiang wrote on 2017/11/16
  */
@@ -10,9 +12,9 @@ public class PushFailRequestBody {
      */
     private String companyName;
     /**
-     * 推送团队
+     * 跟进团队
      */
-    private Long deptId;
+    private List<Long> deptIds;
     /**
      * 推送人
      */
@@ -52,12 +54,12 @@ public class PushFailRequestBody {
         this.companyName = companyName;
     }
 
-    public Long getDeptId() {
-        return deptId;
+    public List<Long> getDeptIds() {
+        return deptIds;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setDeptIds(List<Long> deptIds) {
+        this.deptIds = deptIds;
     }
 
     public Long getUserId() {

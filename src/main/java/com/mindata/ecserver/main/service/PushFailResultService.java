@@ -59,10 +59,8 @@ public class PushFailResultService {
             criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));
         }
         //推送团队模糊查询
-        if (pushFailRequestBody.getDeptId() != null) {
-            List<PtUser> userList = ptUserManager.findByDeptIdAndState(pushFailRequestBody.getDeptId(), STATE_NORMAL);
-            List<Long> list = userList.stream().map(PtUser::getId).collect(Collectors.toList());
-            criteria.add(Restrictions.in("followUserId", list, true));
+        if (pushFailRequestBody.getDeptIds() != null) {
+            criteria.add(Restrictions.in("departmentId", pushFailRequestBody.getDeptIds(), true));
         }
         //推送人模糊查询
         if (pushFailRequestBody.getUserId() != null) {

@@ -3,7 +3,7 @@ package com.mindata.ecserver.global.constant;
 /**
  * @author wuweifeng wrote on 2017/11/3.
  */
-public interface CacheConstant {
+public interface CacheConstant extends Constant {
     /**
      * 记录登录密码输入错误次数
      */

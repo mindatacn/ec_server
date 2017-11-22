@@ -7,7 +7,9 @@ import org.springframework.data.domain.Sort;
  */
 public interface Constant {
     String SALT = "mindata";
-
+    /**
+     * 正常态
+     */
     int STATE_NORMAL = 0;
 
     int STATE_FAIL = 2;

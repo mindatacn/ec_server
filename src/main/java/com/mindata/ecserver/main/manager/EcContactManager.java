@@ -1,19 +1,18 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
-import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
-import com.xiaoleilu.hutool.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-
-import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
-import static com.mindata.ecserver.global.constant.Constant.STATE_NO_PUSH;
 
 /**
  * @author wuweifeng wrote on 2017/10/25.
@@ -22,6 +21,8 @@ import static com.mindata.ecserver.global.constant.Constant.STATE_NO_PUSH;
 public class EcContactManager {
     @Autowired
     private EcContactRepository contactRepository;
+    @Resource
+    private EcContactRepository ecContactRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
     /**
@@ -33,8 +34,17 @@ public class EcContactManager {
      *         结束日期
      * @return 某天的数量
      */
-    public int countByDate(Date begin, Date end) {
+    public int countByCreateTimeBetween(Date begin, Date end) {
         return contactRepository.countByCreateTimeBetween(begin, end);
+    }
+
+    /**
+     * 查询每个省份下的数量
+     *
+     * @return list
+     */
+    public List<Object[]> findCountByProvince() {
+        return contactRepository.findCountByProvince();
     }
 
     /**
@@ -59,24 +69,16 @@ public class EcContactManager {
     /**
      * 根据Id和状态查找结果
      * @param id
+     * id
      * @return
+     * 结果
      */
     public EcContactEntity findById(Long id) {
         return contactRepository.findById(id);
     }
 
-    /**
-     *根据状态和名称模糊查询结果
-     * @param state
-     * @param company
-     * @return
-     */
-    public List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company) {
-        if(StrUtil.isEmpty(company)){
-            return contactRepository.findByState(state);
-        }
-        return contactRepository.findByStateAndCompanyLike(state,"%" + company + "%");
+
+    public Page<EcContactEntity> findAll(Specification<EcContactEntity> criteria, Pageable pageable) {
+        return ecContactRepository.findAll(criteria, pageable);
     }
-
-
 }

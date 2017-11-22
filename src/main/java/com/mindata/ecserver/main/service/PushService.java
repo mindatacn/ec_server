@@ -101,7 +101,8 @@ public class PushService extends BaseService {
         fieldList.add("f_company_province");
         fieldList.add("f_company_city");
 //      fieldList.add("f_vocation");
-//      fieldList.add("f_channel");
+        //TODO 如果是别的公司，则该channel需要修改
+        //fieldList.add("f_channel");
         return fieldList.toArray();
     }
 
@@ -128,6 +129,7 @@ public class PushService extends BaseService {
             v.add(e.getGender() == null ? 0 : e.getGender());
             v.add(ecCodeAreaManager.findById(e.getProvince()));
             v.add(ecCodeAreaManager.findById(e.getCity()));
+            //v.add("82014661");
             valueList.add(v.toArray());
         }
         return valueList;

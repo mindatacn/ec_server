@@ -4,11 +4,11 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
+import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.manager.es.EsContactManager;
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
-import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
@@ -31,16 +31,18 @@ import java.util.*;
 @Service
 public class ContactService extends BaseService {
     @Resource
-    private EcContactRepository contactRepository;
-    @Resource
     private EsContactManager esContactManager;
     @Resource
+    private EcContactManager ecContactManager;
+    @Resource
     private EcVocationCodeManager ecVocationCodeManager;
+    @Resource
+    private SearchConditionService searchConditionService;
 
     public EcContactEntity findById(Long id) {
         EsContact esContact = esContactManager.findById(id);
 
-        EcContactEntity ecContactEntity = contactRepository.findOne(id);
+        EcContactEntity ecContactEntity = ecContactManager.findOne(id);
         if (esContact != null) {
             ecContactEntity.setMemo(esContact.getComintro());
             ecContactEntity.setJobName(esContact.getJobName());
@@ -51,6 +53,9 @@ public class ContactService extends BaseService {
 
     public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody
             contactRequestBody) {
+        //TODO 将来新开一个接口
+        searchConditionService.add(contactRequestBody);
+
         //公司名\详细地址\职位名称\企业简介，任何一个不为空，就走ES
         if (!StrUtil.isEmpty(contactRequestBody.getCompanyName()) || !StrUtil.isEmpty(contactRequestBody.getAddress()
         ) || !StrUtil.isEmpty(contactRequestBody.getJobName()) || !StrUtil.isEmpty(contactRequestBody.getComintro())
@@ -109,7 +114,7 @@ public class ContactService extends BaseService {
             orderBy = contactRequestBody.getOrderBy();
         }
         Pageable pageable = new PageRequest(page, size, direction, orderBy);
-        Page<EcContactEntity> ecContactEntities = contactRepository.findAll(criteria, pageable);
+        Page<EcContactEntity> ecContactEntities = ecContactManager.findAll(criteria, pageable);
         List<ContactVO> contactVOS = new ArrayList<>(ecContactEntities.getContent().size());
         for (EcContactEntity ecContactEntity : ecContactEntities) {
             ContactVO vo = new ContactVO();
@@ -135,7 +140,7 @@ public class ContactService extends BaseService {
      * list
      */
     public List<Map<String, Object>> findCountByProvince() {
-        List<Object[]> objList = contactRepository.findCountByProvince();
+        List<Object[]> objList = ecContactManager.findCountByProvince();
         List<Map<String, Object>> list = new ArrayList<>(50);
         for (Object[] objects : objList) {
             Map<String, Object> map = new HashMap<>();
@@ -162,8 +167,8 @@ public class ContactService extends BaseService {
         for (; beginTime.before(endTime); beginTime = DateUtil.offsetDay(beginTime, 1)) {
             //查一天的统计
             Date oneDayEnd = DateUtil.endOfDay(beginTime);
-            Integer count = contactRepository.countByCreateTimeBetween(beginTime, oneDayEnd);
-            Map<String, Object> map = new HashMap<>();
+            Integer count = ecContactManager.countByCreateTimeBetween(beginTime, oneDayEnd);
+            Map<String, Object> map = new HashMap<>(2);
             map.put("date", beginTime);
             map.put("count", count);
             list.add(map);

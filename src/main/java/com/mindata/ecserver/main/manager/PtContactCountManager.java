@@ -57,7 +57,7 @@ public class PtContactCountManager {
         entity.setAnalyDate(date);
         Date begin = DateUtil.beginOfDay(date);
         Date end = DateUtil.endOfDay(date);
-        entity.setCompCount(ecContactManager.countByDate(begin, end));
+        entity.setCompCount(ecContactManager.countByCreateTimeBetween(begin, end));
         entity.setPushCount(ptPushResultManager.countAllByDate(begin, end));
         entity.setPushSuccessCount(ptPushResultManager.countSuccessByDate(begin, end));
         //TODO 其他的统计数据，如已沟通和有意向

@@ -24,6 +24,16 @@ public class Restrictions {
     }
 
     /**
+     * 集合包含某个元素
+     */
+    public static SimpleExpression hasMember(String fieldName, Object value, boolean ignoreNull) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
+            return null;
+        }
+        return new SimpleExpression(fieldName, value, Criterion.Operator.IS_MEMBER);
+    }
+
+    /**
      * 不等于
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull) {
@@ -121,4 +131,32 @@ public class Restrictions {
         }
         return new LogicalExpression(ses, Criterion.Operator.OR);
     }
+
+    /**
+     * 集合包含某几个元素，譬如可以查询User类中Set<String> set包含"ABC","bcd"的User集合，
+     * 或者查询User中Set<Address>的Address的name为"北京"的所有User集合
+     * 集合可以为基本类型或者JavaBean，可以是one to many或者是@ElementCollection
+     *
+     * @param fieldName
+     *         列名
+     * @param value
+     *         集合
+     * @return expresssion
+     */
+    public static LogicalExpression hasMembers(String fieldName, Object... value) {
+        SimpleExpression[] ses = new SimpleExpression[value.length];
+        int i = 0;
+        //集合中对象是基本类型，如Set<Long>，List<String>
+        Criterion.Operator operator = Criterion.Operator.IS_MEMBER;
+        //集合中对象是JavaBean
+        if (fieldName.contains(".")) {
+            operator = Criterion.Operator.EQ;
+        }
+        for (Object obj : value) {
+            ses[i] = new SimpleExpression(fieldName, obj, operator);
+            i++;
+        }
+        return new LogicalExpression(ses, Criterion.Operator.OR);
+    }
+
 }

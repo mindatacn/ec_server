@@ -66,7 +66,7 @@ public class PtUser extends BaseEntity {
      */
     private String memo;
     /**
-     * 状态，（0正常，1被删除）
+     * 状态，（0正常，-1被删除，1是不获取该用户EC通话信息）
      */
     private Integer state;
 

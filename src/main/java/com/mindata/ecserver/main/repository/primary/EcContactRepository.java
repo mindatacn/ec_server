@@ -36,9 +36,6 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
 
     EcContactEntity findById(Long id);
 
-
-    List<EcContactEntity> findByStateAndCompanyLike(Integer state,String company);
-
     List<EcContactEntity> findByState(Integer state);
 
     /**

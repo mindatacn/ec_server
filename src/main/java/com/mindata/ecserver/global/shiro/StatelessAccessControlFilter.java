@@ -35,7 +35,7 @@ public class StatelessAccessControlFilter extends FormAuthenticationFilter {
     protected boolean onAccessDenied(ServletRequest req, ServletResponse response) throws Exception {
         HttpServletRequest request = (HttpServletRequest) req;
         //测试相关的不拦截
-        if (request.getRequestURI().startsWith("/test")) {
+        if (request.getRequestURI().startsWith("/test") || request.getRequestURI().startsWith("/druid")) {
             return true;
         }
         //如果是登录请求

@@ -1,8 +1,5 @@
 package com.mindata.ecserver.global.shiro;
 
-import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
-import org.apache.shiro.mgt.DefaultSubjectDAO;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -64,14 +61,14 @@ public class ShiroConfig {
         // 设置realm.
         securityManager.setRealm(myShiroRealm());
 
-        //禁用session
-        securityManager.setSubjectFactory(subjectFactory());
-        securityManager.setSessionManager(sessionManager());
-        //禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions
-        // 所以需要配合context.setSessionCreationEnabled(false)
-        ((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) securityManager.getSubjectDAO())
-                .getSessionStorageEvaluator()).
-                setSessionStorageEnabled(false);
+        ////禁用session
+        //securityManager.setSubjectFactory(subjectFactory());
+        //securityManager.setSessionManager(sessionManager());
+        ////禁用使用Sessions 作为存储策略的实现，但它没有完全地禁用Sessions
+        //// 所以需要配合context.setSessionCreationEnabled(false)
+        //((DefaultSessionStorageEvaluator) ((DefaultSubjectDAO) securityManager.getSubjectDAO())
+        //        .getSessionStorageEvaluator()).
+        //        setSessionStorageEnabled(false);
 
         return securityManager;
     }
@@ -84,12 +81,12 @@ public class ShiroConfig {
         return new StatelessDefaultSubjectFactory();
     }
 
-    @Bean
-    public DefaultSessionManager sessionManager() {
-        DefaultSessionManager sessionManager = new DefaultSessionManager();
-        sessionManager.setSessionValidationSchedulerEnabled(false);
-        return sessionManager;
-    }
+    //@Bean
+    //public DefaultSessionManager sessionManager() {
+    //    DefaultSessionManager sessionManager = new DefaultSessionManager();
+    //    sessionManager.setSessionValidationSchedulerEnabled(false);
+    //    return sessionManager;
+    //}
 
     /**
      * 开启shiro aop注解支持.

@@ -194,7 +194,7 @@ public class PtPushResultManager {
      * 查询所有推送失败的记录
      */
     public Page<PtPushFailureResult> findFailAll(Specification<PtPushFailureResult> var1, Pageable var2) {
-        return ptPushFailureResultRepository.findAll(var1,var2);
+        return ptPushFailureResultRepository.findAll(var1, var2);
     }
 
 }

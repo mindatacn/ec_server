@@ -7,7 +7,6 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.PtPushResultManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;
 import com.mindata.ecserver.main.requestbody.PushFailRequestBody;
@@ -34,8 +33,6 @@ public class PushFailResultService {
     private PtPushResultManager ptPushResultManager;
     @Resource
     private EcContactManager ecContactManager;
-    @Resource
-    private PtUserManager ptUserManager;
 
     /**
      * 查找所有推送失败的记录

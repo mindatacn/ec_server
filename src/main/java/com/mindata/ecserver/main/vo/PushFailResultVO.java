@@ -54,4 +54,14 @@ public class PushFailResultVO {
     public void setFailReason(String failReason) {
         this.failReason = failReason;
     }
+
+    @Override
+    public String toString() {
+        return "PushFailResultVO{" +
+                "id=" + id +
+                ", companyName='" + companyName + '\'' +
+                ", pushTime=" + pushTime +
+                ", failReason='" + failReason + '\'' +
+                '}';
+    }
 }

@@ -28,7 +28,8 @@ import java.util.List;
 import static com.mindata.ecserver.global.constant.Constant.*;
 
 /**
- * @author wuweifeng wrote on 2017/10/26.  
+ * @author wuweifeng wrote on 2017/10/26.
+ *
  * 条件查询联系人数据（推送成功的）
  */
 @Service

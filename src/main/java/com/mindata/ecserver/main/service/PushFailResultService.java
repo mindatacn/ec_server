@@ -86,7 +86,7 @@ public class PushFailResultService {
             if (ecContactEntity != null) {
                 failResultVO.setCompanyName(ecContactEntity.getCompany());
                 failResultVO.setId(failureResult.getId());
-                failResultVO.setFailReasion(failureResult.getFailureCause());
+                failResultVO.setFailReason(failureResult.getFailureCause());
                 failResultVO.setPushTime(failureResult.getCreateTime());
                 resultVOS.add(failResultVO);
             }

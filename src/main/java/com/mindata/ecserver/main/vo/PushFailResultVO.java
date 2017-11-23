@@ -21,7 +21,7 @@ public class PushFailResultVO {
     /**
      * 失败原因
      */
-    private String failReasion;
+    private String failReason;
 
     public Long getId() {
         return id;
@@ -47,11 +47,11 @@ public class PushFailResultVO {
         this.pushTime = pushTime;
     }
 
-    public String getFailReasion() {
-        return failReasion;
+    public String getFailReason() {
+        return failReason;
     }
 
-    public void setFailReasion(String failReasion) {
-        this.failReasion = failReasion;
+    public void setFailReason(String failReason) {
+        this.failReason = failReason;
     }
 }

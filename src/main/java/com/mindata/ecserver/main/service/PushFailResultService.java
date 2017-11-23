@@ -44,10 +44,8 @@ public class PushFailResultService {
     /**
      * 查找所有推送失败的记录
      *
-     * @param pushFailRequestBody
-     * body
-     * @return
-     * SimplePage
+     * @param pushFailRequestBody body
+     * @return SimplePage
      */
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
         Criteria<PtPushFailureResult> criteria = new Criteria<>();
@@ -59,8 +57,10 @@ public class PushFailResultService {
             criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));
         }
         //推送团队模糊查询
-        if (pushFailRequestBody.getDeptIds() != null) {
-            criteria.add(Restrictions.in("departmentId", pushFailRequestBody.getDeptIds(), true));
+        if (pushFailRequestBody.getDeptId() != null) {
+            List<PtUser> userList = ptUserManager.findByDeptIdAndState(pushFailRequestBody.getDeptId(), STATE_NORMAL);
+            List<Long> list = userList.stream().map(PtUser::getId).collect(Collectors.toList());
+            criteria.add(Restrictions.in("followUserId", list, true));
         }
         //推送人模糊查询
         if (pushFailRequestBody.getUserId() != null) {

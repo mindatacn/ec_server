@@ -65,11 +65,11 @@ public class PushFailResultService {
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {
             Date date = CommonUtil.beginOfDay(pushFailRequestBody.getBeginTime());
-            criteria.add(Restrictions.gt("createTime", date, true));
+            criteria.add(Restrictions.gte("createTime", date, true));
         }
         if (StrUtil.isNotEmpty(pushFailRequestBody.getEndTime())) {
             Date date = CommonUtil.endOfDay(pushFailRequestBody.getEndTime());
-            criteria.add(Restrictions.lt("createTime", date, true));
+            criteria.add(Restrictions.lte("createTime", date, true));
         }
 
         int page = Constant.PAGE_NUM;

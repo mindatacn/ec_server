@@ -49,8 +49,8 @@ public class PtRole extends BaseEntity {
 
         PtRole ptRole = (PtRole) o;
 
-        if (name != null ? !name.equals(ptRole.name) : ptRole.name != null) return false;
-        return sign != null ? sign.equals(ptRole.sign) : ptRole.sign == null;
+        return (name != null ? name.equals(ptRole.name) : ptRole.name == null) && (sign != null ? sign.equals(ptRole
+                .sign) : ptRole.sign == null);
     }
 
     @Override

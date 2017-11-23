@@ -63,11 +63,11 @@ public class PushFailResultService {
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {
             Date date = DateUtil.beginOfDay(DateUtil.parseDate(pushFailRequestBody.getBeginTime()));
-            criteria.add(Restrictions.gt("createTime", date, true));
+            criteria.add(Restrictions.gt("createTime", date.getTime(), true));
         }
         if (StrUtil.isNotEmpty(pushFailRequestBody.getEndTime())) {
             Date date = DateUtil.endOfDay(DateUtil.parseDate(pushFailRequestBody.getEndTime()));
-            criteria.add(Restrictions.lt("createTime", date, true));
+            criteria.add(Restrictions.lt("createTime", date.getTime(), true));
         }
         int page = Constant.PAGE_NUM;
         if (pushFailRequestBody.getPage() != null) {

@@ -72,11 +72,11 @@ public class PushSuccessResultService extends BaseService {
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {
             Date date = DateUtil.beginOfDay(DateUtil.parseDate(pushResultRequestBody.getBeginTime()));
-            criteria.add(Restrictions.gt("createTime", date, true));
+            criteria.add(Restrictions.gt("createTime", date.getTime(), true));
         }
         if (!StrUtil.isEmpty(pushResultRequestBody.getEndTime())) {
             Date date = DateUtil.endOfDay(DateUtil.parseDate(pushResultRequestBody.getEndTime()));
-            criteria.add(Restrictions.lt("createTime", date, true));
+            criteria.add(Restrictions.lt("createTime", date.getTime(), true));
         }
         //跟进人查询
         if (CollectionUtil.isNotEmpty(pushResultRequestBody.getFollowUserIds())) {

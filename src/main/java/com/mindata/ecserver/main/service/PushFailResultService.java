@@ -50,7 +50,6 @@ public class PushFailResultService {
         if (StrUtil.isNotEmpty(pushFailRequestBody.getCompanyName())) {
             criteria.add(Restrictions.like("companyName", pushFailRequestBody.getCompanyName(), true));
         }
-
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {
             Date date = CommonUtil.beginOfDay(pushFailRequestBody.getBeginTime());

@@ -2,10 +2,14 @@ package com.mindata.ecserver.util;
 
 
 import com.mindata.ecserver.global.constant.Constant;
+import com.xiaoleilu.hutool.date.DatePattern;
 import com.xiaoleilu.hutool.io.file.FileReader;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +41,40 @@ public class CommonUtil {
     public static String password(String oldPass) {
         Object simpleHash = new SimpleHash("MD5", oldPass, Constant.SALT, 2);
         return simpleHash.toString();
+    }
+
+    /**
+     * 只接受这样的格式2017-09-3，不能带时分秒
+     *
+     * @param date
+     *         年月日
+     * @return 该天的开始
+     */
+    public static Date beginOfDay(String date) {
+        DateFormat dateFormat = new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN);
+        try {
+            return dateFormat.parse(date + " 00:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 只接受这样的格式2017-09-3，不能带时分秒
+     *
+     * @param date
+     *         年月日
+     * @return 该天的结束
+     */
+    public static Date endOfDay(String date) {
+        DateFormat dateFormat = new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN);
+        try {
+            return dateFormat.parse(date + " 23:59:59");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

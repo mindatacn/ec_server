@@ -11,7 +11,7 @@ import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushSuccessResultVO;
-import com.xiaoleilu.hutool.date.DateUtil;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
@@ -71,12 +71,12 @@ public class PushSuccessResultService extends BaseService {
         }
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {
-            Date date = DateUtil.beginOfDay(DateUtil.parseDate(pushResultRequestBody.getBeginTime()));
-            criteria.add(Restrictions.gt("createTime", date.getTime(), true));
+            Date date = CommonUtil.beginOfDay(pushResultRequestBody.getBeginTime());
+            criteria.add(Restrictions.gt("createTime", date, true));
         }
         if (!StrUtil.isEmpty(pushResultRequestBody.getEndTime())) {
-            Date date = DateUtil.endOfDay(DateUtil.parseDate(pushResultRequestBody.getEndTime()));
-            criteria.add(Restrictions.lt("createTime", date.getTime(), true));
+            Date date = CommonUtil.endOfDay(pushResultRequestBody.getEndTime());
+            criteria.add(Restrictions.lt("createTime", date, true));
         }
         //跟进人查询
         if (CollectionUtil.isNotEmpty(pushResultRequestBody.getFollowUserIds())) {

@@ -11,7 +11,7 @@ import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;
 import com.mindata.ecserver.main.requestbody.PushFailRequestBody;
 import com.mindata.ecserver.main.vo.PushFailResultVO;
-import com.xiaoleilu.hutool.date.DateUtil;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,8 @@ public class PushFailResultService {
     /**
      * 查找所有推送失败的记录
      *
-     * @param pushFailRequestBody body
+     * @param pushFailRequestBody
+     *         body
      * @return SimplePage
      */
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
@@ -60,15 +61,17 @@ public class PushFailResultService {
         //    PtUser ptUser = ptUserManager.findByUserId(pushFailRequestBody.getUserId());
         //    criteria.add(Restrictions.eq("followUserId", ptUser.getId(), true));
         //}
+
         //开始时间
         if (StrUtil.isNotEmpty(pushFailRequestBody.getBeginTime())) {
-            Date date = DateUtil.beginOfDay(DateUtil.parseDate(pushFailRequestBody.getBeginTime()));
-            criteria.add(Restrictions.gt("createTime", date.getTime(), true));
+            Date date = CommonUtil.beginOfDay(pushFailRequestBody.getBeginTime());
+            criteria.add(Restrictions.gt("createTime", date, true));
         }
         if (StrUtil.isNotEmpty(pushFailRequestBody.getEndTime())) {
-            Date date = DateUtil.endOfDay(DateUtil.parseDate(pushFailRequestBody.getEndTime()));
-            criteria.add(Restrictions.lt("createTime", date.getTime(), true));
+            Date date = CommonUtil.endOfDay(pushFailRequestBody.getEndTime());
+            criteria.add(Restrictions.lt("createTime", date, true));
         }
+
         int page = Constant.PAGE_NUM;
         if (pushFailRequestBody.getPage() != null) {
             page = pushFailRequestBody.getPage();

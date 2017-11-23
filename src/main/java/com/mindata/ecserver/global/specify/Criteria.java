@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 定义一个查询条件容器  on 17/6/6.
+ * @author wuwf 定义一个查询条件容器  on 17/6/6.
  */
 public class Criteria<T> implements Specification<T> {
     private List<Criterion> criterions = new ArrayList<>();

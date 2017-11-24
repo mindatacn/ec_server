@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
  * @author wuweifeng wrote on 2017/10/23.
  * druid连接情况及慢查询界面
  */
-@WebServlet(urlPatterns = {"/druid/*", "/server/druid/*"},
+@WebServlet(urlPatterns = {"/druid/*"},
         initParams = {
                 @WebInitParam(name = "allow", value = ""),// IP白名单(没有配置或者为空，则允许所有访问)
                 @WebInitParam(name = "deny", value = "192.168.1.73"),// IP黑名单 (存在共同时，deny优先于allow)

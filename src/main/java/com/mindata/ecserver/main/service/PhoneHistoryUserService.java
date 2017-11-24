@@ -82,7 +82,7 @@ public class PhoneHistoryUserService {
                 (Collectors.toList());
     }
 
-    private List<PhoneHistoryUserBeanVO> findPersonalHistoryByCompanyId(Long companyId, Date begin, Date end) {
+    public List<PhoneHistoryUserBeanVO> findPersonalHistoryByCompanyId(Long companyId, Date begin, Date end) {
         List<PtDepartment> ptDepartments = ptDepartmentManager.findByCompanyIdAndState(companyId, 0);
         List<PhoneHistoryUserBeanVO> vos = new ArrayList<>();
         for (PtDepartment ptDepartment : ptDepartments) {

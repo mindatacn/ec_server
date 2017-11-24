@@ -1,6 +1,5 @@
 package com.mindata.ecserver.global.druid;
 
-import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 /**
  * @author wuweifeng wrote on 2017/10/23.
@@ -96,7 +94,7 @@ public class DruidDBConfig {
     /**
      * 通过connectProperties属性来打开mergeSql功能；慢SQL记录
      */
-    @Value("druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000")
+    @Value("druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500")
     private String connectionProperties;
 
     @Bean(name = "primaryDataSource")
@@ -135,20 +133,11 @@ public class DruidDBConfig {
         datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
         try {
             datasource.setFilters(filters);
-            datasource.setProxyFilters(Arrays.asList(statFilter()));
         } catch (SQLException e) {
             logger.error("druid configuration initialization filter : {0}", e);
         }
         datasource.setConnectionProperties(connectionProperties);
 
         return datasource;
-    }
-
-    @Bean(name = "stat-filter")
-    public StatFilter statFilter() {
-        StatFilter statFilter = new StatFilter();
-        statFilter.setSlowSqlMillis(20);
-        statFilter.setLogSlowSql(true);
-        return statFilter;
     }
 }

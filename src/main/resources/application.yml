@@ -14,6 +14,11 @@ spring:
       ddl-auto: update
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy #命名策略，加分隔线"_"
+  datasource:
+    druid:
+      aop-patterns: com.mindata.ecserver.main.manager.*.*(..), com.mindata.ecserver.main.service.*.*(..), com.mindata.ecserver.main.repository.*.*(..)
+  aop:
+    proxy-target-class: true
   profiles:
     active: ${ENV:dev}
 ecServer:

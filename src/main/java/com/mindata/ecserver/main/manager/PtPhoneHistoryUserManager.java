@@ -42,25 +42,29 @@ public class PtPhoneHistoryUserManager {
      *         一天结束时间
      * @return 数量集合
      */
-    public List<Object[]> findDeptOneDayTotalByDeptId(Long deptId, Date begin, Date end) throws IOException {
+    public List<Object[]> findDeptOneDayTotalByDeptId(Long deptId, Date begin, Date end, boolean force) throws
+            IOException {
         //找到部门所有正常的员工
         List<PtUser> users = ptUserManager.findByDeptIdAndState(deptId, STATE_NORMAL);
         List<Long> ids = users.stream().map(PtUser::getId).collect(Collectors.toList());
 
         List<Object[]> list = new ArrayList<>();
         long totalCallTime = 0L, totalCallCount = 0L, totalCustomer = 0L, pushCount = 0L, validCount = 0, noPushCount
-                = 0;
+                = 0, pushCallTime = 0, pushCustomer = 0, pushValidCount = 0;
         for (Long id : ids) {
-            PtPhoneHistoryUser user = findOneDay(id, begin, end);
+            PtPhoneHistoryUser user = findOneDay(id, begin, end, force);
             totalCallTime += user.getTotalCallTime();
             totalCallCount += user.getTotalCallCount();
             totalCustomer += user.getTotalCustomer();
             pushCount += user.getPushCount();
             validCount += user.getValidCount();
             noPushCount += user.getNoPushCount();
+            pushCallTime += user.getPushCallTime();
+            pushCustomer += user.getPushCustomer();
+            pushValidCount += user.getPushValidCount();
         }
         Object[] objects = new Object[]{totalCallTime, totalCallCount, totalCustomer, pushCount, validCount,
-                noPushCount};
+                noPushCount, pushCallTime, pushCustomer, pushValidCount};
         list.add(objects);
         //得到该天的累计数量
         return list;
@@ -83,14 +87,14 @@ public class PtPhoneHistoryUserManager {
      *
      * @return 统计信息
      */
-    private PtPhoneHistoryUser findOneDay(Long userId, Date tempBegin, Date tempEnd) throws IOException {
+    private PtPhoneHistoryUser findOneDay(Long userId, Date tempBegin, Date tempEnd, boolean force) throws IOException {
         List<PtPhoneHistoryUser> list = ptPhoneHistoryUserRepository.findByUserIdAndStartTimeBetween(userId,
                 tempBegin,
                 tempEnd);
-        if (CollectionUtil.isEmpty(list)) {
+        if (CollectionUtil.isEmpty(list) || force) {
             //去PhoneHistory总表去查询某天该用户的通话历史
             List<Object[]> ptPhoneHistoryList = ptPhoneHistoryManager.findTotalByUserIdAndOneDay(userId,
-                    tempBegin, tempEnd);
+                    tempBegin, tempEnd, force);
             PtPhoneHistoryUser historyUser = new PtPhoneHistoryUser();
             Object[] objects = ptPhoneHistoryList.get(0);
             historyUser.setCreateTime(CommonUtil.getNow());
@@ -103,6 +107,9 @@ public class PtPhoneHistoryUserManager {
             historyUser.setPushCount(CommonUtil.parseObject(objects[3]));
             historyUser.setValidCount(CommonUtil.parseObject(objects[4]));
             historyUser.setNoPushCount(CommonUtil.parseObject(objects[5]));
+            historyUser.setPushCallTime(CommonUtil.parseObject(objects[6]));
+            historyUser.setPushCustomer(CommonUtil.parseObject(objects[7]));
+            historyUser.setPushValidCount(CommonUtil.parseObject(objects[8]));
             return ptPhoneHistoryUserRepository.save(historyUser);
         }
         return list.get(0);

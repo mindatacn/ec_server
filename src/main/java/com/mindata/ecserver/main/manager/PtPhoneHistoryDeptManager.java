@@ -40,7 +40,7 @@ public class PtPhoneHistoryDeptManager {
      *         一天结束时间
      * @return 数量集合
      */
-    public List<Object[]> findCompanyOneDayTotalByCompanyId(Long companyId, Date begin, Date end) throws
+    public List<Object[]> findCompanyOneDayTotalByCompanyId(Long companyId, Date begin, Date end, boolean force) throws
             IOException {
         //找到公司所有正常的部门
         List<PtDepartment> departments = ptDepartmentManager.findByCompanyIdAndState(companyId, STATE_NORMAL);
@@ -49,9 +49,10 @@ public class PtPhoneHistoryDeptManager {
         for (Long deptId : ids) {
             Integer count = ptPhoneHistoryDeptRepository.countByDeptIdAndStartTimeBetween(deptId, begin, end);
             //如果今天没值，就去统计userHistory的总数量，并且把今天的值给补上
-            if (count == 0) {
+            if (count == 0 || force) {
                 //得到该部门所有员工今天的累计数据
-                List<Object[]> userTotal = ptPhoneHistoryUserManager.findDeptOneDayTotalByDeptId(deptId, begin, end);
+                List<Object[]> userTotal = ptPhoneHistoryUserManager.findDeptOneDayTotalByDeptId(deptId, begin, end,
+                        force);
                 Object[] objects = userTotal.get(0);
                 PtPhoneHistoryDept historyDept = new PtPhoneHistoryDept();
                 historyDept.setDeptId(deptId);
@@ -62,6 +63,9 @@ public class PtPhoneHistoryDeptManager {
                 historyDept.setPushCount(CommonUtil.parseObject(objects[3]));
                 historyDept.setValidCount(CommonUtil.parseObject(objects[4]));
                 historyDept.setNoPushCount(CommonUtil.parseObject(objects[5]));
+                historyDept.setPushCallTime(CommonUtil.parseObject(objects[6]));
+                historyDept.setPushCustomer(CommonUtil.parseObject(objects[7]));
+                historyDept.setPushValidCount(CommonUtil.parseObject(objects[8]));
                 historyDept.setCreateTime(CommonUtil.getNow());
                 historyDept.setUpdateTime(CommonUtil.getNow());
                 ptPhoneHistoryDeptRepository.save(historyDept);

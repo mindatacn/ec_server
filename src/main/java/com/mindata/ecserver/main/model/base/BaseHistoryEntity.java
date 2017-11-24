@@ -24,21 +24,33 @@ public class BaseHistoryEntity {
      */
     private Long totalCallTime;
     /**
-     * 总打电话数量
+     * 是我们推送的总电话时长
+     */
+    private Long pushCallTime;
+    /**
+     * 总的打电话数量
      */
     private Long totalCallCount;
+    /**
+     * 使用我们的号码的总打电话数量
+     */
+    private Long pushCount;
     /**
      * 总联系人数量（对客户id排重）
      */
     private Long totalCustomer;
     /**
-     * 总联系人中有哪些是我们推送的客户
+     * 总联系人中有哪些是我们推送的客户，排重
      */
-    private Long pushCount;
+    private Long pushCustomer;
     /**
-     * 沟通时间大于0的数量
+     * 总的沟通时间大于0的数量
      */
     private Long validCount;
+    /**
+     * 是我们推送的接通的数量
+     */
+    private Long pushValidCount;
     /**
      * 其他渠道数量
      */
@@ -47,6 +59,30 @@ public class BaseHistoryEntity {
     private Date createTime;
 
     private Date updateTime;
+
+    public Long getPushCallTime() {
+        return pushCallTime;
+    }
+
+    public void setPushCallTime(Long pushCallTime) {
+        this.pushCallTime = pushCallTime;
+    }
+
+    public Long getPushCount() {
+        return pushCount;
+    }
+
+    public void setPushCount(Long pushCount) {
+        this.pushCount = pushCount;
+    }
+
+    public Long getPushValidCount() {
+        return pushValidCount;
+    }
+
+    public void setPushValidCount(Long pushValidCount) {
+        this.pushValidCount = pushValidCount;
+    }
 
     public Date getStartTime() {
         return startTime;
@@ -80,12 +116,12 @@ public class BaseHistoryEntity {
         this.totalCustomer = totalCustomer;
     }
 
-    public Long getPushCount() {
-        return pushCount;
+    public Long getPushCustomer() {
+        return pushCustomer;
     }
 
-    public void setPushCount(Long pushCount) {
-        this.pushCount = pushCount;
+    public void setPushCustomer(Long pushCustomer) {
+        this.pushCustomer = pushCustomer;
     }
 
     public Long getValidCount() {

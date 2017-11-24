@@ -36,7 +36,7 @@ public class PtPhoneHistoryManager {
     @Resource
     private PtUserManager ptUserManager;
 
-    public static final Integer ARRAY_SIZE = 6;
+    public static final Integer ARRAY_SIZE = 9;
 
     private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
     private int nowPageNo;
@@ -77,7 +77,8 @@ public class PtPhoneHistoryManager {
      * @return
      * 统计信息
      */
-    public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd) throws IOException {
+    public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd, boolean force) throws
+            IOException {
         Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
         //没绑定ec
         if (ecUserId == null) {
@@ -131,13 +132,21 @@ public class PtPhoneHistoryManager {
         //如果该天有真实数据
         List<PtPhoneHistory> ptPhoneHistories = ptPhoneHistoryRepository.findByEcUserIdAndStartTimeBetween(ecUserId,
                 tempBegin, tempEnd);
-        int pushCount = 0, noPushCount = 0;
-        int validCount = 0;
+        //排除重复的是我们推送的联系人
+        Set<String> pushCustomerSet = new HashSet<>();
+        int pushCount = 0, noPushCount = 0, pushCallTime = 0, pushValidCount = 0, validCount = 0;
         for (PtPhoneHistory history : ptPhoneHistories) {
             //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
             boolean crmExist = ptPushResultManager.existCrmId(history.getCrmId());
             if (crmExist) {
+                //我们推送的沟通次数加1
                 pushCount++;
+                //我们推送的沟通有效加1
+                if (history.getCallTime() > 0) {
+                    pushValidCount++;
+                    pushCallTime += history.getCallTime();
+                }
+                pushCustomerSet.add(history.getCallToNo());
             } else {
                 noPushCount++;
             }
@@ -152,6 +161,10 @@ public class PtPhoneHistoryManager {
         objects[3] = pushCount;
         objects[4] = validCount;
         objects[5] = noPushCount;
+        objects[6] = pushCallTime;
+        objects[7] = pushCustomerSet.size();
+        objects[8] = pushValidCount;
+
         list.clear();
         list.add(objects);
         return list;
@@ -164,10 +177,12 @@ public class PtPhoneHistoryManager {
         List<Object[]> list = new ArrayList<>();
         Object[] objects = new Object[ARRAY_SIZE];
         objects[0] = historyDataBeans.size();
-        //排除重复的联系人
+        //排除重复的总的联系人
         Set<String> customerSet = new HashSet<>();
+        //排除重复的是我们推送的联系人
+        Set<String> pushCustomerSet = new HashSet<>();
         int totalCallTime = 0;
-        int pushCount = 0, validCount = 0, noPushCount = 0;
+        int pushCount = 0, validCount = 0, noPushCount = 0, pushCallTime = 0, pushValidCount = 0;
 
         for (PhoneHistoryDataBean bean : historyDataBeans) {
             PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
@@ -189,7 +204,13 @@ public class PtPhoneHistoryManager {
             //判断crmId是否在我们成功推送的列表里，如果是，那就是该数据是我们推送的
             boolean crmExist = ptPushResultManager.existCrmId(bean.getCrmId());
             if (crmExist) {
+                //未排重的我们的沟通的次数
                 pushCount++;
+                if (ptPhoneHistory.getCallTime() > 0) {
+                    pushCallTime += ptPhoneHistory.getCallTime();
+                    pushValidCount++;
+                }
+                pushCustomerSet.add(bean.getCalltono());
             } else {
                 noPushCount++;
             }
@@ -206,6 +227,9 @@ public class PtPhoneHistoryManager {
         objects[3] = pushCount;
         objects[4] = validCount;
         objects[5] = noPushCount;
+        objects[6] = pushCallTime;
+        objects[7] = pushCustomerSet.size();
+        objects[8] = pushValidCount;
         list.add(objects);
         return list;
     }

@@ -36,12 +36,15 @@ public class PhoneHistoryController {
      */
     @CheckEcAnnotation
     @GetMapping("/fetch")
-    public BaseData fetchCompanyData(Long companyId, String begin, String end,
+    public BaseData fetchCompanyData(Long companyId, String begin, String end, Boolean force,
                                      @PageableDefault(direction =
                                              Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
             IOException {
+        if (force == null) {
+            force = false;
+        }
         return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.fetchAllHistoryData(companyId, begin, end,
-                pageable));
+                pageable, force));
     }
 
     /**

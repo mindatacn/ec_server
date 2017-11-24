@@ -12,6 +12,9 @@ public class PhoneHistoryBeanVO {
     private Long pushCount;
     private Long validCount;
     private Long noPushCount;
+    private Long pushCallTime;
+    private Long pushCustomer;
+    private Long pushValidCount;
 
     public PhoneHistoryBeanVO() {
     }
@@ -24,6 +27,33 @@ public class PhoneHistoryBeanVO {
         pushCount = CommonUtil.parseObject(objects[3]);
         validCount = CommonUtil.parseObject(objects[4]);
         noPushCount = CommonUtil.parseObject(objects[5]);
+        pushCallTime = CommonUtil.parseObject(objects[6]);
+        pushCustomer = CommonUtil.parseObject(objects[7]);
+        pushValidCount = CommonUtil.parseObject(objects[8]);
+    }
+
+    public Long getPushCallTime() {
+        return pushCallTime;
+    }
+
+    public void setPushCallTime(Long pushCallTime) {
+        this.pushCallTime = pushCallTime;
+    }
+
+    public Long getPushCustomer() {
+        return pushCustomer;
+    }
+
+    public void setPushCustomer(Long pushCustomer) {
+        this.pushCustomer = pushCustomer;
+    }
+
+    public Long getPushValidCount() {
+        return pushValidCount;
+    }
+
+    public void setPushValidCount(Long pushValidCount) {
+        this.pushValidCount = pushValidCount;
     }
 
     public Long getTotalCallCount() {

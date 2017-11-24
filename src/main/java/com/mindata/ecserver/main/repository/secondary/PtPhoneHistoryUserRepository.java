@@ -34,7 +34,7 @@ public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHisto
      * 统计某天、某个部门所有员工总的打电话次数
      */
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount), sum" +
-            "(noPushCount)" +
+            "(noPushCount), sum(pushCallTime), sum(pushCustomer), sum(pushValidCount)" +
             " " +
             " from PtPhoneHistoryUser where userId in ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(List<Long> userIds, Date begin, Date end);

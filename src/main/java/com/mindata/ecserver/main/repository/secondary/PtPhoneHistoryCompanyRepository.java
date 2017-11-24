@@ -54,7 +54,7 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      * @return 聚合结果
      */
     @Query("select sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount), sum" +
-            "(noPushCount)" +
+            "(noPushCount), sum(pushCallTime), sum(pushCustomer), sum(pushValidCount)" +
             " " +
             " from PtPhoneHistoryCompany where companyId in ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(List<Long> companyIds, Date begin, Date end);

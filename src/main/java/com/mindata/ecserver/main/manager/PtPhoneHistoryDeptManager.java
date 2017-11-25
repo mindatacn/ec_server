@@ -49,12 +49,18 @@ public class PtPhoneHistoryDeptManager {
         for (Long deptId : ids) {
             Integer count = ptPhoneHistoryDeptRepository.countByDeptIdAndStartTimeBetween(deptId, begin, end);
             //如果今天没值，就去统计userHistory的总数量，并且把今天的值给补上
+            PtPhoneHistoryDept historyDept;
             if (count == 0 || force) {
+                if (count > 0) {
+                    historyDept = ptPhoneHistoryDeptRepository.findByDeptId(deptId).get(0);
+                } else {
+                    historyDept = new PtPhoneHistoryDept();
+                }
+
                 //得到该部门所有员工今天的累计数据
                 List<Object[]> userTotal = ptPhoneHistoryUserManager.findDeptOneDayTotalByDeptId(deptId, begin, end,
                         force);
                 Object[] objects = userTotal.get(0);
-                PtPhoneHistoryDept historyDept = new PtPhoneHistoryDept();
                 historyDept.setDeptId(deptId);
                 historyDept.setStartTime(begin);
                 historyDept.setTotalCallTime(CommonUtil.parseObject(objects[0]));

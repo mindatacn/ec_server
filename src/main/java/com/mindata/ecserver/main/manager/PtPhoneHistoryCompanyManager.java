@@ -69,6 +69,10 @@ public class PtPhoneHistoryCompanyManager {
                         tempBegin, oneDayEnd, force);
                 Object[] objects = deptTotal.get(0);
                 PtPhoneHistoryCompany historyCompany = new PtPhoneHistoryCompany();
+                if (oneDayCount > 0) {
+                    historyCompany = ptPhoneHistoryCompanyRepository.findByCompanyId(companyId).get(0);
+                }
+
                 historyCompany.setCompanyId(companyId);
                 historyCompany.setStartTime(tempBegin);
                 historyCompany.setTotalCallTime(CommonUtil.parseObject(objects[0]));

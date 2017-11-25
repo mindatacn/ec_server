@@ -187,7 +187,7 @@ public class PtPushResultManager {
      * @return 结果
      */
     public boolean existCrmId(Long crmId) {
-        return ptPushSuccessResultRepository.findByCrmId(crmId) != null;
+        return ptPushSuccessResultRepository.findByCrmId(crmId).size() > 0;
     }
 
     /**

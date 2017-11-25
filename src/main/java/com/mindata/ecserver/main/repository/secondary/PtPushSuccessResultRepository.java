@@ -30,7 +30,7 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      *         crmId
      * @return 结果
      */
-    PtPushSuccessResult findByCrmId(Long crmId);
+    List<PtPushSuccessResult> findByCrmId(Long crmId);
 
     /**
      * 理论上不能有多个，但是有测试数据需要删除掉

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: ec_server
   data:
     elasticsearch:
       cluster-name: elasticsearch
@@ -28,3 +30,9 @@ logging:
 logstash:
   ip: ${logstashIp:localhost}
   port: ${logstashPort:4560}
+eureka:
+  instance:
+    prefer-ip-address: true   #该行比较重要，如果不设定，在docker里zuul无法访问到该服务
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_SERVER}/eureka/

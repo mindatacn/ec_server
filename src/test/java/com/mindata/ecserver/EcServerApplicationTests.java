@@ -7,6 +7,7 @@ import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
+import com.mindata.ecserver.main.service.PhoneHistoryUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,9 +33,13 @@ public class EcServerApplicationTests {
     private PtUserManager ptUserManager;
     @Resource
     private PtSearchConditionManager ptSearchConditionManager;
+    @Resource
+    private PhoneHistoryUserService phoneHistoryUserService;
 
     @Test
     public void contextLoads() throws IOException {
+
+
         //List<PtSearchCondition> conditions = ptSearchConditionManager.find();
         //System.out.println(codeAreaManager.findCitiesByProvince("110000"));
         //System.out.println(codeAreaRepository.findAll());

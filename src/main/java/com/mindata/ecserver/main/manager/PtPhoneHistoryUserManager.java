@@ -74,9 +74,13 @@ public class PtPhoneHistoryUserManager {
      * 查询某用户一段时间内的统计信息
      *
      * @param userId
+     * userId
      * @param begin
+     * begin
      * @param end
+     * end
      * @return
+     * 统计
      */
     public List<Object[]> findTotalByUserId(Long userId, Date begin, Date end) {
         return ptPhoneHistoryUserRepository.findCount(CollectionUtil.newArrayList(userId), begin, end);

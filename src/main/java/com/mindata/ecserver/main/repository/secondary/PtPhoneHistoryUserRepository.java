@@ -28,6 +28,17 @@ public interface PtPhoneHistoryUserRepository extends JpaRepository<PtPhoneHisto
      */
     Page<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Long userId, Date begin, Date end, Pageable pageable);
 
+    /**
+     * 查询某个用户一段时间内的通话历史统计
+     *
+     * @param userId
+     *         userId
+     * @param begin
+     *         开始时间（包含）
+     * @param end
+     *         结束时间（包含）
+     * @return 集合
+     */
     List<PtPhoneHistoryUser> findByUserIdAndStartTimeBetween(Long userId, Date begin, Date end);
 
     /**

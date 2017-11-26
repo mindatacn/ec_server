@@ -109,15 +109,4 @@ public class PtPhoneHistoryCompanyManager {
         return ptPhoneHistoryCompanyRepository.findCount(CollectionUtil.newArrayList(companyId), begin, end);
     }
 
-
-    //@Resource
-    //private PtPho
-    //public void complete() {
-    //    List<PtPhoneHistoryCompany> ptPhoneHistoryCompanies = ptPhoneHistoryCompanyRepository.findAll();
-    //    for (PtPhoneHistoryCompany ptPhoneHistoryCompany : ptPhoneHistoryCompanies) {
-    //
-    //    }
-    //    List<PtPhoneHistoryUser> ptPhoneHistoryUsers = ptPhoneHistoryCompanyRepository.findAll();
-    //}
-
 }

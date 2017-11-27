@@ -106,9 +106,9 @@ public class AuthController {
 
     @GetMapping(value = "/logout")
     public BaseData logout() {
+        userService.logout();
         //使用权限管理工具进行用户的退出，跳出登录
         SecurityUtils.getSubject().logout();
-        userService.logout();
         return ResultGenerator.genSuccessResult();
     }
 

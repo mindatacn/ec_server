@@ -7,7 +7,7 @@ import java.util.Date;
  * @author wuweifeng wrote on 2017/11/27.
  */
 @Entity
-@Table(name = "ec_customer_operation1")
+@Table(name = "ec_customer_operation")
 public class EcCustomerOperation {
     private Long id;
     /**
@@ -21,7 +21,7 @@ public class EcCustomerOperation {
     /**
      * 操作类型
      */
-    private Integer operateCode;
+    private Integer statusCode;
     /**
      * 操作时间
      */
@@ -54,12 +54,12 @@ public class EcCustomerOperation {
         this.operateType = operateType;
     }
 
-    public Integer getOperateCode() {
-        return operateCode;
+    public Integer getStatusCode() {
+        return statusCode;
     }
 
-    public void setOperateCode(Integer operateCode) {
-        this.operateCode = operateCode;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
     public Date getOperateTime() {

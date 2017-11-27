@@ -22,6 +22,10 @@ public class ContactVO {
      */
     private String province;
     /**
+     * 地址
+     */
+    private String address;
+    /**
      * 手机
      */
     private String mobile;
@@ -29,6 +33,14 @@ public class ContactVO {
      * 电话
      */
     private String phone;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
@@ -84,5 +96,19 @@ public class ContactVO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactVO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", vocation='" + vocation + '\'' +
+                ", province='" + province + '\'' +
+                ", address='" + address + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

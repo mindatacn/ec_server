@@ -43,6 +43,8 @@ public class PushSuccessResultService extends BaseService {
     private PtDepartmentManager ptDepartmentManager;
     @Resource
     private PtRoleManager ptRoleManager;
+    @Resource
+    private EcCustomerOperationManager ecCustomerOperationManager;
 
 
     public PtPushSuccessResult findById(Long id) {
@@ -148,7 +150,8 @@ public class PushSuccessResultService extends BaseService {
             //最后沟通时间
             vo.setLastContactTime(ptPhoneHistoryManager.findByCrmIdOrderByCallTime(result.getCrmId()));
             vo.setContactId(result.getContactId());
-            //TODO 沟通相关的属性
+            //沟通状态相关的属性
+            vo.setSaleState(ecCustomerOperationManager.findCodeByCustomerId(result.getCrmId()));
             vos.add(vo);
         }
 

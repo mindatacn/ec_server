@@ -126,6 +126,7 @@ public class ContactService extends BaseService {
                 vo.setMobile(ecContactEntity.getMobile());
             }
             vo.setName(ecContactEntity.getName());
+            vo.setAddress(ecContactEntity.getAddress());
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));
             contactVOS.add(vo);

@@ -6,14 +6,41 @@ import com.mindata.ecserver.util.CommonUtil;
  * @author wuweifeng wrote on 2017/11/6.
  */
 public class PhoneHistoryBeanVO {
+    /**
+     * 总拨打数量
+     */
     private Long totalCallCount;
+    /**
+     * 总拨打时长
+     */
     private Long totalCallTime;
+    /**
+     * 总联系人数量
+     */
     private Long totalCustomer;
+    /**
+     * 推送的总拨打数量
+     */
     private Long pushCount;
-    private Long validCount;
+    /**
+     * 非推送的总拨打数量
+     */
     private Long noPushCount;
+    /**
+     * 通话时长大于0的总数量
+     */
+    private Long validCount;
+    /**
+     * 推送的拨打总时长
+     */
     private Long pushCallTime;
+    /**
+     * 推送的总联系人数量
+     */
     private Long pushCustomer;
+    /**
+     * 推送的通话时长大于0的总数量
+     */
     private Long pushValidCount;
 
     public PhoneHistoryBeanVO() {

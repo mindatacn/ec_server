@@ -147,6 +147,7 @@ public class EsContactManager extends BaseService {
                 vo.setMobile(esContact.getMobile());
             }
             vo.setName(esContact.getName());
+            vo.setAddress(esContact.getAddress());
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             contactVOS.add(vo);

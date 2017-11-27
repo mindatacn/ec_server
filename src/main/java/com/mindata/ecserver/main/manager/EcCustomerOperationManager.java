@@ -32,6 +32,6 @@ public class EcCustomerOperationManager {
         if (CollectionUtil.isEmpty(customerOperations)) {
             return 0;
         }
-        return customerOperations.get(0).getOperateCode();
+        return customerOperations.get(0).getStatusCode();
     }
 }

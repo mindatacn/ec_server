@@ -31,8 +31,8 @@ public class EcContactEntity {
     private String phone;
     private String email;
     private String fax;
-    private String province;
-    private String city;
+    private Integer province;
+    private Integer city;
     private String title;
     private String qq;
     private String wechat;
@@ -185,21 +185,21 @@ public class EcContactEntity {
 
     @Basic
     @Column(name = "province")
-    public String getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
     @Basic
     @Column(name = "city")
-    public String getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 

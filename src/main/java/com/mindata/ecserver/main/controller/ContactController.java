@@ -34,13 +34,24 @@ public class ContactController {
     }
 
     /**
-     * 按省份来查询不同省份的线索数据
+     * 按省份来查询不同省份的线索数据，查询某省按城市分组聚合的数据，查询某城市按行业聚合的数据
+     * 共3个接口
      *
      * @return 按省份区分后的聚合分组数据
      */
     @GetMapping("/province")
     public BaseData findCountByProvince(){
-        return ResultGenerator.genSuccessResult(contactService.findCountByProvince());
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(null, null));
+    }
+
+    @GetMapping("/province/{province}")
+    public BaseData findCountByProvince(@PathVariable Integer province) {
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, null));
+    }
+
+    @GetMapping("/province/{province}/{city}")
+    public BaseData findCountByProvince(@PathVariable Integer province, @PathVariable Integer city) {
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, city));
     }
 
     /**

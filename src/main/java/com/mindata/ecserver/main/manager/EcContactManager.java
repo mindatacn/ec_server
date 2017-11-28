@@ -2,9 +2,6 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,12 +16,11 @@ import java.util.List;
  */
 @Service
 public class EcContactManager {
-    @Autowired
+    @Resource
     private EcContactRepository contactRepository;
     @Resource
     private EcContactRepository ecContactRepository;
 
-    private Logger logger = LoggerFactory.getLogger(getClass().getName());
     /**
      * 获取某天的爬取数量
      *
@@ -46,6 +42,25 @@ public class EcContactManager {
     public List<Object[]> findCountByProvince() {
         return contactRepository.findCountByProvince();
     }
+
+    /**
+     * 查询每个省份下按城市分组的数量
+     *
+     * @return list
+     */
+    public List<Object[]> findCountByCity(Integer province) {
+        return contactRepository.findCountByCity(province);
+    }
+
+    /**
+     * 查询每个城市下按行业分组的数量
+     *
+     * @return list
+     */
+    public List<Object[]> findCountByVocation(Integer city) {
+        return contactRepository.findCountByVocation(city);
+    }
+
 
     /**
      * 根据id集合查询所有的线索

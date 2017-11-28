@@ -51,6 +51,7 @@ public class ContactService extends BaseService {
         return ecContactEntity;
     }
 
+    @SuppressWarnings("Duplicates")
     public SimplePage<ContactVO> findByStateAndConditions(int state, ContactRequestBody
             contactRequestBody) {
         //TODO 将来新开一个接口
@@ -128,7 +129,7 @@ public class ContactService extends BaseService {
             vo.setName(ecContactEntity.getName());
             vo.setAddress(ecContactEntity.getAddress());
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
-            vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince()));
+            vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince() + ""));
             contactVOS.add(vo);
         }
         return new SimplePage<>(ecContactEntities.getTotalPages(), ecContactEntities.getTotalElements(), contactVOS);
@@ -140,15 +141,54 @@ public class ContactService extends BaseService {
      * @return
      * list
      */
-    public List<Map<String, Object>> findCountByProvince() {
-        List<Object[]> objList = ecContactManager.findCountByProvince();
-        List<Map<String, Object>> list = new ArrayList<>(50);
-        for (Object[] objects : objList) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("province", objects[0]);
-            map.put("count", objects[1]);
-            list.add(map);
+    public List<Map<String, Object>> findCountByProvince(Integer province, Integer city) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        //分别按省、市、行业分组
+        if (province == null && city == null) {
+            List<Object[]> objList = ecContactManager.findCountByProvince();
+            for (Object[] objects : objList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("province", objects[0]);
+                map.put("count", objects[1]);
+                list.add(map);
+            }
+        } else if (province != null && city == null) {
+            List<Object[]> objList = ecContactManager.findCountByCity(province);
+            for (Object[] objects : objList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("city", objects[0]);
+                map.put("count", objects[1]);
+                list.add(map);
+            }
+        } else {
+            List<Object[]> objList = ecContactManager.findCountByVocation(city);
+            Map<String, Long> map = new HashMap<>();
+            for (Object[] objects : objList) {
+                //判断如果是二级行业的话，合并的一级行业的数据里去
+                Integer vocation = (Integer) objects[0];
+                String key = "";
+                //大于18的就是2级行业了
+                if (vocation > 18) {
+                    //获取它对应的1级行业
+                    key = ecVocationCodeManager.findParentCode(vocation) + "";
+                }
+                if (map.get(key) != null) {
+                    //将值相加
+                    map.put(key, (map.get(key)) + (Long) objects[1]);
+                } else {
+                    map.put(key, (Long) objects[1]);
+                }
+
+            }
+            //遍历map
+            for (String key : map.keySet()) {
+                Map<String, Object> hashMap = new HashMap<>();
+                hashMap.put("vocation", key);
+                hashMap.put("count", map.get(key));
+                list.add(hashMap);
+            }
         }
+
         return list;
     }
 

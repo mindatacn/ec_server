@@ -36,11 +36,11 @@ public class PtPushSuccessResult extends BaseEntity {
     /**
      * 省
      */
-    private String province;
+    private Integer province;
     /**
      * 市
      */
-    private String city;
+    private Integer city;
     /**
      * 来源（58、桔子）
      */
@@ -106,19 +106,19 @@ public class PtPushSuccessResult extends BaseEntity {
         this.saleState = saleState;
     }
 
-    public String getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
-    public String getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 

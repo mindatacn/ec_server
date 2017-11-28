@@ -31,6 +31,21 @@ public class EcVocationCodeManager {
     }
 
     /**
+     * 根据code获取parentCode
+     *
+     * @param vocationCode
+     *         code
+     * @return 获取父code
+     */
+    public Integer findParentCode(Integer vocationCode) {
+        EcVocationCodeEntity entity = ecVocationCodeEntityRepository.findOne(vocationCode);
+        if (entity.getParentCode() == 0) {
+            return vocationCode;
+        }
+        return entity.getParentCode();
+    }
+
+    /**
      * 查询所有code等于vocationCode，或者parentCode等于vocationCode的
      */
     public List<EcVocationCodeEntity> findAllRelated(Integer vocationCode) {

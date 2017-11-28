@@ -63,6 +63,7 @@ public class EsContactManager extends BaseService {
      *         body
      * @return 结果
      */
+    @SuppressWarnings("Duplicates")
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
         BoolQueryBuilder boolQuery = boolQuery();
 

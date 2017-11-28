@@ -127,8 +127,8 @@ public class PushService extends BaseService {
             v.add(e.getUrl() == null ? "" : e.getUrl());
             v.add(e.getMemo() == null ? "" : e.getMemo());
             v.add(e.getGender() == null ? 0 : e.getGender());
-            v.add(ecCodeAreaManager.findById(e.getProvince()));
-            v.add(ecCodeAreaManager.findById(e.getCity()));
+            v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
+            v.add(ecCodeAreaManager.findById(e.getCity() + ""));
             //v.add("82014661");
             valueList.add(v.toArray());
         }

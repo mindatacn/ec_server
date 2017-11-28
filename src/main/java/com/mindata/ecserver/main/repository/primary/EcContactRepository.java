@@ -46,4 +46,21 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
     @Query(value = "SELECT province, COUNT(*) FROM ec_contact_no_push WHERE state = 0 GROUP BY province", nativeQuery =
             true)
     List<Object[]> findCountByProvince();
+
+    /**
+     * 按城市查询数据总量
+     *
+     * @return 分组后的集合
+     */
+    @Query(value = "SELECT city, COUNT(city) FROM EcContactEntity WHERE state = 0 AND province = ?1 GROUP BY city")
+    List<Object[]> findCountByCity(Integer province);
+
+    /**
+     * 按行业查询数据总量
+     *
+     * @return 分组后的集合
+     */
+    @Query(value = "SELECT vocation, COUNT(vocation) FROM EcContactEntity WHERE state = 0 AND city = ?1 GROUP BY " +
+            "vocation")
+    List<Object[]> findCountByVocation(Integer city);
 }

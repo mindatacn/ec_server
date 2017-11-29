@@ -146,6 +146,14 @@ public class PtPushResultManager {
         return ptPushFailureResultRepository.findByContactId(contactId);
     }
 
+    public PtPushSuccessResult findResultByMobile(String mobile) {
+        List<PtPushSuccessResult> ptPushSuccessResults = ptPushSuccessResultRepository.findByMobile(mobile);
+        if (CollectionUtil.isEmpty(ptPushSuccessResults)) {
+            return null;
+        }
+        return ptPushSuccessResults.get(0);
+    }
+
     /**
      * 查看一段时间内的推送总数量
      *

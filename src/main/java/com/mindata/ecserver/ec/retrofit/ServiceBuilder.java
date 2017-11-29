@@ -40,4 +40,8 @@ public class ServiceBuilder {
     public CustomerTagInfoService getClassInfoService(){
         return retrofitBuilder.getRetrofit().create(CustomerTagInfoService.class);
     }
+
+    public UserTrajectoryService getUserTrajectoryService() {
+        return retrofitBuilder.getRetrofit().create(UserTrajectoryService.class);
+    }
 }

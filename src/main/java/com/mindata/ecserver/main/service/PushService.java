@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/10/31.
@@ -51,27 +52,27 @@ public class PushService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public PushResultCountVO push(PushBody pushBody) throws IOException {
+        //对id进行排序
+        List<Long> ids = pushBody.getIds();
+        List<Long> newIds = ids.stream().sorted().collect(Collectors.toList());
+        pushBody.setIds(newIds);
+
         List<EcContactEntity> contactEntities = ecContactManager.findByIds(pushBody.getIds());
         if (contactEntities.size() == 0) {
             return new PushResultCountVO(0, 0);
         }
-        CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
+        Long followUserId = ptUserManager.findByUserId(pushBody.getFollowUserId())
+                .getEcUserId();
+        Long optUserId;
         if (pushBody.getOptUserId() == null) {
             //设置操作人id
-            customerCreateRequest.setOptUserId(ShiroKit.getCurrentUser().getEcUserId());
+            optUserId = ShiroKit.getCurrentUser().getEcUserId();
         } else {
-            customerCreateRequest.setOptUserId(ptUserManager.findByUserId(pushBody.getOptUserId())
-                    .getEcUserId());
+            optUserId = ptUserManager.findByUserId(pushBody.getOptUserId())
+                    .getEcUserId();
         }
-        //设置跟进人id
-        customerCreateRequest.setFollowUserId(ptUserManager.findByUserId(pushBody.getFollowUserId())
-                .getEcUserId());
-        customerCreateRequest.setFieldNameMapping(fieldName());
-        customerCreateRequest.setFieldValueList(fieldValueList(contactEntities));
-        CustomerService customerService = serviceBuilder.getCustomerService();
-        //得到返回值
-        CustomerCreateData customerCreateData = (CustomerCreateData) callManager.execute(customerService.batchCreate
-                (customerCreateRequest));
+
+        CustomerCreateData customerCreateData = pushToEc(optUserId, followUserId, contactEntities);
         //发布事件
         CustomerCreateDataBean bean = customerCreateData.getData();
         eventPublisher.publishEvent(new ContactPushResultEvent(new PushResultVO(bean,
@@ -82,6 +83,23 @@ public class PushService extends BaseService {
         int successCount = bean.getSuccessCrmIds().size();
         int failureCount = totalCount - successCount;
         return new PushResultCountVO(successCount, failureCount);
+    }
+
+    /**
+     * 批量创建客户
+     */
+    private CustomerCreateData pushToEc(Long optUserId, Long followUserId, List<EcContactEntity> contactEntities)
+            throws IOException {
+        CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
+        //设置跟进人id
+        customerCreateRequest.setFollowUserId(followUserId);
+        customerCreateRequest.setOptUserId(optUserId);
+        customerCreateRequest.setFieldNameMapping(fieldName());
+        customerCreateRequest.setFieldValueList(fieldValueList(contactEntities));
+        CustomerService customerService = serviceBuilder.getCustomerService();
+        //得到返回值
+        return (CustomerCreateData) callManager.execute(customerService.batchCreate
+                (customerCreateRequest));
     }
 
     private Object[] fieldName() {
@@ -115,7 +133,7 @@ public class PushService extends BaseService {
             } else {
                 v.add(e.getName());
             }
-            
+
             v.add(e.getMobile());
             v.add(e.getPhone() == null ? "" : e.getPhone());
             v.add(e.getTitle() == null ? "" : e.getTitle());

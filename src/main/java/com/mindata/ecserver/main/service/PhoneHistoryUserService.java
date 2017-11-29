@@ -73,6 +73,8 @@ public class PhoneHistoryUserService {
         PtUser ptUser = ptUserManager.findByUserId(userId);
         vo.setDeptName(ptDepartmentManager.findByDeptId(ptUser.getDepartmentId()).getName());
         vo.setUserName(ptUser.getName());
+        vo.setDeptId(ptUser.getDepartmentId());
+        vo.setUserId(userId);
         return vo;
     }
 

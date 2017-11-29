@@ -5,6 +5,7 @@ package com.mindata.ecserver.main.vo;
  */
 public class PhoneHistoryUserBeanVO extends PhoneHistoryDeptBeanVO {
     private String userName;
+    private Long userId;
 
     public PhoneHistoryUserBeanVO() {
     }
@@ -13,11 +14,27 @@ public class PhoneHistoryUserBeanVO extends PhoneHistoryDeptBeanVO {
         super(objects);
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    @Override
+    public String toString() {
+        return "PhoneHistoryUserBeanVO{" +
+                "userName='" + userName + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }

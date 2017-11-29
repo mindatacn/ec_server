@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -166,7 +167,7 @@ public class ContactService extends BaseService {
             for (Object[] objects : objList) {
                 //判断如果是二级行业的话，合并的一级行业的数据里去
                 Integer vocation = (Integer) objects[0];
-                String key = "";
+                String key = vocation + "";
                 //大于18的就是2级行业了
                 if (vocation > 18) {
                     //获取它对应的1级行业
@@ -188,8 +189,13 @@ public class ContactService extends BaseService {
                 list.add(hashMap);
             }
         }
-
-        return list;
+        //按count进行排序
+        return list.stream().sorted((o1, o2) -> {
+            if ((Long) o1.get("count") > (Long) o2.get("count")) {
+                return -1;
+            }
+            return 1;
+        }).collect(Collectors.toList());
     }
 
     /**

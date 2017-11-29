@@ -45,6 +45,7 @@ public class PhoneHistoryDeptService {
         List<Object[]> list = ptPhoneHistoryDeptManager.findTotalByDeptId(deptId, begin, end);
         PhoneHistoryDeptBeanVO deptBeanVO = new PhoneHistoryDeptBeanVO(list.get(0));
         deptBeanVO.setDeptName(ptDepartmentManager.findByDeptId(deptId).getName());
+        deptBeanVO.setDeptId(deptId);
         return deptBeanVO;
 
         //sum(totalCallTime), sum(totalCallCount), sum(totalCustomer), sum(pushCount), sum(validCount) " +

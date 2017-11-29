@@ -15,7 +15,7 @@ public interface PtUserRepository extends JpaRepository<PtUser, Long> {
      * 根据ecUserId查询
      *
      * @param ecUserId
-     *         ecuserId
+     *         ecUserId
      * @return 本地user
      */
     PtUser findByEcUserId(Long ecUserId);

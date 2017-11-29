@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.primary.EcCustomerOperation;
-import com.mindata.ecserver.main.repository.primary.CustomerOperationRepository;
+import com.mindata.ecserver.main.model.primary.EcCustomer;
+import com.mindata.ecserver.main.repository.primary.EcCustomerRepository;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +14,9 @@ import java.util.List;
  * @author wuweifeng wrote on 2017/11/27.
  */
 @Service
-public class EcCustomerOperationManager {
+public class EcCustomerManager {
     @Resource
-    private CustomerOperationRepository customerOperationRepository;
+    private EcCustomerRepository ecCustomerRepository;
 
     /**
      * 查询某客户当前沟通状态
@@ -27,7 +27,7 @@ public class EcCustomerOperationManager {
      */
     public Integer findCodeByCustomerId(Long crmId) {
         Pageable pageable = new PageRequest(0, 1);
-        List<EcCustomerOperation> customerOperations = customerOperationRepository.findByCrmIdOrderByOperateTimeDesc
+        List<EcCustomer> customerOperations = ecCustomerRepository.findByCrmIdOrderByUpdateTimeDesc
                 (crmId, pageable);
         if (CollectionUtil.isEmpty(customerOperations)) {
             return 0;

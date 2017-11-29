@@ -44,7 +44,7 @@ public class PushSuccessResultService extends BaseService {
     @Resource
     private PtRoleManager ptRoleManager;
     @Resource
-    private EcCustomerOperationManager ecCustomerOperationManager;
+    private EcCustomerManager ecCustomerManager;
 
 
     public PtPushSuccessResult findById(Long id) {
@@ -151,7 +151,7 @@ public class PushSuccessResultService extends BaseService {
             vo.setLastContactTime(ptPhoneHistoryManager.findByCrmIdOrderByCallTime(result.getCrmId()));
             vo.setContactId(result.getContactId());
             //沟通状态相关的属性
-            vo.setSaleState(ecCustomerOperationManager.findCodeByCustomerId(result.getCrmId()));
+            vo.setSaleState(ecCustomerManager.findCodeByCustomerId(result.getCrmId()));
             vos.add(vo);
         }
 

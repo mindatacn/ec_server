@@ -15,7 +15,6 @@ import java.util.List;
 public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, Long> {
     Page<PtPhoneHistory> findByStartTimeBetween(Date begin, Date end, Pageable pageable);
 
-    Page<PtPhoneHistory> findByEcUserIdIn(List<Integer> ecUserIds, Pageable pageable);
 
     /**
      * 统计某段时间、某人总的打电话次数

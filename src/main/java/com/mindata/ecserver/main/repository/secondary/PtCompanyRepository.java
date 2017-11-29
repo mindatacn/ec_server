@@ -7,5 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author wuweifeng wrote on 2017/10/26.
  */
 public interface PtCompanyRepository extends JpaRepository<PtCompany, Long> {
+    /**
+     * 根据ec的公司id查询
+     *
+     * @param cropId
+     *         公司id
+     * @return 公司
+     */
     PtCompany findByCorpId(Long cropId);
 }

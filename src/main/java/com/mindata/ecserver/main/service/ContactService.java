@@ -198,8 +198,10 @@ public class ContactService extends BaseService {
         return list.stream().sorted((o1, o2) -> {
             if ((Long) o1.get("count") > (Long) o2.get("count")) {
                 return -1;
+            } else if ((Long) o1.get("count") > (Long) o2.get("count")) {
+                return 1;
             }
-            return 1;
+            return 0;
         }).collect(Collectors.toList());
     }
 

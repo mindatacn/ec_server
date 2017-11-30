@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
+import com.mindata.ecserver.main.manager.EcCodeAreaManager;
 import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.manager.es.EsContactManager;
@@ -39,6 +40,8 @@ public class ContactService extends BaseService {
     private EcVocationCodeManager ecVocationCodeManager;
     @Resource
     private SearchConditionService searchConditionService;
+    @Resource
+    private EcCodeAreaManager ecCodeAreaManager;
 
     public EcContactEntity findById(Long id) {
         EsContact esContact = esContactManager.findById(id);
@@ -159,6 +162,7 @@ public class ContactService extends BaseService {
                 Map<String, Object> map = new HashMap<>();
                 map.put("city", objects[0]);
                 map.put("count", objects[1]);
+                map.put("name", ecCodeAreaManager.findById(objects[0].toString()));
                 list.add(map);
             }
         } else {
@@ -186,6 +190,7 @@ public class ContactService extends BaseService {
                 Map<String, Object> hashMap = new HashMap<>();
                 hashMap.put("vocation", key);
                 hashMap.put("count", map.get(key));
+                hashMap.put("name", ecVocationCodeManager.findNameByCode(Integer.valueOf(key)));
                 list.add(hashMap);
             }
         }

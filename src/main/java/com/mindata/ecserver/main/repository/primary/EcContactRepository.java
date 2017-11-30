@@ -65,8 +65,7 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
      * @return
      * 分组后的集合
      */
-    @Query(value = "SELECT province, COUNT(*) FROM ec_contact_no_push WHERE state = 0 GROUP BY province", nativeQuery =
-            true)
+    @Query(value = "SELECT province, COUNT(province) FROM EcContactEntity WHERE state = 0 GROUP BY province")
     List<Object[]> findCountByProvince();
 
     /**

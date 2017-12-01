@@ -26,11 +26,22 @@ public class CommonUtil {
 
     /**
      * 生成uuid
-     *
-     * @return
      */
     public static String token() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 是否是直辖市里的区县
+     *
+     * @param cityCode
+     *         区县码
+     * @return 是否是直辖市里的
+     */
+    public static boolean isZhiXiaShi(Integer cityCode) {
+        //110000北京，120000天津，310000上海， 500000重庆，810000香港，820000澳门
+        int city = cityCode / 1000;
+        return city == 110 || city == 120 || city == 310 || city == 500 || city == 810 || city == 820;
     }
 
     /**

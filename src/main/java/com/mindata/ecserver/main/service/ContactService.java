@@ -12,7 +12,9 @@ import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.ContactGroupVO;
 import com.mindata.ecserver.main.vo.ContactVO;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -42,6 +44,10 @@ public class ContactService extends BaseService {
     private SearchConditionService searchConditionService;
     @Resource
     private EcCodeAreaManager ecCodeAreaManager;
+
+    private final String COUNT = "count";
+    private final long PROVINCE_MIN_COUNT = 100;
+    private final long CITY_MIN_COUNT = 20;
 
     public EcContactEntity findById(Long id) {
         EsContact esContact = esContactManager.findById(id);
@@ -145,26 +151,62 @@ public class ContactService extends BaseService {
      * @return
      * list
      */
-    public List<Map<String, Object>> findCountByProvince(Integer province, Integer city) {
+    public ContactGroupVO findCountByProvince(Integer province, Integer city) {
         List<Map<String, Object>> list = new ArrayList<>();
+        Long totalCount = 0L;
+
         //分别按省、市、行业分组
         if (province == null && city == null) {
             List<Object[]> objList = ecContactManager.findCountByProvince();
             for (Object[] objects : objList) {
+                long count = CommonUtil.parseObject(objects[1]);
+                if (count < PROVINCE_MIN_COUNT) {
+                    continue;
+                }
                 Map<String, Object> map = new HashMap<>();
                 map.put("province", objects[0]);
-                map.put("count", objects[1]);
-                list.add(map);
-            }
-        } else if (province != null && city == null) {
-            List<Object[]> objList = ecContactManager.findCountByCity(province);
-            for (Object[] objects : objList) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("city", objects[0]);
-                map.put("count", objects[1]);
+                map.put(COUNT, objects[1]);
                 map.put("name", ecCodeAreaManager.findById(objects[0].toString()));
                 list.add(map);
+                totalCount += count;
             }
+        } else if (province != null && city == null) {
+            //查到的包括市和县
+            List<Object[]> objList = ecContactManager.findCountByCity(province);
+            //将县合并到市里去，除了直辖市外
+            Map<String, Long> map = new HashMap<>();
+            for (Object[] objects : objList) {
+                String key;
+                //判断如果是非直辖市的县的话，合并到市里的数据里去
+                Integer cityCode = (Integer) objects[0];
+                if (CommonUtil.isZhiXiaShi(cityCode)) {
+                    key = cityCode + "";
+                } else if (cityCode == 0) {
+                    key = "0";
+                } else {
+                    key = cityCode / 100 + "00";
+                }
+                if (map.get(key) == null) {
+                    map.put(key, (Long) objects[1]);
+                } else {
+                    //将值相加
+                    map.put(key, (map.get(key)) + (Long) objects[1]);
+                }
+            }
+            //遍历map
+            for (String key : map.keySet()) {
+                long count = map.get(key);
+                if (count < CITY_MIN_COUNT) {
+                    continue;
+                }
+                Map<String, Object> hashMap = new HashMap<>();
+                hashMap.put("city", key);
+                hashMap.put(COUNT, count);
+                hashMap.put("name", ecCodeAreaManager.findById(key));
+                list.add(hashMap);
+                totalCount += CommonUtil.parseObject(map.get(key));
+            }
+
         } else {
             List<Object[]> objList = ecContactManager.findCountByVocation(city);
             Map<String, Long> map = new HashMap<>();
@@ -187,22 +229,28 @@ public class ContactService extends BaseService {
             }
             //遍历map
             for (String key : map.keySet()) {
+                long count = map.get(key);
+                if (count < CITY_MIN_COUNT) {
+                    continue;
+                }
                 Map<String, Object> hashMap = new HashMap<>();
                 hashMap.put("vocation", key);
-                hashMap.put("count", map.get(key));
+                hashMap.put(COUNT, count);
                 hashMap.put("name", ecVocationCodeManager.findNameByCode(Integer.valueOf(key)));
                 list.add(hashMap);
+                totalCount += CommonUtil.parseObject(map.get(key));
             }
         }
+
         //按count进行排序
-        return list.stream().sorted((o1, o2) -> {
-            if ((Long) o1.get("count") > (Long) o2.get("count")) {
+        return new ContactGroupVO(totalCount, list.stream().sorted((o1, o2) -> {
+            if ((Long) o1.get(COUNT) > (Long) o2.get(COUNT)) {
                 return -1;
-            } else if ((Long) o1.get("count") < (Long) o2.get("count")) {
+            } else if ((Long) o1.get(COUNT) < (Long) o2.get(COUNT)) {
                 return 1;
             }
             return 0;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList()));
     }
 
     /**
@@ -224,7 +272,7 @@ public class ContactService extends BaseService {
             Integer count = ecContactManager.countByCreateTimeBetween(beginTime, oneDayEnd);
             Map<String, Object> map = new HashMap<>(2);
             map.put("date", beginTime);
-            map.put("count", count);
+            map.put(COUNT, count);
             list.add(map);
         }
         return list;

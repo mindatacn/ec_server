@@ -146,7 +146,11 @@ public class PushService extends BaseService {
             v.add(e.getMemo() == null ? "" : e.getMemo());
             v.add(e.getGender() == null ? 0 : e.getGender());
             v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
-            v.add(ecCodeAreaManager.findById(e.getCity() + ""));
+            String city = ecCodeAreaManager.findById(e.getCity() + "");
+            if ("滨海新区".equals(city)) {
+                city = "";
+            }
+            v.add(city);
             //v.add("82014661");
             valueList.add(v.toArray());
         }

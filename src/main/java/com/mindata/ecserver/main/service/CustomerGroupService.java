@@ -13,7 +13,6 @@ import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,7 +39,7 @@ public class CustomerGroupService {
      * 把信息同步到db
      * 将从ec查出的员工客户库分组信息添加到数据库
      */
-    @EventListener(CompanySyncEvent.class)
+    //@EventListener(CompanySyncEvent.class)
     public void syncFromEcToDb(CompanySyncEvent companySyncEvent) throws IOException {
         logger.info("从EC获取客户分组信息");
         Boolean force = (Boolean) companySyncEvent.getSource();

@@ -73,6 +73,10 @@ public class EcContactEntity {
      * 对应爬虫的公司id
      */
     private Long compId;
+    /**
+     * 公司评分打分
+     */
+    private Double companyScore;
 
     private Date createTime;
 
@@ -327,6 +331,14 @@ public class EcContactEntity {
     @Column(name = "state")
     public Integer getState() {
         return state;
+    }
+
+    public Double getCompanyScore() {
+        return companyScore;
+    }
+
+    public void setCompanyScore(Double companyScore) {
+        this.companyScore = companyScore;
     }
 
     public String getJobName() {

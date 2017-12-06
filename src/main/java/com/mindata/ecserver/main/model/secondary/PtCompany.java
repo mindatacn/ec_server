@@ -71,13 +71,13 @@ public class PtCompany extends BaseEntity {
     /**
      * 在EC的公司id
      */
-    private Integer corpId;
+    private Long corpId;
 
-    public Integer getCorpId() {
+    public Long getCorpId() {
         return corpId;
     }
 
-    public void setCorpId(Integer corpId) {
+    public void setCorpId(Long corpId) {
         this.corpId = corpId;
     }
 

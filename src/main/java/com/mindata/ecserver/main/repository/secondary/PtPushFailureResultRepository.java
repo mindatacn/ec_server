@@ -36,8 +36,11 @@ public interface PtPushFailureResultRepository extends JpaRepository<PtPushFailu
     /**
      * 查询所有推送失败的记录
      * @param var1
+     * 复杂查询
      * @param var2
+     * 分页
      * @return
+     * 分页集合
      */
     Page<PtPushFailureResult> findAll(Specification<PtPushFailureResult> var1, Pageable var2);
 }

@@ -95,7 +95,7 @@ public class EcContactManager {
      * 结果
      */
     public EcContactEntity findById(Long id) {
-        return contactRepository.findById(id);
+        return contactRepository.findOne(id);
     }
 
 

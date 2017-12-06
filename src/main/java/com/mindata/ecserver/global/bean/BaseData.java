@@ -8,6 +8,15 @@ public class BaseData {
     private String message;
     private Object data;
 
+    @Override
+    public String toString() {
+        return "BaseData{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public BaseData setCode(ResultCode resultCode) {
         this.code = resultCode.code;
         return this;

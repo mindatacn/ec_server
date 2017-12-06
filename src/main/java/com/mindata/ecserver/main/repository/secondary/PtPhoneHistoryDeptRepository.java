@@ -51,5 +51,12 @@ public interface PtPhoneHistoryDeptRepository extends JpaRepository<PtPhoneHisto
      */
     Integer countByDeptIdAndStartTimeBetween(Long ecDeptId, Date begin, Date end);
 
+    /**
+     * 按部门查询
+     *
+     * @param deptId
+     *         deptId
+     * @return 结果集
+     */
     List<PtPhoneHistoryDept> findByDeptId(Long deptId);
 }

@@ -35,9 +35,6 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
      */
     List<EcContactEntity> findByIdIn(List<Long> ids);
 
-
-    EcContactEntity findById(Long id);
-
     List<EcContactEntity> findByState(Integer state);
 
     /**
@@ -70,6 +67,8 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
 
     /**
      * 按城市查询数据总量
+     * @param province
+     * 省
      *
      * @return 分组后的集合
      */
@@ -78,7 +77,8 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
 
     /**
      * 按行业查询数据总量
-     *
+     * @param city
+     * 市
      * @return 分组后的集合
      */
     @Query(value = "SELECT vocation, COUNT(vocation) FROM EcContactEntity WHERE state = 0 AND city = ?1 GROUP BY " +

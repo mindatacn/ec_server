@@ -33,4 +33,12 @@ public class TokenExpire {
     public void setExpire(Long expire) {
         this.expire = expire;
     }
+
+    @Override
+    public String toString() {
+        return "TokenExpire{" +
+                "token='" + token + '\'' +
+                ", expire=" + expire +
+                '}';
+    }
 }

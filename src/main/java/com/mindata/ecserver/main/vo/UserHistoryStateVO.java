@@ -61,4 +61,16 @@ public class UserHistoryStateVO {
     public void setScale(String scale) {
         this.scale = scale;
     }
+
+    @Override
+    public String toString() {
+        return "UserHistoryStateVO{" +
+                "name='" + name + '\'' +
+                ", hasDone='" + hasDone + '\'' +
+                ", noDone='" + noDone + '\'' +
+                ", shouldDone='" + shouldDone + '\'' +
+                ", scale='" + scale + '\'' +
+                ", noScale='" + noScale + '\'' +
+                '}';
+    }
 }

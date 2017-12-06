@@ -42,7 +42,7 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
     List<PtPushSuccessResult> findByContactId(Long contactId);
 
     /**
-     * 根据mobile查询crmid
+     * 根据mobile查询crmId
      *
      * @param mobile
      *         mobile

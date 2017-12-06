@@ -43,13 +43,9 @@ public class CompanyService extends BaseService {
      *
      * @return id
      */
-    public Integer getCorpId() {
+    public Long getCorpId() {
         PtCompany ptCompany = findNowCompany();
-        if (ptCompany == null) {
-            return null;
-        } else {
-            return ptCompany.getCorpId();
-        }
+        return ptCompany == null ? null : ptCompany.getCorpId();
     }
 
     /**

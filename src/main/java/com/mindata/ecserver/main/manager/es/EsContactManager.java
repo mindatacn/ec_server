@@ -63,7 +63,6 @@ public class EsContactManager extends BaseService {
      *         body
      * @return 结果
      */
-    @SuppressWarnings("Duplicates")
     public SimplePage<ContactVO> findByRequestBody(ContactRequestBody contactRequestBody) {
         BoolQueryBuilder boolQuery = boolQuery();
 
@@ -130,13 +129,17 @@ public class EsContactManager extends BaseService {
         if (contactRequestBody.getSize() != null) {
             size = contactRequestBody.getSize();
         }
-        //Sort.Direction direction = Constant.DIRECTION;
-        //String orderBy = "id";
         Pageable pageable = new PageRequest(page, size);
 
         SearchQuery searchQuery = builder.withPageable(pageable).build();
         List<EsContact> esContacts = elasticsearchTemplate.queryForList(searchQuery, EsContact.class);
+        List<ContactVO> contactVOS = parse(esContacts);
 
+        return new SimplePage<>((int) totalCount / size + 1, totalCount, contactVOS);
+    }
+
+    @SuppressWarnings("Duplicates")
+    private List<ContactVO> parse(List<EsContact> esContacts) {
         List<ContactVO> contactVOS = new ArrayList<>();
         for (EsContact esContact : esContacts) {
             ContactVO vo = new ContactVO();
@@ -153,6 +156,6 @@ public class EsContactManager extends BaseService {
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             contactVOS.add(vo);
         }
-        return new SimplePage<>((int) totalCount / size + 1, totalCount, contactVOS);
+        return contactVOS;
     }
 }

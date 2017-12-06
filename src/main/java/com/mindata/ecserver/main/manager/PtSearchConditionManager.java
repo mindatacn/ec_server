@@ -8,7 +8,6 @@ import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +60,6 @@ public class PtSearchConditionManager {
         Criteria<PtSearchCondition> criteria = new Criteria<>();
         criteria.add(Restrictions.hasMembers("as.name", "abc"));
         criteria.add(Restrictions.hasMembers("provinces", "110000", "120000"));
-        Page page = ptSearchConditionRepository.findAll(criteria, new PageRequest(0, 10));
-        return page;
+        return ptSearchConditionRepository.findAll(criteria, new PageRequest(0, 10));
     }
 }

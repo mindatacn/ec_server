@@ -63,6 +63,7 @@ public class UserRoleCache extends BaseCache {
      * @param event
      *         事件
      */
+    @SuppressWarnings("unchecked")
     @EventListener
     public void listenUserRoleChange(UserRoleChangeEvent event) {
         List<Long> userIds = (List<Long>) event.getSource();

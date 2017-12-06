@@ -42,6 +42,13 @@ public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHi
      */
     Integer countByCompanyIdAndStartTimeBetween(Long companyId, Date begin, Date end);
 
+    /**
+     * 查询某公司通话历史
+     *
+     * @param companyId
+     *         companyId
+     * @return 结果集
+     */
     List<PtPhoneHistoryCompany> findByCompanyId(Long companyId);
 
     /**

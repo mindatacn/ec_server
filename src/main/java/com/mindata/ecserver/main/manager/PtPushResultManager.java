@@ -126,7 +126,6 @@ public class PtPushResultManager {
             result.setOptUserId(optUserId);
             result.setProvince(contactEntity.getProvince());
             result.setWebsiteId(contactEntity.getWebsiteId());
-            //TODO
             result.setVocation(contactEntity.getVocation());
             ptPushSuccessResultRepository.save(result);
             //将contact表的state变更为成功

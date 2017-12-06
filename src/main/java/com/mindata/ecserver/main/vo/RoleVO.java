@@ -17,4 +17,11 @@ public class RoleVO {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "RoleVO{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

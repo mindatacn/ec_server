@@ -60,6 +60,7 @@ public class RoleMenuCache extends BaseCache {
      * @param roleMenuChangeEvent
      *         菜单事件
      */
+    @SuppressWarnings("unchecked")
     @EventListener
     @Order(0)
     public void menuCrud(RoleMenuChangeEvent roleMenuChangeEvent) {

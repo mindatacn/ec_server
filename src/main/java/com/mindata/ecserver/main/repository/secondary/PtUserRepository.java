@@ -55,15 +55,21 @@ public interface PtUserRepository extends JpaRepository<PtUser, Long> {
 
     /**
      * 根据状态和名字模糊查询
+     *
      * @param state
+     *         是否可用
      * @param name
-     * @return
+     *         名字
+     * @return 结果集
      */
-    List<PtUser> findByStateAndNameLike(Integer state,String name);
+    List<PtUser> findByStateAndNameLike(Integer state, String name);
+
     /**
      * 根据状态查询所有
+     *
      * @param state
-     * @return
+     *         状态
+     * @return 结果
      */
     List<PtUser> findByState(Integer state);
 }

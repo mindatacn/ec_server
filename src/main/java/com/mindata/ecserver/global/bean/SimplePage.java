@@ -50,4 +50,13 @@ public class SimplePage<T> {
     public void setList(List<T> list) {
         this.list = list;
     }
+
+    @Override
+    public String toString() {
+        return "SimplePage{" +
+                "totalPage=" + totalPage +
+                ", totalCount=" + totalCount +
+                ", list=" + list +
+                '}';
+    }
 }

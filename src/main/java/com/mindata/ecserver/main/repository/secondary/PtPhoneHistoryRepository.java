@@ -23,6 +23,20 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
             " from PtPhoneHistory where ecUserId = ?1 and startTime between ?2 and ?3")
     List<Object[]> findCount(Long ecUserId, Date begin, Date end);
 
+    /**
+     * 查询某段时间通话大于多少秒的总数量
+     *
+     * @param seconds
+     *         秒数
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 总数量
+     */
+    @Query("select count(distinct crmId) from PtPhoneHistory where callTime > ?1 and startTime between ?2 and ?3")
+    Long countCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
+
     List<PtPhoneHistory> findByEcUserIdAndStartTimeBetween(Long ecUserId, Date begin, Date end);
 
     /**

@@ -63,5 +63,19 @@ public class ContactController {
     public BaseData findCountByDay(String begin, String end) {
         return ResultGenerator.genSuccessResult(contactService.findCountByDateBetween(begin, end));
     }
+
+    /**
+     * 查询某段时间的客户意向率、有效沟通量
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 结果
+     */
+    @GetMapping("/saleState")
+    public BaseData saleState(String begin, String end) {
+        return ResultGenerator.genSuccessResult(contactService.findCountByDateBetween(begin, end));
+    }
 }
 

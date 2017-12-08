@@ -43,6 +43,18 @@ public class PtPhoneHistoryManager {
     private int maxPageNo;
 
     /**
+     * 查询通话大于多少秒的总数量
+     *
+     * @param seconds
+     *         多少秒
+     * @return 数量
+     */
+    public Long findTotalCountByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
+        return ptPhoneHistoryRepository.countCallTimeGreaterThanAndStartTimeBetween(seconds, begin,
+                end);
+    }
+
+    /**
      * 查询某客户的累计通话时长
      *
      * @param crmId
@@ -74,8 +86,7 @@ public class PtPhoneHistoryManager {
      *
      * @param userId
      *         userId
-     * @return
-     * 统计信息
+     * @return 统计信息
      */
     public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd, boolean force) throws
             IOException {

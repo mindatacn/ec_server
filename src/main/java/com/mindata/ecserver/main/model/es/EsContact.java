@@ -117,6 +117,18 @@ public class EsContact {
             format = DateFormat.custom, pattern = "dd-MM-yyyy hh:mm:ss"
     )
     private Long insertTime;
+    /**
+     * 公司评分打分
+     */
+    private Double companyScore;
+
+    public Double getCompanyScore() {
+        return companyScore;
+    }
+
+    public void setCompanyScore(Double companyScore) {
+        this.companyScore = companyScore;
+    }
 
     public String getMainJob() {
         return mainJob;

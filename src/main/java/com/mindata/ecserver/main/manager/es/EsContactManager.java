@@ -8,6 +8,7 @@ import com.mindata.ecserver.main.repository.es.EsContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.ContactVO;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -152,6 +153,7 @@ public class EsContactManager extends BaseService {
             }
             vo.setName(esContact.getName());
             vo.setAddress(esContact.getAddress());
+            vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore()));
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             contactVOS.add(vo);

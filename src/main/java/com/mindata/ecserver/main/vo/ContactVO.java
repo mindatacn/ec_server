@@ -33,6 +33,18 @@ public class ContactVO {
      * 电话
      */
     private String phone;
+    /**
+     * 公司打分
+     */
+    private Double companyScore;
+
+    public Double getCompanyScore() {
+        return companyScore;
+    }
+
+    public void setCompanyScore(Double companyScore) {
+        this.companyScore = companyScore;
+    }
 
     public String getAddress() {
         return address;
@@ -109,6 +121,7 @@ public class ContactVO {
                 ", address='" + address + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", phone='" + phone + '\'' +
+                ", companyScore=" + companyScore +
                 '}';
     }
 }

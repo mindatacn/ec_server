@@ -176,4 +176,22 @@ public class PtUser extends BaseEntity {
     public void setMemo(String memo) {
         this.memo = memo;
     }
+
+    @Override
+    public String toString() {
+        return "PtUser{" +
+                "name='" + name + '\'' +
+                ", account='" + account + '\'' +
+                ", companyId=" + companyId +
+                ", departmentId=" + departmentId +
+                ", title='" + title + '\'' +
+                ", jobNumber='" + jobNumber + '\'' +
+                ", ecUserId=" + ecUserId +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", memo='" + memo + '\'' +
+                ", state=" + state +
+                ", roles=" + roles +
+                '}';
+    }
 }

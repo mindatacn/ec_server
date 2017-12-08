@@ -45,6 +45,21 @@ public class CommonUtil {
     }
 
     /**
+     * 截取double2位
+     *
+     * @param d
+     *         d
+     * @return 截取后结果
+     */
+    public static double cutDouble2(Double d) {
+        if (d == null) {
+            return 0.00;
+        }
+        DecimalFormat df = new DecimalFormat("######0.00");
+        return Double.parseDouble(df.format(d));
+    }
+
+    /**
      * 获取加密后的密码
      *
      * @return 密码

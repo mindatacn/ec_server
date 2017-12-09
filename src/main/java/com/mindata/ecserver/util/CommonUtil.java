@@ -51,12 +51,20 @@ public class CommonUtil {
      *         d
      * @return 截取后结果
      */
-    public static double cutDouble2(Double d) {
+    public static Double cutDouble2(Double d) {
         if (d == null) {
             return 0.00;
         }
-        DecimalFormat df = new DecimalFormat("######0.00");
+        DecimalFormat df = new DecimalFormat("######0.000");
         return Double.parseDouble(df.format(d));
+    }
+
+    public static Double parsePercent(Long var1, Long var2) {
+        try {
+            return cutDouble2(var1 * 1.0 / var2);
+        } catch (Exception e) {
+            return 0.000;
+        }
     }
 
     /**

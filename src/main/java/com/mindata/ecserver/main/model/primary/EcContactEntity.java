@@ -352,4 +352,37 @@ public class EcContactEntity {
     public void setState(Integer state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "EcContactEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", legal=" + legal +
+                ", gender=" + gender +
+                ", mobile='" + mobile + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", fax='" + fax + '\'' +
+                ", province=" + province +
+                ", city=" + city +
+                ", title='" + title + '\'' +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", address='" + address + '\'' +
+                ", vocation=" + vocation +
+                ", url='" + url + '\'' +
+                ", memo='" + memo + '\'' +
+                ", vocationTag=" + vocationTag +
+                ", memberSizeTag=" + memberSizeTag +
+                ", needSale=" + needSale +
+                ", websiteId=" + websiteId +
+                ", state=" + state +
+                ", compId=" + compId +
+                ", companyScore=" + companyScore +
+                ", createTime=" + createTime +
+                ", jobName='" + jobName + '\'' +
+                '}';
+    }
 }

@@ -19,11 +19,18 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
      *         结束
      * @return 总量
      */
-    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateTime between ?1 and ?2")
+    @Query(value = "SELECT count(DISTINCT crm_id) FROM company.ec_customer_operation WHERE operate_time BETWEEN ?1 " +
+            "AND ?2 AND crm_id " +
+            "NOT " +
+            "IN ( SELECT crm_id FROM company.ec_bjmd_olddata)", nativeQuery = true)
     Long countDistinctByCrmIdAndOperateTimeBetween(Date begin, Date end);
 
-    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateTime between ?1 and ?2 and (content " +
-            "like '%百度技术%' or content like '%网站咨询%' or content like '%400%')")
+    @Query(value = "SELECT count(DISTINCT crm_id) FROM company.ec_customer_operation WHERE operate_time BETWEEN ?1 " +
+            "AND ?2 AND" +
+            " (content " +
+            "LIKE '%百度技术%' OR content LIKE '%网站咨询%' OR content LIKE '%400%') AND crm_id NOT IN ( SELECT crm_id FROM " +
+            "company.ec_bjmd_olddata" +
+            ")", nativeQuery = true)
     Long countDistinctByCrmIdAndOperateTimeBetweenAndShiChang(Date begin, Date end);
 
     /**
@@ -37,8 +44,11 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
      *         结束时间
      * @return 结果
      */
-    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateType = ?1 and operateTime between ?2 " +
-            "and ?3")
+    @Query(value = "SELECT count(DISTINCT crm_id) FROM company.ec_customer_operation WHERE operate_type = ?1 AND " +
+            "crm_id NOT " +
+            "IN ( SELECT " +
+            "crm_id FROM company.ec_bjmd_olddata) AND operate_time BETWEEN ?2 " +
+            "AND ?3 ", nativeQuery = true)
     Long countAddedAndOperateTimeBetween(String operateType, Date begin, Date end);
 
     /**
@@ -57,13 +67,13 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
             "like '%网站咨询%' or content like '%400%') and operateTime " +
             "between " +
             "?2 " +
-            "and ?3 ")
+            "and ?3")
     Long countAddedAndOperateTimeBetweenAndIsShiChang(String operateType, Date begin, Date end);
 
     @Query("select count(DISTINCT crmId) from EcCustomerOperation where 1 = 1 and (content like '%初步意向%' or content " +
             "like '%意向客户%') and operateTime " +
             "between " +
             "?1 " +
-            "and ?2 ")
+            "and ?2")
     Long countIntentedAndOperateTimeBetween(Date begin, Date end);
 }

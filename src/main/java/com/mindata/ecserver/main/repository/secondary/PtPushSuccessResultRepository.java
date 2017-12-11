@@ -99,7 +99,9 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      * @return 总数量
      */
     @Query(value = "SELECT count(DISTINCT crm_id) FROM pt_push_success_result WHERE crm_id IN " +
-            "(SELECT crm_id FROM pt_phone_history WHERE call_time > ?1 AND start_time BETWEEN ?2 AND ?3)", nativeQuery =
+            "(SELECT crm_id FROM pt_phone_history WHERE call_time > ?1 AND start_time BETWEEN ?2 AND ?3)" +
+            "",
+            nativeQuery =
             true)
     Long countCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
 

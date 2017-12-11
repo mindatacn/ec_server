@@ -73,9 +73,15 @@ public class CustomerService {
                 CommonUtil.parsePercent(otherAddedTotalCount, addedTotalCount),
                 CommonUtil.parsePercent(shichangAddedTotalCount, addedTotalCount)));
 
-        //接通量
+        //接通量，大于0的
         Long connectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(0, beginTime, endTime);
+        //总的，包含0的
+        Long totalConnectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(-1, beginTime, endTime);
+        //大于0的
         Long mdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(0,
+                beginTime, endTime);
+        //包含0的
+        Long totalMdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(-1,
                 beginTime, endTime);
         Long shichangConnectedCount = mdConnectedCount / 23;
         Long otherConnectedCount = connectedCount - mdConnectedCount - shichangConnectedCount;
@@ -83,8 +89,8 @@ public class CustomerService {
                 connectedCount));
         //接通率 技术接通量/技术线索总量
         saleStateVO.setConnectedContactPercent(Arrays.asList(
-                CommonUtil.parsePercent(mdConnectedCount, maidaTotalContact),
-                CommonUtil.parsePercent(otherConnectedCount, otherTotalContact),
+                CommonUtil.parsePercent(mdConnectedCount, totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnectedCount, totalConnectedCount - totalMdConnectedCount),
                 CommonUtil.parsePercent(shichangConnectedCount, shichangTotalContact)
         ));
 

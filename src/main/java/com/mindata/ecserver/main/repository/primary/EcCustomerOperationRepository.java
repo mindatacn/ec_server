@@ -84,4 +84,16 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
             "?1 " +
             "AND ?2", nativeQuery = true)
     Long countIntentedAndOperateTimeBetween(Date begin, Date end);
+
+    @Query(value = "SELECT count(DISTINCT crm_id) FROM company.ec_customer_operation WHERE (content" +
+            " LIKE '%百度技术%' " +
+            " OR content" +
+            " LIKE '%网站咨询%' OR content LIKE '%400%') AND crm_id IN (SELECT " +
+            " crm_id " +
+            "FROM company.ec_customer_operation WHERE 1 = 1 AND crm_id NOT IN ( " +
+            "SELECT crm_id FROM company.ec_bjmd_olddata) AND " +
+            "(content LIKE " +
+            "'%初步意向%' OR content LIKE '%意向客户%' )" +
+            ") AND operate_time BETWEEN ?1 AND ?2", nativeQuery = true)
+    Long countShiChangIntentedAndOperateTimeBetween(Date begin, Date end);
 }

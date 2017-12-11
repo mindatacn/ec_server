@@ -83,22 +83,25 @@ public class CustomerService {
         //包含0的
         Long totalMdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(-1,
                 beginTime, endTime);
-        Long shichangConnectedCount = mdConnectedCount / 23;
+        Long shichangConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(0, beginTime, endTime);
+        Long totalShichangConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(-1, beginTime,
+                endTime);
         Long otherConnectedCount = connectedCount - mdConnectedCount - shichangConnectedCount;
         saleStateVO.setConnectedContact(Arrays.asList(mdConnectedCount, otherConnectedCount, shichangConnectedCount,
                 connectedCount));
-        //接通率 技术接通量/技术线索总量
+        //接通率 技术接通量/包含时长为0的接通量
         saleStateVO.setConnectedContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnectedCount, totalMdConnectedCount),
                 CommonUtil.parsePercent(otherConnectedCount, totalConnectedCount - totalMdConnectedCount),
-                CommonUtil.parsePercent(shichangConnectedCount, shichangTotalContact)
+                CommonUtil.parsePercent(shichangConnectedCount, totalShichangConnectedCount)
         ));
 
         //有意向线索量，ec_customer_operation
         Long intentTotalCount = ecCustomerOperationManager.countByIntentedAndTimeBetween(beginTime, endTime);
         Long mdIntentTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndIsIntent(beginTime,
                 endTime);
-        Long shichangIntentTotalCount = mdIntentTotalCount / 23;
+        Long shichangIntentTotalCount = ecCustomerOperationManager.countShiChangIntentedAndTimeBetween(beginTime,
+                endTime);
         Long otherIntentTotalCount = intentTotalCount - mdIntentTotalCount - shichangIntentTotalCount;
         saleStateVO.setIntentedContact(Arrays.asList(mdIntentTotalCount, otherIntentTotalCount,
                 shichangIntentTotalCount,
@@ -113,7 +116,7 @@ public class CustomerService {
         Long validCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(30, beginTime, endTime);
         Long mdValidCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(30, beginTime,
                 endTime);
-        Long shichangValidCount = mdValidCount / 23;
+        Long shichangValidCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(30, beginTime, endTime);
         Long otherValidCount = validCount - mdValidCount - shichangValidCount;
         saleStateVO.setValidedContact(Arrays.asList(mdValidCount, otherValidCount, shichangValidCount, validCount));
         //有效沟通率是：技术有效沟通量 / 技术接通量

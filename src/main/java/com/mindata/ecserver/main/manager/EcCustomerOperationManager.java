@@ -78,4 +78,8 @@ public class EcCustomerOperationManager {
     public Long countByIntentedAndTimeBetween(Date begin, Date end) {
         return ecCustomerOperationRepository.countIntentedAndOperateTimeBetween(begin, end);
     }
+
+    public Long countShiChangIntentedAndTimeBetween(Date begin, Date end) {
+        return ecCustomerOperationRepository.countShiChangIntentedAndOperateTimeBetween(begin, end);
+    }
 }

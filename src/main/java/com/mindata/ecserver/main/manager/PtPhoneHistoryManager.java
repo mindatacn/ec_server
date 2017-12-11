@@ -54,6 +54,10 @@ public class PtPhoneHistoryManager {
                 end);
     }
 
+    public Long findShiChangByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
+        return ptPhoneHistoryRepository.countShiChangCallTimeGreaterThanAndStartTimeBetween(seconds, begin, end);
+    }
+
     /**
      * 查询某客户的累计通话时长
      *

@@ -43,4 +43,7 @@ public interface CacheConstant extends Constant {
     String CACHE_EC_TOKEN_KEY = "ec_user_token_key";
 
     String CACHE_EC_HEADER_CROP_ID = "CORP_ID";
+
+    String SALE_STATE_KEY = "sale_state_key";
+
 }

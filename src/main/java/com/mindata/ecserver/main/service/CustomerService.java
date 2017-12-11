@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.global.cache.SaleStateCache;
 import com.mindata.ecserver.main.manager.EcCustomerManager;
 import com.mindata.ecserver.main.manager.EcCustomerOperationManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryManager;
@@ -25,6 +26,8 @@ public class CustomerService {
     private PtPushSuccessResultRepository ptPushSuccessResultRepository;
     @Resource
     private PtPhoneHistoryManager ptPhoneHistoryManager;
+    @Resource
+    private SaleStateCache saleStateCache;
 
     /**
      * 分析某段时间的已沟通的线索信息和销售信息
@@ -32,10 +35,15 @@ public class CustomerService {
      * @return 聚合数据
      */
     public SaleStateVO analyzeSaleState(String begin, String end) {
+        SaleStateVO saleStateVO = saleStateCache.getSaleStateVO(begin, end);
+        if (saleStateVO != null) {
+            return saleStateVO;
+        }
+
         Date beginTime = CommonUtil.beginOfDay(begin);
         Date endTime = CommonUtil.endOfDay(end);
 
-        SaleStateVO saleStateVO = new SaleStateVO();
+        saleStateVO = new SaleStateVO();
         //时间段总的沟通客户数
         Long totalContact = ecCustomerOperationManager.countDistinctCustomerBetween(beginTime, endTime);
         //由技术提供的
@@ -124,6 +132,7 @@ public class CustomerService {
                 CommonUtil.parsePercent(shichangSaledTotalCount, shichangConnectedCount)
         ));
 
+        saleStateCache.saveSaleState(begin, end, saleStateVO);
         return saleStateVO;
     }
 }

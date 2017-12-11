@@ -117,14 +117,8 @@ public class ContactService extends BaseService {
             size = contactRequestBody.getSize();
         }
         Sort.Direction direction = Constant.DIRECTION;
-        if (contactRequestBody.getOrder() != null && contactRequestBody.getOrder()) {
-            direction = Sort.Direction.ASC;
-        }
-        String orderBy = "id";
-        if (!StrUtil.isEmpty(contactRequestBody.getOrderBy())) {
-            orderBy = contactRequestBody.getOrderBy();
-        }
-        Pageable pageable = new PageRequest(page, size, direction, orderBy);
+        Sort sort = new Sort(direction, "companyScore", "id");
+        Pageable pageable = new PageRequest(page, size, sort);
         Page<EcContactEntity> ecContactEntities = ecContactManager.findAll(criteria, pageable);
         List<ContactVO> contactVOS = new ArrayList<>(ecContactEntities.getContent().size());
         for (EcContactEntity ecContactEntity : ecContactEntities) {

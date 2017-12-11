@@ -62,18 +62,26 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
      *         结束时间
      * @return 结果
      */
-    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateType = ?1 and (content like '%百度技术%' " +
+    @Query(value = "select count(DISTINCT crm_id) from company.ec_customer_operation where operate_type = ?1 AND " +
+            "crm_id NOT " +
+            "IN ( SELECT crm_id FROM company.ec_bjmd_olddata) " +
+            "and " +
+            "(content " +
+            "like '%百度技术%' " +
             "or content " +
-            "like '%网站咨询%' or content like '%400%') and operateTime " +
+            "like '%网站咨询%' or content like '%400%') and operate_time " +
             "between " +
             "?2 " +
-            "and ?3")
+            "and ?3", nativeQuery = true)
     Long countAddedAndOperateTimeBetweenAndIsShiChang(String operateType, Date begin, Date end);
 
-    @Query("select count(DISTINCT crmId) from EcCustomerOperation where 1 = 1 and (content like '%初步意向%' or content " +
-            "like '%意向客户%') and operateTime " +
-            "between " +
+    @Query(value = "SELECT count(DISTINCT crm_id) FROM company.ec_customer_operation WHERE 1 = 1 AND crm_id NOT IN ( " +
+            "SELECT crm_id FROM company.ec_bjmd_olddata) AND " +
+            "(content LIKE " +
+            "'%初步意向%' OR content " +
+            "LIKE '%意向客户%') AND operate_time " +
+            "BETWEEN " +
             "?1 " +
-            "and ?2")
+            "AND ?2", nativeQuery = true)
     Long countIntentedAndOperateTimeBetween(Date begin, Date end);
 }

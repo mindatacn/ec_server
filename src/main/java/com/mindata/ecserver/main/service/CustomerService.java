@@ -88,9 +88,9 @@ public class CustomerService {
                 CommonUtil.parsePercent(shichangConnectedCount, shichangTotalContact)
         ));
 
-        //有意向线索量，customer里status_code为2，3，4
-        Long intentTotalCount = ecCustomerManager.findTotalIntentCount("2, 3, 4", beginTime, endTime);
-        Long mdIntentTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndIsIntent("2, 3, 4", beginTime,
+        //有意向线索量，ec_customer_operation
+        Long intentTotalCount = ecCustomerOperationManager.countByIntentedAndTimeBetween(beginTime, endTime);
+        Long mdIntentTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndIsIntent(beginTime,
                 endTime);
         Long shichangIntentTotalCount = mdIntentTotalCount / 23;
         Long otherIntentTotalCount = intentTotalCount - mdIntentTotalCount - shichangIntentTotalCount;

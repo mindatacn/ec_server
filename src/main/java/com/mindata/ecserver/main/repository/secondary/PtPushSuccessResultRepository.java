@@ -72,7 +72,7 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
     Long countByCrmIdInListAndIsSaled(String statusCodes, Date begin, Date end);
 
     /**
-     * 查询某段时间成交的客户总数，且客户是我们推送过去的
+     * 查询某段时间有意向的客户
      *
      * @param begin
      *         开始时间
@@ -81,13 +81,10 @@ public interface PtPushSuccessResultRepository extends JpaRepository<PtPushSucce
      * @return 数量
      */
     @Query(value = "SELECT count(DISTINCT id) FROM ec_server.`pt_push_success_result` WHERE crm_id IN (" +
-            "SELECT crm_id FROM company.`ec_customer` WHERE status_code IN (?1) AND crm_id IN(SELECT" +
-            " " +
-            "crm_id FROM" +
-            " " +
-            "company.`ec_customer_operation` WHERE `operate_time` BETWEEN ?2 AND ?3 " +
+            "(SELECT crm_id FROM company.`ec_customer_operation` WHERE 1 = 1 and `operate_time` BETWEEN ?1 AND ?2 " +
+            "AND ( content like '%初步意向%' or content like '%意向客户%' )" +
             "GROUP BY crm_id))", nativeQuery = true)
-    Long countByCrmIdInListAndIsIntent(String statusCodes, Date begin, Date end);
+    Long countByCrmIdInListAndIsIntent(Date begin, Date end);
 
     /**
      * 查询某段时间通话大于多少秒的总数量，且是我们推送的

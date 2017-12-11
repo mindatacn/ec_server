@@ -65,4 +65,17 @@ public class EcCustomerOperationManager {
     public Long countByOperateTypeAndTimeBetweenAndIsShiChang(String type, Date begin, Date end) {
         return ecCustomerOperationRepository.countAddedAndOperateTimeBetweenAndIsShiChang(type, begin, end);
     }
+
+    /**
+     * 查询某段时间有意向
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @return 数量
+     */
+    public Long countByIntentedAndTimeBetween(Date begin, Date end) {
+        return ecCustomerOperationRepository.countIntentedAndOperateTimeBetween(begin, end);
+    }
 }

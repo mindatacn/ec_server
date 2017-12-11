@@ -3,7 +3,6 @@ package com.mindata.ecserver.main.service;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryUserManager;
-import com.mindata.ecserver.main.manager.PtRoleManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryUser;
@@ -31,8 +30,6 @@ public class PhoneHistoryUserService {
     private PtUserManager ptUserManager;
     @Resource
     private PtDepartmentManager ptDepartmentManager;
-    @Resource
-    private PtRoleManager ptRoleManager;
 
     /**
      * 个人历史营销统计功能
@@ -47,18 +44,6 @@ public class PhoneHistoryUserService {
         }
         //查整个公司
         return findPersonalHistoryByCompanyId(ptUser.getCompanyId(), beginDate, endDate);
-        //List<PtRole> roles = ptRoleManager.findByUserId(ptUser.getId());
-        //boolean manager = false;
-        //for (PtRole role : roles) {
-        //    if (Constant.ROLE_MANAGER.equals(role.getName())) {
-        //        manager = true;
-        //        break;
-        //    }
-        //}
-        //if (!manager) {
-        //    deptId = ptUser.getDepartmentId();
-        //}
-
     }
 
     public PhoneHistoryUserBeanVO findPersonalHistoryByUserId(Long userId, String begin, String end) {
@@ -97,16 +82,5 @@ public class PhoneHistoryUserService {
     private Page<PtPhoneHistoryUser> findByUserIdAndDate(Long userId, Date begin, Date end, Pageable pageable) {
         //分页查询这段时间内的分页数据
         return ptPhoneHistoryUserManager.findByUserId(userId, begin, end, pageable);
-        //List<PhoneHistoryBeanVO> beanVOS = page.getContent().stream().map(ptPhoneHistoryUser -> {
-        //    PhoneHistoryBeanVO vo = new PhoneHistoryBeanVO();
-        //    vo.setPushCount(ptPhoneHistoryUser.getPushCount());
-        //    vo.setTotalCallCount(ptPhoneHistoryUser.getTotalCallCount());
-        //    vo.setValidCount(ptPhoneHistoryUser.getValidCount());
-        //    vo.setTotalCallTime(ptPhoneHistoryUser.getTotalCallTime());
-        //    vo.setTotalCustomer(ptPhoneHistoryUser.getTotalCustomer());
-        //    return vo;
-        //}).collect(Collectors.toList());
-        //SimplePage<PhoneHistoryBeanVO> simplePage = new SimplePage<>(page.getTotalPages(), page.getTotalElements(),
-        //        beanVOS);
     }
 }

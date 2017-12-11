@@ -37,7 +37,8 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
      *         结束时间
      * @return 结果
      */
-    @Query("select count(id) from EcCustomerOperation where operateType = ?1 and operateTime between ?2 and ?3")
+    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateType = ?1 and operateTime between ?2 " +
+            "and ?3")
     Long countAddedAndOperateTimeBetween(String operateType, Date begin, Date end);
 
     /**
@@ -51,14 +52,15 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
      *         结束时间
      * @return 结果
      */
-    @Query("select count(id) from EcCustomerOperation where operateType = ?1 and (content like '%百度技术%' or content " +
+    @Query("select count(DISTINCT crmId) from EcCustomerOperation where operateType = ?1 and (content like '%百度技术%' " +
+            "or content " +
             "like '%网站咨询%' or content like '%400%') and operateTime " +
             "between " +
             "?2 " +
             "and ?3 ")
     Long countAddedAndOperateTimeBetweenAndIsShiChang(String operateType, Date begin, Date end);
 
-    @Query("select count(id) from EcCustomerOperation where 1 = 1 and (content like '%初步意向%' or content " +
+    @Query("select count(DISTINCT crmId) from EcCustomerOperation where 1 = 1 and (content like '%初步意向%' or content " +
             "like '%意向客户%') and operateTime " +
             "between " +
             "?1 " +

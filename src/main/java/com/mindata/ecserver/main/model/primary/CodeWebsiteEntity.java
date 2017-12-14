@@ -65,4 +65,14 @@ public class CodeWebsiteEntity {
         result = 31 * result + (website != null ? website.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "CodeWebsiteEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", enname='" + enname + '\'' +
+                ", website='" + website + '\'' +
+                '}';
+    }
 }

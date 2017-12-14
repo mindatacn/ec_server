@@ -1,5 +1,7 @@
 package com.mindata.ecserver.main.model.primary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -10,7 +12,9 @@ import javax.persistence.*;
 public class CodeWebsiteEntity {
     private int id;
     private String name;
+    @JsonIgnore
     private String enname;
+    @JsonIgnore
     private String website;
 
     @Id

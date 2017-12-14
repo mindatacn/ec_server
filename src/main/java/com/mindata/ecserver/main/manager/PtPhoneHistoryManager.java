@@ -12,6 +12,8 @@ import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ public class PtPhoneHistoryManager {
     private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
     private int nowPageNo;
     private int maxPageNo;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 查询通话大于多少秒的总数量
@@ -124,6 +128,8 @@ public class PtPhoneHistoryManager {
                 getFromEc(ecUserId, tempBegin);
             }
 
+            logger.info("从EC获取到的ecUserId为" + ecUserId + "的通话历史数据为" + historyDataBeans.toString());
+
             //如果EC也没该用户的数据，我们就造一条
             if (CollectionUtil.isEmpty(historyDataBeans)) {
                 PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
@@ -134,6 +140,7 @@ public class PtPhoneHistoryManager {
                 ptPhoneHistory.setUpdateTime(CommonUtil.getNow());
                 save(ptPhoneHistory);
 
+                logger.info("ecUserId为" + ecUserId + "的通话历史数据为空");
                 //返回全为0
                 return generEmptyList();
             }

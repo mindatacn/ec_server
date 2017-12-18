@@ -2,6 +2,7 @@ package com.mindata.ecserver.ec.retrofit;
 
 import com.mindata.ecserver.ec.service.*;
 import org.springframework.stereotype.Component;
+import retrofit2.Retrofit;
 
 import javax.annotation.Resource;
 
@@ -11,37 +12,37 @@ import javax.annotation.Resource;
 @Component
 public class ServiceBuilder {
     @Resource
-    private RetrofitBuilder retrofitBuilder;
+    private Retrofit retrofit;
 
     public AuthService getAuthService() {
-        return retrofitBuilder.getRetrofit().create(AuthService.class);
+        return retrofit.create(AuthService.class);
     }
 
     public CompanyInfoService getCompanyInfoService() {
-        return retrofitBuilder.getRetrofit().create(CompanyInfoService.class);
+        return retrofit.create(CompanyInfoService.class);
     }
 
     public CustomerService getCustomerService() {
-        return retrofitBuilder.getRetrofit().create(CustomerService.class);
+        return retrofit.create(CustomerService.class);
     }
 
     public PhoneHistoryService getPhoneHistoryService() {
-        return retrofitBuilder.getRetrofit().create(PhoneHistoryService.class);
+        return retrofit.create(PhoneHistoryService.class);
     }
 
     public UserAccountService getUserAccountService() {
-        return retrofitBuilder.getRetrofit().create(UserAccountService.class);
+        return retrofit.create(UserAccountService.class);
     }
 
     public CustomerGroupInfoService getCustomerGroupInfoService(){
-        return retrofitBuilder.getRetrofit().create(CustomerGroupInfoService.class);
+        return retrofit.create(CustomerGroupInfoService.class);
     }
 
     public CustomerTagInfoService getClassInfoService(){
-        return retrofitBuilder.getRetrofit().create(CustomerTagInfoService.class);
+        return retrofit.create(CustomerTagInfoService.class);
     }
 
     public UserTrajectoryService getUserTrajectoryService() {
-        return retrofitBuilder.getRetrofit().create(UserTrajectoryService.class);
+        return retrofit.create(UserTrajectoryService.class);
     }
 }

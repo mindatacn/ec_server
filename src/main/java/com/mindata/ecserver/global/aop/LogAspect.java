@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -61,7 +62,8 @@ public class LogAspect {
             Object[] objects = joinPoint.getArgs();
             for (int i = 0; i < method.getParameters().length; i++) {
                 Parameter parameter = method.getParameters()[i];
-                if (parameter.isAnnotationPresent(RequestBody.class)) {
+                if (parameter.isAnnotationPresent(RequestBody.class) || parameter.isAnnotationPresent(ModelAttribute
+                        .class)) {
                     //记录application/json时的传参，SpringMVC中使用@RequestBody接收的值
                     logger.info(objects[i].toString());
                 }

@@ -82,7 +82,7 @@ public class PushController {
      * @return 结果
      */
     @GetMapping("/success")
-    public BaseData get(PushResultRequestBody pushResultRequestBody) {
+    public BaseData get(@ModelAttribute PushResultRequestBody pushResultRequestBody) {
         return ResultGenerator.genSuccessResult(pushSuccessResultService.findByConditions(pushResultRequestBody));
     }
 
@@ -90,7 +90,7 @@ public class PushController {
      * 查看推送失败的历史
      */
     @GetMapping("/failure")
-    public BaseData get(PushFailRequestBody pushFailRequestBody) {
+    public BaseData get(@ModelAttribute PushFailRequestBody pushFailRequestBody) {
 
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }

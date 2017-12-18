@@ -18,6 +18,8 @@ public interface Constant {
 
     String ES_INDEX_NAME = "ec-server";
     String ES_TYPE_NAME = "contact";
+    String ES_GEO_INDEX_NAME = "geo";
+    String ES_COORDINATE_TYPE_NAME = "coordinate";
 
     int SUCCESS = 1;
     int FAILURE = 0;

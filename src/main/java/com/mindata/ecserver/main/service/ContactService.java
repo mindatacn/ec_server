@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
+import com.mindata.ecserver.main.manager.CodeSizeManager;
 import com.mindata.ecserver.main.manager.EcCodeAreaManager;
 import com.mindata.ecserver.main.manager.EcContactManager;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
@@ -44,6 +45,8 @@ public class ContactService extends BaseService {
     private SearchConditionService searchConditionService;
     @Resource
     private EcCodeAreaManager ecCodeAreaManager;
+    @Resource
+    private CodeSizeManager codeSizeManager;
 
     private final String COUNT = "count";
     private final long PROVINCE_MIN_COUNT = 100;
@@ -135,6 +138,7 @@ public class ContactService extends BaseService {
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince() + ""));
             vo.setCompanyScore(CommonUtil.cutDouble2(ecContactEntity.getCompanyScore()));
+            vo.setMemberSizeTag(codeSizeManager.findById(ecContactEntity.getMemberSizeTag()).getName());
             contactVOS.add(vo);
         }
         return new SimplePage<>(ecContactEntities.getTotalPages(), ecContactEntities.getTotalElements(), contactVOS);

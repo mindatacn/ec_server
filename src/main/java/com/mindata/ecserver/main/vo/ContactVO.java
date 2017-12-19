@@ -34,6 +34,10 @@ public class ContactVO {
      */
     private String phone;
     /**
+     * 员工规模
+     */
+    private String memberSizeTag;
+    /**
      * 公司打分
      */
     private Double companyScore;
@@ -76,6 +80,14 @@ public class ContactVO {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getMemberSizeTag() {
+        return memberSizeTag;
+    }
+
+    public void setMemberSizeTag(String memberSizeTag) {
+        this.memberSizeTag = memberSizeTag;
     }
 
     public String getVocation() {

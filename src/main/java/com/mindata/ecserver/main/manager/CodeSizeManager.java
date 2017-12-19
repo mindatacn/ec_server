@@ -23,4 +23,8 @@ public class CodeSizeManager {
     public List<CodeSizeEntity> findAll() {
         return codeSizeRepository.findAll();
     }
+
+    public CodeSizeEntity findById(Integer id) {
+        return codeSizeRepository.findOne(id);
+    }
 }

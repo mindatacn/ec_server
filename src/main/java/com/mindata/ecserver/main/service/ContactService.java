@@ -138,7 +138,7 @@ public class ContactService extends BaseService {
             vo.setVocation(ecVocationCodeManager.findNameByCode(ecContactEntity.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(ecContactEntity.getProvince() + ""));
             vo.setCompanyScore(CommonUtil.cutDouble2(ecContactEntity.getCompanyScore()));
-            vo.setMemberSizeTag(codeSizeManager.findById(ecContactEntity.getMemberSizeTag()).getName());
+            vo.setMemberSizeTag(codeSizeManager.findNameById(ecContactEntity.getMemberSizeTag()));
             contactVOS.add(vo);
         }
         return new SimplePage<>(ecContactEntities.getTotalPages(), ecContactEntities.getTotalElements(), contactVOS);

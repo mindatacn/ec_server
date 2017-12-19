@@ -2,6 +2,7 @@ package com.mindata.ecserver.main.manager.es;
 
 import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.main.manager.CodeSizeManager;
 import com.mindata.ecserver.main.manager.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.repository.es.EsContactRepository;
@@ -41,6 +42,8 @@ public class EsContactManager extends BaseService {
     private EcVocationCodeManager ecVocationCodeManager;
     @Resource
     private EsContactRepository esContactRepository;
+    @Resource
+    private CodeSizeManager codeSizeManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -156,6 +159,7 @@ public class EsContactManager extends BaseService {
             vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore()));
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
+            vo.setMemberSizeTag(codeSizeManager.findNameById(esContact.getMemberSizeTag()));
             contactVOS.add(vo);
         }
         return contactVOS;

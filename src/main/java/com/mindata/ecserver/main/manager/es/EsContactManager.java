@@ -139,7 +139,13 @@ public class EsContactManager extends BaseService {
         List<EsContact> esContacts = elasticsearchTemplate.queryForList(searchQuery, EsContact.class);
         List<ContactVO> contactVOS = parse(esContacts);
 
-        return new SimplePage<>((int) totalCount / size + 1, totalCount, contactVOS);
+        int yu = (int) (totalCount % size);
+        int count = (int) (totalCount / size);
+        if (yu != 0) {
+            count += 1;
+        }
+
+        return new SimplePage<>(count, totalCount, contactVOS);
     }
 
     @SuppressWarnings("Duplicates")

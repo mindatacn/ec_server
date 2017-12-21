@@ -6,6 +6,7 @@ import com.mindata.ecserver.ec.model.response.CompanyUserBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CompanyInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
+import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
@@ -14,6 +15,8 @@ import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.ContactVO;
+import com.mindata.ecserver.main.vo.UserVO;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,8 @@ public class CompanyService extends BaseService {
     private ServiceBuilder serviceBuilder;
     @Resource
     private CallManager callManager;
+    @Resource
+    private UserService userService;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -105,6 +110,10 @@ public class CompanyService extends BaseService {
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId, force);
+        // 缓存同步之前的最大id
+        userService.setBeforeMaxId(ptUserManager.findMaxId());
         ptUserManager.addUsers(userBeanList, companyId, force);
+        // 缓存同步之后的最大id
+        userService.setAfterMaxId(ptUserManager.findMaxId());
     }
 }

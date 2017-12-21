@@ -5,8 +5,10 @@ import com.mindata.ecserver.ec.model.response.UserAccountData;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.UserAccountService;
 import com.mindata.ecserver.ec.util.CallManager;
+import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.bean.TokenExpire;
 import com.mindata.ecserver.global.cache.UserTokenCache;
+import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
@@ -16,14 +18,21 @@ import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
+import com.mindata.ecserver.main.requestbody.PtUserRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.RoleVO;
+import com.mindata.ecserver.main.vo.UserVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -229,5 +238,85 @@ public class UserService extends BaseService {
     public PtUserPushCount findPushCount() {
         return ptUserPushCountManager.findCountByUserId(ShiroKit.getCurrentUser().getId()
                 , null);
+    }
+
+    /**
+     * 缓存同步之前的用户最大id
+     *
+     * @param userId 用户id
+     */
+    public void setBeforeMaxId(Long userId) {
+        userTokenCache.setBeforeMaxId(userId);
+    }
+
+    /**
+     * 缓存同步之后的用户最大id
+     *
+     * @param userId 用户id
+     */
+    public void setAfterMaxId(Long userId) {
+        userTokenCache.setAfterMaxId(userId);
+    }
+
+    /**
+     * 获取同步之前的用户最大id
+     */
+    private String getBeforeMaxId() {
+        return userTokenCache.getBeforeMaxId();
+    }
+
+    /**
+     * 获取同步之后的用户最大id
+     */
+    private String getAfterMaxId() {
+        return userTokenCache.getAfterMaxId();
+    }
+
+    /**
+     * 查询同步后新增的用户信息
+     *
+     * @param requestBody 参数
+     * @return 结果
+     */
+    public SimplePage<UserVO> findByIdBetween(PtUserRequestBody requestBody) {
+        int page = Constant.PAGE_NUM;
+        if (requestBody.getPage() != null) {
+            page = requestBody.getPage();
+        }
+        int size = Constant.PAGE_SIZE;
+        if (requestBody.getSize() != null) {
+            size = requestBody.getSize();
+        }
+        Sort.Direction direction = Constant.DIRECTION;
+        Sort sort = new Sort(direction, "id");
+        Pageable pageable = new PageRequest(page, size, sort);
+        // 如果同步之前的最大id和同步之后的最大id一样 则没有新数据
+        if (getBeforeMaxId().equals(getAfterMaxId())) {
+            return new SimplePage<>();
+        }
+        Page<PtUser> ptUsers = userManager.findByIdBetween(Long.valueOf(getBeforeMaxId()), Long.valueOf(getAfterMaxId()), pageable);
+        List<UserVO> userVOS = new ArrayList<>();
+        for (PtUser ptUser : ptUsers) {
+            UserVO userVO = new UserVO();
+            userVO.setUserId(ptUser.getId());
+            userVO.setName(ptUser.getName());
+            userVO.setAccount(ptUser.getAccount());
+            userVOS.add(userVO);
+        }
+        return new SimplePage<>(ptUsers.getTotalPages(), ptUsers.getTotalElements(), userVOS);
+    }
+
+    /**
+     * 修改用户推送的阈值
+     *
+     * @param userId    用户id
+     * @param threshold 阈值
+     */
+    public int updateThresholdByUserId(Long userId, Integer threshold) {
+        PtUser ptUser = userManager.updateThresholdByUserId(userId, threshold);
+        if (ptUser != null) {
+            return 0;
+        }
+        return -1;
     }
 }

@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.main.requestbody.PtUserRequestBody;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -40,8 +41,7 @@ public class UserController {
     /**
      * 绑定EC账号
      *
-     * @param account
-     *         ec的手机号
+     * @param account ec的手机号
      * @return 结果
      */
     @PostMapping("/bindEc")
@@ -76,8 +76,7 @@ public class UserController {
     /**
      * 根据名字模糊查询
      *
-     * @param name
-     *         名字
+     * @param name 名字
      * @return 集合
      */
     @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
@@ -101,5 +100,29 @@ public class UserController {
     @GetMapping("/role")
     public BaseData queryRole() {
         return ResultGenerator.genSuccessResult(userService.findRole());
+    }
+
+    /**
+     * 查询同步后新添加的用户信息
+     */
+    @GetMapping("/idBetween")
+    public BaseData findNewlyUsers(PtUserRequestBody requestBody) {
+        return ResultGenerator.genSuccessResult(userService.findByIdBetween(requestBody));
+    }
+
+    /**
+     * 修改用户推送的阈值
+     *
+     * @param userId    用户Id
+     * @param threshold 推送的阈值
+     * @return 结果
+     */
+    @PutMapping("/threshold")
+    public BaseData updateThresholdByUserId(Long userId, Integer threshold) {
+        Integer code = userService.updateThresholdByUserId(userId, threshold);
+        if (code == 0) {
+            return ResultGenerator.genSuccessResult("设置成功");
+        }
+        return ResultGenerator.genFailResult("设置失败");
     }
 }

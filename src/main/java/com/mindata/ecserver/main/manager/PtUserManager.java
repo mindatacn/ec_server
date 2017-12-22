@@ -6,8 +6,6 @@ import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -178,6 +176,7 @@ public class PtUserManager {
      *
      * @param name 名字
      * @return
+     * 集合
      */
     public List<PtUser> findByNameLike(String name) {
         if (StrUtil.isEmpty(name)) {
@@ -191,8 +190,8 @@ public class PtUserManager {
      *
      * @return 结果
      */
-    public Long findMaxId() {
-        return userRepository.findMaxId();
+    public Long findCompanyMaxUserId(Long companyId) {
+        return userRepository.findCompanyMaxUserId(companyId);
     }
 
     /**
@@ -200,11 +199,10 @@ public class PtUserManager {
      *
      * @param beginId  开始id
      * @param endId    结束id
-     * @param pageable 分页
      * @return 结果
      */
-    public Page<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId, Long companyId, Pageable pageable) {
-        return userRepository.findByIdBetweenAndCompanyId(beginId, endId, companyId, pageable);
+    public List<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId, Long companyId) {
+        return userRepository.findByIdBetweenAndCompanyId(beginId, endId, companyId);
     }
 
     /**

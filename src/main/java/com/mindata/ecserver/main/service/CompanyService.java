@@ -75,7 +75,7 @@ public class CompanyService extends BaseService {
     }
 
     /**
-     * 从Ec同步公司信息
+     * 从Ec同步公司信息，返回新增的用户列表集合
      *
      * @return CompanyData
      * @throws IOException 异常
@@ -85,12 +85,14 @@ public class CompanyService extends BaseService {
         if (force == null) {
             force = false;
         }
-        // 缓存同步之前的最大id
-        userService.setBeforeMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        // 同步之前的最大id
+        Long beforeUserId = ptUserManager.findCompanyMaxUserId(companyId);
         eventPublisher.publishEvent(new CompanySyncEvent(force));
         // 缓存同步之后的最大id
-        userService.setAfterMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
-        return null;
+        Long afterUserId = ptUserManager.findCompanyMaxUserId(companyId);
+
+        return userService.findByIdBetween(beforeUserId, afterUserId, companyId);
     }
 
     /**

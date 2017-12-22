@@ -5,10 +5,8 @@ import com.mindata.ecserver.ec.model.response.UserAccountData;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.UserAccountService;
 import com.mindata.ecserver.ec.util.CallManager;
-import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.bean.TokenExpire;
 import com.mindata.ecserver.global.cache.UserTokenCache;
-import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
@@ -18,16 +16,11 @@ import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
-import com.mindata.ecserver.main.requestbody.PtUserRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.NewAsyncUserVO;
 import com.mindata.ecserver.main.vo.RoleVO;
-import com.mindata.ecserver.main.vo.UserVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -241,73 +234,18 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 缓存同步之前的用户最大id
-     *
-     * @param userId 用户id
-     */
-    public void setBeforeMaxId(Long companyId, Long userId) {
-        userTokenCache.setBeforeMaxId(companyId, userId);
-    }
-
-    /**
-     * 缓存同步之后的用户最大id
-     *
-     * @param userId 用户id
-     */
-    public void setAfterMaxId(Long companyId, Long userId) {
-        userTokenCache.setAfterMaxId(companyId, userId);
-    }
-
-    /**
-     * 获取同步之前的用户最大id
-     */
-    private String getBeforeMaxId(Long companyId) {
-        return userTokenCache.getBeforeMaxId(companyId);
-    }
-
-    /**
-     * 获取同步之后的用户最大id
-     */
-    private String getAfterMaxId(Long companyId) {
-        return userTokenCache.getAfterMaxId(companyId);
-    }
-
-    /**
      * 查询同步后新增的用户信息
-     *
-     * @param requestBody 参数
+     * @param beginId 参数，不包含
+     * @param endId 参数，包含
      * @return 结果
      */
-    public SimplePage<UserVO> findByIdBetween(PtUserRequestBody requestBody) {
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
-        int page = Constant.PAGE_NUM;
-        if (requestBody.getPage() != null) {
-            page = requestBody.getPage();
-        }
-        int size = Constant.PAGE_SIZE;
-        if (requestBody.getSize() != null) {
-            size = requestBody.getSize();
-        }
-        Sort.Direction direction = Constant.DIRECTION;
-        Sort sort = new Sort(direction, "id");
-        Pageable pageable = new PageRequest(page, size, sort);
+    public List<NewAsyncUserVO> findByIdBetween(Long beginId, Long endId, Long companyId) {
         // 如果同步之前的最大id和同步之后的最大id一样 则没有新数据
-        if (getBeforeMaxId(companyId).equals(getAfterMaxId(companyId))) {
-            return new SimplePage<>();
+        if (endId <= beginId) {
+            return new ArrayList<>();
         }
-        Page<PtUser> ptUsers = userManager.findByIdBetweenAndCompanyId(Long.valueOf(getBeforeMaxId(companyId)),
-                Long.valueOf(getAfterMaxId(companyId)), companyId, pageable);
-        List<UserVO> userVOS = new ArrayList<>();
-        for (PtUser ptUser : ptUsers) {
-            UserVO userVO = new UserVO();
-            userVO.setUserId(ptUser.getId());
-            userVO.setName(ptUser.getName());
-            userVO.setAccount(ptUser.getAccount());
-            //获取明文密码
-            userVO.setPassword(ptUser.getEcUserId().toString());
-            userVOS.add(userVO);
-        }
-        return new SimplePage<>(ptUsers.getTotalPages(), ptUsers.getTotalElements(), userVOS);
+        List<PtUser> ptUsers = userManager.findByIdBetweenAndCompanyId(beginId + 1, endId, companyId);
+        return ptUsers.stream().map(NewAsyncUserVO::new).collect(Collectors.toList());
     }
 
     /**

@@ -45,9 +45,4 @@ public interface CacheConstant extends Constant {
     String CACHE_EC_HEADER_CROP_ID = "CORP_ID";
 
     String SALE_STATE_KEY = "sale_state_key";
-
-    String BEFORE_MAX_ID = "before_max_id";
-
-    String AFTER_MAX_ID = "after_max_id";
-
 }

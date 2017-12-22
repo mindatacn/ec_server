@@ -4,7 +4,6 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
-import com.mindata.ecserver.main.requestbody.PtUserRequestBody;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -103,14 +102,6 @@ public class UserController {
     }
 
     /**
-     * 查询同步后新添加的用户信息
-     */
-    @GetMapping("/idBetween")
-    public BaseData findNewlyUsers(PtUserRequestBody requestBody) {
-        return ResultGenerator.genSuccessResult(userService.findByIdBetween(requestBody));
-    }
-
-    /**
      * 修改用户推送的阈值
      *
      * @param userId    用户Id
@@ -120,7 +111,7 @@ public class UserController {
     @PutMapping("/threshold")
     public BaseData updateThresholdByUserId(Long userId, Integer threshold) {
         if (threshold == null) {
-            return ResultGenerator.genFailResult("推送数量不能为空");
+            return ResultGenerator.genFailResult("阈值不能为空");
         }
         userService.updateThresholdByUserId(userId, threshold);
         return ResultGenerator.genSuccessResult("设置成功");

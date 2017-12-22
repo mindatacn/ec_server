@@ -1,9 +1,11 @@
 package com.mindata.ecserver.main.vo;
 
+import com.mindata.ecserver.main.model.secondary.PtUser;
+
 /**
  * @author hanliqiang wrote on 2017/12/21
  */
-public class UserVO {
+public class NewAsyncUserVO {
     private Long userId;
     /**
      * 用户名称
@@ -18,6 +20,14 @@ public class UserVO {
      * 密码
      */
     private String password;
+
+    public NewAsyncUserVO(PtUser ptUser) {
+        setUserId(ptUser.getId());
+        setName(ptUser.getName());
+        setAccount(ptUser.getAccount());
+        //获取明文密码
+        setPassword(ptUser.getEcUserId().toString());
+    }
 
     public String getName() {
         return name;
@@ -49,5 +59,15 @@ public class UserVO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "NewAsyncUserVO{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

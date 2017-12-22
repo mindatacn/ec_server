@@ -88,7 +88,7 @@ public class Restrictions {
         if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
-        return new SimpleExpression(fieldName, value, Criterion.Operator.GTE);
+        return new SimpleExpression(fieldName, value, Criterion.Operator.LTE);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Restrictions {
         if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
-        return new SimpleExpression(fieldName, value, Criterion.Operator.LTE);
+        return new SimpleExpression(fieldName, value, Criterion.Operator.GTE);
     }
 
     /**

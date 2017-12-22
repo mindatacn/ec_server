@@ -303,7 +303,7 @@ public class UserService extends BaseService {
             userVO.setUserId(ptUser.getId());
             userVO.setName(ptUser.getName());
             userVO.setAccount(ptUser.getAccount());
-            // 获取明文密码
+            //获取明文密码
             userVO.setPassword(ptUser.getEcUserId().toString());
             userVOS.add(userVO);
         }

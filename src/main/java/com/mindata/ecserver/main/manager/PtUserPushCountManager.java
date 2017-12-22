@@ -26,8 +26,6 @@ public class PtUserPushCountManager extends BaseService {
     @Resource
     private PtUserPushCountRepository ptUserPushCountRepository;
     @Resource
-    private PtDepartmentManager ptDepartmentManager;
-    @Resource
     private PtUserManager ptUserManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -91,17 +89,16 @@ public class PtUserPushCountManager extends BaseService {
         ptUserPushCount.setCompanyId(ptUser.getCompanyId());
         ptUserPushCount.setPushedCount(0);
         ptUserPushCount.setUserId(userId);
-        ptUserPushCount.setThreshold(ptDepartmentManager.findByDeptId(ptUser.getDepartmentId()).getThreshold());
+        // 之前从dept里获取 现在改为从user里获取
+        ptUserPushCount.setThreshold(ptUser.getThreshold());
         return ptUserPushCountRepository.save(ptUserPushCount);
     }
 
     /**
      * 按天查询每天的累计
      *
-     * @param begin
-     *         开始时间
-     * @param end
-     *         结束时间
+     * @param begin 开始时间
+     * @param end   结束时间
      * @return 结果
      */
     public List<Map<String, Object>> findByPushDateTime(String begin, String end) {
@@ -124,5 +121,4 @@ public class PtUserPushCountManager extends BaseService {
         }
         return list;
     }
-
 }

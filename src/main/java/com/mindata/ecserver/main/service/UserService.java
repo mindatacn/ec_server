@@ -245,8 +245,8 @@ public class UserService extends BaseService {
      *
      * @param userId 用户id
      */
-    public void setBeforeMaxId(Long userId) {
-        userTokenCache.setBeforeMaxId(userId);
+    public void setBeforeMaxId(Long companyId, Long userId) {
+        userTokenCache.setBeforeMaxId(companyId, userId);
     }
 
     /**
@@ -254,22 +254,22 @@ public class UserService extends BaseService {
      *
      * @param userId 用户id
      */
-    public void setAfterMaxId(Long userId) {
-        userTokenCache.setAfterMaxId(userId);
+    public void setAfterMaxId(Long companyId, Long userId) {
+        userTokenCache.setAfterMaxId(companyId, userId);
     }
 
     /**
      * 获取同步之前的用户最大id
      */
-    private String getBeforeMaxId() {
-        return userTokenCache.getBeforeMaxId();
+    private String getBeforeMaxId(Long companyId) {
+        return userTokenCache.getBeforeMaxId(companyId);
     }
 
     /**
      * 获取同步之后的用户最大id
      */
-    private String getAfterMaxId() {
-        return userTokenCache.getAfterMaxId();
+    private String getAfterMaxId(Long companyId) {
+        return userTokenCache.getAfterMaxId(companyId);
     }
 
     /**
@@ -279,6 +279,7 @@ public class UserService extends BaseService {
      * @return 结果
      */
     public SimplePage<UserVO> findByIdBetween(PtUserRequestBody requestBody) {
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         int page = Constant.PAGE_NUM;
         if (requestBody.getPage() != null) {
             page = requestBody.getPage();
@@ -291,16 +292,19 @@ public class UserService extends BaseService {
         Sort sort = new Sort(direction, "id");
         Pageable pageable = new PageRequest(page, size, sort);
         // 如果同步之前的最大id和同步之后的最大id一样 则没有新数据
-        if (getBeforeMaxId().equals(getAfterMaxId())) {
+        if (getBeforeMaxId(companyId).equals(getAfterMaxId(companyId))) {
             return new SimplePage<>();
         }
-        Page<PtUser> ptUsers = userManager.findByIdBetween(Long.valueOf(getBeforeMaxId()), Long.valueOf(getAfterMaxId()), pageable);
+        Page<PtUser> ptUsers = userManager.findByIdBetweenAndCompanyId(Long.valueOf(getBeforeMaxId(companyId)),
+                Long.valueOf(getAfterMaxId(companyId)), companyId, pageable);
         List<UserVO> userVOS = new ArrayList<>();
         for (PtUser ptUser : ptUsers) {
             UserVO userVO = new UserVO();
             userVO.setUserId(ptUser.getId());
             userVO.setName(ptUser.getName());
             userVO.setAccount(ptUser.getAccount());
+            // 获取明文密码
+            userVO.setPassword(ptUser.getEcUserId().toString());
             userVOS.add(userVO);
         }
         return new SimplePage<>(ptUsers.getTotalPages(), ptUsers.getTotalElements(), userVOS);
@@ -312,11 +316,7 @@ public class UserService extends BaseService {
      * @param userId    用户id
      * @param threshold 阈值
      */
-    public int updateThresholdByUserId(Long userId, Integer threshold) {
-        PtUser ptUser = userManager.updateThresholdByUserId(userId, threshold);
-        if (ptUser != null) {
-            return 0;
-        }
-        return -1;
+    public void updateThresholdByUserId(Long userId, Integer threshold) {
+        userManager.updateThresholdByUserId(userId, threshold);
     }
 }

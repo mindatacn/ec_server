@@ -87,7 +87,6 @@ public class PtUserManager {
 
         //添加role信息
         userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
-
         return ptUser;
     }
 
@@ -204,8 +203,8 @@ public class PtUserManager {
      * @param pageable 分页
      * @return 结果
      */
-    public Page<PtUser> findByIdBetween(Long beginId, Long endId, Pageable pageable) {
-        return userRepository.findByIdBetween(beginId, endId, pageable);
+    public Page<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId, Long companyId, Pageable pageable) {
+        return userRepository.findByIdBetweenAndCompanyId(beginId, endId, companyId, pageable);
     }
 
     /**
@@ -214,10 +213,9 @@ public class PtUserManager {
      * @param userId    用户id
      * @param threshold 阈值
      */
-    public PtUser updateThresholdByUserId(Long userId, Integer threshold) {
+    public void updateThresholdByUserId(Long userId, Integer threshold) {
         PtUser ptUser = userRepository.findOne(userId);
         ptUser.setThreshold(threshold);
-        ptUser = userRepository.save(ptUser);
-        return ptUser;
+        userRepository.save(ptUser);
     }
 }

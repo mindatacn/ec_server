@@ -119,10 +119,10 @@ public class UserController {
      */
     @PutMapping("/threshold")
     public BaseData updateThresholdByUserId(Long userId, Integer threshold) {
-        Integer code = userService.updateThresholdByUserId(userId, threshold);
-        if (code == 0) {
-            return ResultGenerator.genSuccessResult("设置成功");
+        if (threshold == null) {
+            return ResultGenerator.genFailResult("推送数量不能为空");
         }
-        return ResultGenerator.genFailResult("设置失败");
+        userService.updateThresholdByUserId(userId, threshold);
+        return ResultGenerator.genSuccessResult("设置成功");
     }
 }

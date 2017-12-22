@@ -82,6 +82,6 @@ public interface PtUserRepository extends JpaRepository<PtUser, Long> {
      * @param pageable 分页
      * @return 结果
      */
-    Page<PtUser> findByIdBetween(Long beginId, Long endId, Pageable pageable);
+    Page<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId,Long companyId, Pageable pageable);
 
 }

@@ -22,12 +22,11 @@ public interface PtUserPushCountRepository extends JpaRepository<PtUserPushCount
     /**
      * 查询每天的统计
      *
-     * @param beginTime
-     *         开始
-     * @param endTime
-     *         结束
+     * @param beginTime 开始
+     * @param endTime   结束
      * @return 统计
      */
     @Query("SELECT sum(pushedCount),count(userId) from PtUserPushCount where pushedCount > 0 and pushDate between ?1 and ?2")
     List<Object[]> findByOneDayBetween(Date beginTime, Date endTime);
+
 }

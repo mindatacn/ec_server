@@ -45,19 +45,19 @@ public class UserTokenCache extends BaseCache {
         return CACHE_USER_TOKEN_KEY + "_" + token;
     }
 
-    public void setBeforeMaxId(Long userId){
-        stringRedisTemplate.opsForValue().set(BEFORE_MAX_ID, String.valueOf(userId));
+    public void setBeforeMaxId(Long companyId, Long userId) {
+        stringRedisTemplate.opsForValue().set(BEFORE_MAX_ID + "_" + companyId.toString(), String.valueOf(userId));
     }
 
-    public void setAfterMaxId(Long userId){
-        stringRedisTemplate.opsForValue().set(AFTER_MAX_ID, String.valueOf(userId));
+    public void setAfterMaxId(Long companyId, Long userId) {
+        stringRedisTemplate.opsForValue().set(AFTER_MAX_ID + "_" + companyId.toString(), String.valueOf(userId));
     }
 
-    public String getBeforeMaxId(){
-        return stringRedisTemplate.opsForValue().get(BEFORE_MAX_ID);
+    public String getBeforeMaxId(Long companyId) {
+        return stringRedisTemplate.opsForValue().get(BEFORE_MAX_ID + "_" + companyId.toString());
     }
 
-    public String getAfterMaxId(){
-       return stringRedisTemplate.opsForValue().get(AFTER_MAX_ID);
+    public String getAfterMaxId(Long companyId) {
+        return stringRedisTemplate.opsForValue().get(AFTER_MAX_ID + "_" + companyId.toString());
     }
 }

@@ -6,7 +6,6 @@ import com.mindata.ecserver.ec.model.response.CompanyUserBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CompanyInfoService;
 import com.mindata.ecserver.ec.util.CallManager;
-import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
@@ -15,8 +14,6 @@ import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.service.base.BaseService;
-import com.mindata.ecserver.main.vo.ContactVO;
-import com.mindata.ecserver.main.vo.UserVO;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,8 +53,7 @@ public class CompanyService extends BaseService {
     /**
      * 添加一个Company
      *
-     * @param companyBody
-     *         body
+     * @param companyBody body
      * @return Company
      */
     @Transactional(rollbackFor = Exception.class)
@@ -82,23 +78,25 @@ public class CompanyService extends BaseService {
      * 从Ec同步公司信息
      *
      * @return CompanyData
-     * @throws IOException
-     *         异常
+     * @throws IOException 异常
      */
     @Transactional(rollbackFor = Exception.class)
     public Object syncFromEc(Boolean force) throws IOException {
         if (force == null) {
             force = false;
         }
+        // 缓存同步之前的最大id
+        userService.setBeforeMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
         eventPublisher.publishEvent(new CompanySyncEvent(force));
+        // 缓存同步之后的最大id
+        userService.setAfterMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
         return null;
     }
 
     /**
      * 监听公司同步信息
      *
-     * @throws IOException
-     *         EC
+     * @throws IOException EC
      */
     @EventListener(CompanySyncEvent.class)
     public void listen(CompanySyncEvent syncEvent) throws IOException {
@@ -110,10 +108,6 @@ public class CompanyService extends BaseService {
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId, force);
-        // 缓存同步之前的最大id
-        userService.setBeforeMaxId(ptUserManager.findMaxId());
         ptUserManager.addUsers(userBeanList, companyId, force);
-        // 缓存同步之后的最大id
-        userService.setAfterMaxId(ptUserManager.findMaxId());
     }
 }

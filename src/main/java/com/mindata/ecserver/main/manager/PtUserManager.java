@@ -6,6 +6,8 @@ import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,8 +59,7 @@ public class PtUserManager {
     /**
      * 从Ec同步用户信息
      *
-     * @param companyUserBean
-     *         ec的user信息
+     * @param companyUserBean ec的user信息
      * @return 本地的user
      */
     public PtUser add(CompanyUserBean companyUserBean, Long companyId, boolean force) {
@@ -80,20 +81,19 @@ public class PtUserManager {
         ptUser.setName(companyUserBean.getUserName());
         ptUser.setAccount(companyManager.findOne(companyId).getPrefix() + "_" + companyUserBean.getAccount());
         ptUser.setMobile(companyUserBean.getAccount());
-
+        // 设置阈值
+        ptUser.setThreshold(departmentManager.findByEcDeptId(companyUserBean.getDeptId()).getThreshold());
         ptUser = userRepository.save(ptUser);
 
         //添加role信息
         userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
-
         return ptUser;
     }
 
     /**
      * 从Ec同步一批用户数据
      *
-     * @param userBeanList
-     *         ec用户集合
+     * @param userBeanList ec用户集合
      * @return 本地集合
      */
     public List<PtUser> addUsers(List<CompanyUserBean> userBeanList, Long companyId, boolean force) {
@@ -104,8 +104,7 @@ public class PtUserManager {
     /**
      * 根据account查询User
      *
-     * @param account
-     *         账号名
+     * @param account 账号名
      * @return 用户
      */
     public PtUser findByAccount(String account) {
@@ -127,8 +126,7 @@ public class PtUserManager {
     /**
      * 统计某个部门的人员数量
      *
-     * @param departmentId
-     *         部门id
+     * @param departmentId 部门id
      * @return 数量
      */
     public Integer countByDepartmentId(Long departmentId) {
@@ -138,10 +136,8 @@ public class PtUserManager {
     /**
      * 根据部门id，查询所有的员工
      *
-     * @param deptId
-     *         ec部门id
-     * @param state
-     *         状态
+     * @param deptId ec部门id
+     * @param state  状态
      * @return user
      */
     public List<PtUser> findByDeptIdAndState(Long deptId, Integer state) {
@@ -155,10 +151,8 @@ public class PtUserManager {
     /**
      * 查询某个部门的员工名字like
      *
-     * @param deptId
-     *         部门id
-     * @param name
-     *         名字
+     * @param deptId 部门id
+     * @param name   名字
      * @return 结果集
      */
     public List<PtUser> findByDeptIdAndNameLike(Long deptId, String name) {
@@ -175,12 +169,13 @@ public class PtUserManager {
         return userRepository.findByCompanyIdAndStateAndNameLike(companyId, STATE_NORMAL, "%" + name + "%");
     }
 
-    public List<PtUser> findAll(){
-        return  userRepository.findAll();
+    public List<PtUser> findAll() {
+        return userRepository.findAll();
     }
 
     /**
      * 根据名字模糊查询
+     *
      * @param name 名字
      * @return
      */
@@ -189,5 +184,38 @@ public class PtUserManager {
             return userRepository.findByState(STATE_NORMAL);
         }
         return userRepository.findByStateAndNameLike(STATE_NORMAL, "%" + name + "%");
+    }
+
+    /**
+     * 查询最大id值
+     *
+     * @return 结果
+     */
+    public Long findMaxId() {
+        return userRepository.findMaxId();
+    }
+
+    /**
+     * 查询id范围内的数据
+     *
+     * @param beginId  开始id
+     * @param endId    结束id
+     * @param pageable 分页
+     * @return 结果
+     */
+    public Page<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId, Long companyId, Pageable pageable) {
+        return userRepository.findByIdBetweenAndCompanyId(beginId, endId, companyId, pageable);
+    }
+
+    /**
+     * 修改用户推送的阈值
+     *
+     * @param userId    用户id
+     * @param threshold 阈值
+     */
+    public void updateThresholdByUserId(Long userId, Integer threshold) {
+        PtUser ptUser = userRepository.findOne(userId);
+        ptUser.setThreshold(threshold);
+        userRepository.save(ptUser);
     }
 }

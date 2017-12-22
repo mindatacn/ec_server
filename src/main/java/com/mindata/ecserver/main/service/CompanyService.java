@@ -37,6 +37,8 @@ public class CompanyService extends BaseService {
     private ServiceBuilder serviceBuilder;
     @Resource
     private CallManager callManager;
+    @Resource
+    private UserService userService;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -51,8 +53,7 @@ public class CompanyService extends BaseService {
     /**
      * 添加一个Company
      *
-     * @param companyBody
-     *         body
+     * @param companyBody body
      * @return Company
      */
     @Transactional(rollbackFor = Exception.class)
@@ -77,23 +78,25 @@ public class CompanyService extends BaseService {
      * 从Ec同步公司信息
      *
      * @return CompanyData
-     * @throws IOException
-     *         异常
+     * @throws IOException 异常
      */
     @Transactional(rollbackFor = Exception.class)
     public Object syncFromEc(Boolean force) throws IOException {
         if (force == null) {
             force = false;
         }
+        // 缓存同步之前的最大id
+        userService.setBeforeMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
         eventPublisher.publishEvent(new CompanySyncEvent(force));
+        // 缓存同步之后的最大id
+        userService.setAfterMaxId(ShiroKit.getCurrentUser().getCompanyId(), ptUserManager.findMaxId());
         return null;
     }
 
     /**
      * 监听公司同步信息
      *
-     * @throws IOException
-     *         EC
+     * @throws IOException EC
      */
     @EventListener(CompanySyncEvent.class)
     public void listen(CompanySyncEvent syncEvent) throws IOException {

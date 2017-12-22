@@ -46,4 +46,8 @@ public interface CacheConstant extends Constant {
 
     String SALE_STATE_KEY = "sale_state_key";
 
+    String BEFORE_MAX_ID = "before_max_id";
+
+    String AFTER_MAX_ID = "after_max_id";
+
 }

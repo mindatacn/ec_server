@@ -73,6 +73,11 @@ public class PtUser extends BaseEntity {
     @Transient
     private List<RoleVO> roles;
 
+    /**
+     * 用户推送的阈值
+     */
+    private Integer threshold;
+
     public List<RoleVO> getRoles() {
         return roles;
     }
@@ -175,6 +180,14 @@ public class PtUser extends BaseEntity {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Integer getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(Integer threshold) {
+        this.threshold = threshold;
     }
 
     @Override

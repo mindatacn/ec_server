@@ -77,5 +77,15 @@ public class ContactController {
     public BaseData saleState(String begin, String end) {
         return ResultGenerator.genSuccessResult(contactService.findCountByDateBetween(begin, end));
     }
+
+    /**
+     * 按月统计{10分：0个，20分：10个}
+     *
+     * @return 0-100分，隔10分一个阶段，返回各阶段数量
+     */
+    @GetMapping("/score")
+    public BaseData groupByScore(String begin, String end) {
+        return ResultGenerator.genSuccessResult(contactService.groupByScore(begin, end));
+    }
 }
 

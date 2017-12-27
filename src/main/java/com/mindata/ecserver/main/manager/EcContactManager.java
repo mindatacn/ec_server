@@ -22,8 +22,6 @@ import java.util.List;
 public class EcContactManager {
     @Resource
     private EcContactRepository contactRepository;
-    @Resource
-    private EcContactRepository ecContactRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -36,8 +34,12 @@ public class EcContactManager {
      *         结束日期
      * @return 某天的数量
      */
-    public int countByCreateTimeBetween(Date begin, Date end) {
-        return contactRepository.countByCreateTimeBetween(begin, end);
+    public int countByInsertTimeBetween(Date begin, Date end) {
+        return contactRepository.countByInsertTimeBetween(begin, end);
+    }
+
+    public int countByInsertTimeBetweenAndScore(Date begin, Date end, Double minScore, Double maxScore) {
+        return contactRepository.countByInsertTimeBetweenAndCompanyScoreBetween(begin, end, minScore, maxScore);
     }
 
     /**
@@ -100,7 +102,7 @@ public class EcContactManager {
 
 
     public Page<EcContactEntity> findAll(Specification<EcContactEntity> criteria, Pageable pageable) {
-        return ecContactRepository.findAll(criteria, pageable);
+        return contactRepository.findAll(criteria, pageable);
     }
 
     /**
@@ -123,7 +125,7 @@ public class EcContactManager {
     private void add(String rowStr) {
         String[] array = rowStr.split(",");
         String mobile = array[3];
-        EcContactEntity ecContactEntity = ecContactRepository.findByMobile(mobile);
+        EcContactEntity ecContactEntity = contactRepository.findByMobile(mobile);
         if (ecContactEntity == null) {
             ecContactEntity = new EcContactEntity();
             ecContactEntity.setState(0);
@@ -139,7 +141,7 @@ public class EcContactManager {
             }
             ecContactEntity.setMobile(array[3]);
             ecContactEntity.setEmail(array[4]);
-            ecContactRepository.save(ecContactEntity);
+            contactRepository.save(ecContactEntity);
         }
     }
 

@@ -80,6 +80,8 @@ public class EcContactEntity {
 
     private Date createTime;
 
+    private Date insertTime;
+
     /**
      * 不入库，仅供单条查询时使用
      */
@@ -125,6 +127,16 @@ public class EcContactEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    @Basic
+    @Column(name = "insert_time")
+    public Date getInsertTime() {
+        return insertTime;
+    }
+
+    public void setInsertTime(Date insertTime) {
+        this.insertTime = insertTime;
     }
 
     @Basic

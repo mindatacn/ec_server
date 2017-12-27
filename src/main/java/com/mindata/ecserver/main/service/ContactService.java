@@ -268,11 +268,28 @@ public class ContactService extends BaseService {
         for (; beginTime.before(endTime); beginTime = DateUtil.offsetDay(beginTime, 1)) {
             //查一天的统计
             Date oneDayEnd = DateUtil.endOfDay(beginTime);
-            Integer count = ecContactManager.countByCreateTimeBetween(beginTime, oneDayEnd);
+            Integer count = ecContactManager.countByInsertTimeBetween(beginTime, oneDayEnd);
             Map<String, Object> map = new HashMap<>(2);
             map.put("date", beginTime);
             map.put(COUNT, count);
             list.add(map);
+        }
+        return list;
+    }
+
+    /**
+     * 按打分进行分组
+     *
+     * @return 各分数段集合
+     */
+    public List<Integer> groupByScore(String begin, String end) {
+        List<Integer> list = new ArrayList<>();
+        Date beginTime = CommonUtil.beginOfDay(begin);
+        Date endTime = CommonUtil.endOfDay(end);
+        for (int i = 0; i < 10; i++) {
+            Integer count = ecContactManager.countByInsertTimeBetweenAndScore(beginTime, endTime,
+                    10 * i * 0.01, 10 * (i + 1) * 0.01);
+            list.add(count);
         }
         return list;
     }

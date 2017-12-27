@@ -24,7 +24,22 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
      *         结束
      * @return 数量
      */
-    int countByCreateTimeBetween(Date begin, Date end);
+    Integer countByInsertTimeBetween(Date begin, Date end);
+
+    /**
+     * 统计某段时间不同积分段的数量
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @param min
+     *         起始分
+     * @param max
+     *         结束分
+     * @return 数量
+     */
+    Integer countByInsertTimeBetweenAndCompanyScoreBetween(Date begin, Date end, Double min, Double max);
 
     /**
      * 根据id集合查询线索集合

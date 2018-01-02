@@ -158,9 +158,9 @@ public class CustomerService {
                 intentTotalCount));
         //意向率是：技术意向量/技术接通量
         saleStateVO.setIntentedContactPercent(Arrays.asList(
-                CommonUtil.parsePercent(mdIntentTotalCount, mdConnectedCount),
-                CommonUtil.parsePercent(otherIntentTotalCount, otherConnectedCount),
-                CommonUtil.parsePercent(scIntentTotalCount, scConnectedCount)));
+                CommonUtil.parsePercent(mdIntentTotalCount, mdTotalContact),
+                CommonUtil.parsePercent(otherIntentTotalCount, otherTotalContact),
+                CommonUtil.parsePercent(scIntentTotalCount, scTotalContact)));
 
         //有效沟通量
         Integer validCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(30, beginTime, endTime);

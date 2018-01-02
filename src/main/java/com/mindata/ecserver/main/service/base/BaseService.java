@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.service.base;
 
-import com.mindata.ecserver.main.manager.EcCodeAreaManager;
-import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.ec.EcCodeAreaManager;
+import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.primary.EcVocationCodeEntity;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

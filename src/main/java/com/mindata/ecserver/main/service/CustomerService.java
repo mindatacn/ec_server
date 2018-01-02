@@ -1,8 +1,7 @@
 package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.cache.SaleStateCache;
-import com.mindata.ecserver.main.manager.EcCustomerManager;
-import com.mindata.ecserver.main.manager.EcCustomerOperationManager;
+import com.mindata.ecserver.main.manager.PtCustomerStateManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryManager;
 import com.mindata.ecserver.main.repository.secondary.PtPushSuccessResultRepository;
 import com.mindata.ecserver.main.vo.SaleStateVO;
@@ -19,9 +18,7 @@ import java.util.Date;
 @Service
 public class CustomerService {
     @Resource
-    private EcCustomerOperationManager ecCustomerOperationManager;
-    @Resource
-    private EcCustomerManager ecCustomerManager;
+    private PtCustomerStateManager ptCustomerStateManager;
     @Resource
     private PtPushSuccessResultRepository ptPushSuccessResultRepository;
     @Resource
@@ -45,100 +42,153 @@ public class CustomerService {
 
         saleStateVO = new SaleStateVO();
         //时间段总的沟通客户数
-        Long totalContact = ecCustomerOperationManager.countDistinctCustomerBetween(beginTime, endTime);
+        Integer totalContact = ptCustomerStateManager.countDistinctCustomerBetween(0, beginTime, endTime);
         //由技术提供的
-        Long maidaTotalContact = ptPushSuccessResultRepository.countByCrmIdInList(beginTime, endTime);
-        Long shichangTotalContact = ecCustomerOperationManager.countDistinctCustomerBetweenAndIsShiChang(beginTime,
-                endTime);
-        Long otherTotalContact = totalContact - maidaTotalContact -
-                shichangTotalContact;
-        saleStateVO.setTotalContact(Arrays.asList(maidaTotalContact, otherTotalContact, shichangTotalContact,
+        Integer mdTotalContact = ptCustomerStateManager.countDistinctCustomerBetween(1, beginTime, endTime);
+        Integer scTotalContact = ptCustomerStateManager.countDistinctCustomerBetween(2, beginTime, endTime);
+        Integer otherTotalContact = totalContact - mdTotalContact - scTotalContact;
+        saleStateVO.setTotalContact(Arrays.asList(mdTotalContact, otherTotalContact, scTotalContact,
                 totalContact));
-        saleStateVO.setTotalContactPercent(Arrays.asList(CommonUtil.parsePercent(maidaTotalContact, totalContact),
+        saleStateVO.setTotalContactPercent(Arrays.asList(CommonUtil.parsePercent(mdTotalContact, totalContact),
                 CommonUtil.parsePercent(otherTotalContact, totalContact),
-                CommonUtil.parsePercent(shichangTotalContact, totalContact)));
+                CommonUtil.parsePercent(scTotalContact, totalContact)));
 
         //线索新增量
-        Long addedTotalCount = ecCustomerOperationManager.countByOperateTypeAndTimeBetween("新增客户", beginTime, endTime);
-        Long mdAddedTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndType("新增客户", beginTime,
+        Integer addedTotalCount = ptCustomerStateManager.countByOperateTypeAndTimeBetween("新增客户", 0, beginTime,
                 endTime);
-        Long shichangAddedTotalCount = ecCustomerOperationManager.countByOperateTypeAndTimeBetweenAndIsShiChang
-                ("新增客户", beginTime,
+        Integer mdAddedTotalCount = ptCustomerStateManager.countByOperateTypeAndTimeBetween("新增客户", 1, beginTime,
                 endTime);
-        Long otherAddedTotalCount = addedTotalCount - mdAddedTotalCount -
-                shichangAddedTotalCount;
-        saleStateVO.setAddedContact(Arrays.asList(mdAddedTotalCount, otherAddedTotalCount, shichangAddedTotalCount,
+        Integer scAddedTotalCount = ptCustomerStateManager.countByOperateTypeAndTimeBetween("新增客户", 2, beginTime,
+                endTime);
+        Integer otherAddedTotalCount = addedTotalCount - mdAddedTotalCount -
+                scAddedTotalCount;
+        saleStateVO.setAddedContact(Arrays.asList(mdAddedTotalCount, otherAddedTotalCount, scAddedTotalCount,
                 addedTotalCount));
         saleStateVO.setAddedContactPercent(Arrays.asList(CommonUtil.parsePercent(mdAddedTotalCount, addedTotalCount),
                 CommonUtil.parsePercent(otherAddedTotalCount, addedTotalCount),
-                CommonUtil.parsePercent(shichangAddedTotalCount, addedTotalCount)));
+                CommonUtil.parsePercent(scAddedTotalCount, addedTotalCount)));
 
         //接通量，大于0的
-        Long connectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(0, beginTime, endTime);
+        Integer connectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(0, beginTime, endTime);
+        //接通量，大于30秒的
+        Integer connected30Count = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(30, beginTime, endTime);
+        //接通量，大于60秒的
+        Integer connected60Count = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(60, beginTime, endTime);
+        //接通量，大于120秒的
+        Integer connected120Count = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(120, beginTime, endTime);
+        //接通量，大于240秒的
+        Integer connected240Count = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(240, beginTime, endTime);
         //总的，包含0的
-        Long totalConnectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(-1, beginTime, endTime);
+        Integer totalConnectedCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(-1, beginTime, endTime);
         //大于0的
-        Long mdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(0,
+        Integer mdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(0,
+                beginTime, endTime);
+        Integer mdConnected30Count = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(30,
+                beginTime, endTime);
+        Integer mdConnected60Count = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(60,
+                beginTime, endTime);
+        Integer mdConnected120Count = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(120,
+                beginTime, endTime);
+        Integer mdConnected240Count = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(240,
                 beginTime, endTime);
         //包含0的
-        Long totalMdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(-1,
+        Integer totalMdConnectedCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(-1,
                 beginTime, endTime);
-        Long shichangConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(0, beginTime, endTime);
-        Long totalShichangConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(-1, beginTime,
+        Integer scConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(0, beginTime, endTime);
+        Integer scConnected30Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(30, beginTime, endTime);
+        Integer scConnected60Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(60, beginTime, endTime);
+        Integer scConnected120Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(120, beginTime, endTime);
+        Integer scConnected240Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(240, beginTime, endTime);
+        Integer totalScConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(-1, beginTime,
                 endTime);
-        Long otherConnectedCount = connectedCount - mdConnectedCount - shichangConnectedCount;
-        saleStateVO.setConnectedContact(Arrays.asList(mdConnectedCount, otherConnectedCount, shichangConnectedCount,
+        Integer otherConnectedCount = connectedCount - mdConnectedCount - scConnectedCount;
+        Integer otherConnected30Count = connected30Count - mdConnected30Count - scConnected30Count;
+        Integer otherConnected60Count = connected60Count - mdConnected60Count - scConnected60Count;
+        Integer otherConnected120Count = connected120Count - mdConnected120Count - scConnected120Count;
+        Integer otherConnected240Count = connected240Count - mdConnected240Count - scConnected240Count;
+
+        saleStateVO.setConnectedContact(Arrays.asList(mdConnectedCount, otherConnectedCount, scConnectedCount,
                 connectedCount));
+        saleStateVO.setConnected30Contact(Arrays.asList(mdConnected30Count, otherConnected30Count, scConnected30Count,
+                connected30Count));
+        saleStateVO.setConnected60Contact(Arrays.asList(mdConnected60Count, otherConnected60Count, scConnected60Count,
+                connected60Count));
+        saleStateVO.setConnected120Contact(Arrays.asList(mdConnected120Count, otherConnected120Count,
+                scConnected120Count,
+                connected120Count));
+        saleStateVO.setConnected240Contact(Arrays.asList(mdConnected240Count, otherConnected240Count,
+                scConnected240Count,
+                connected240Count));
         //接通率 技术接通量/包含时长为0的接通量
         saleStateVO.setConnectedContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnectedCount, totalMdConnectedCount),
                 CommonUtil.parsePercent(otherConnectedCount, totalConnectedCount - totalMdConnectedCount),
-                CommonUtil.parsePercent(shichangConnectedCount, totalShichangConnectedCount)
+                CommonUtil.parsePercent(scConnectedCount, totalScConnectedCount)
+        ));
+        saleStateVO.setConnected30ContactPercent(Arrays.asList(
+                CommonUtil.parsePercent(mdConnected30Count, totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected30Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(scConnected30Count, totalScConnectedCount)
+        ));
+        saleStateVO.setConnected60ContactPercent(Arrays.asList(
+                CommonUtil.parsePercent(mdConnected60Count, totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected60Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(scConnected60Count, totalScConnectedCount)
+        ));
+        saleStateVO.setConnected120ContactPercent(Arrays.asList(
+                CommonUtil.parsePercent(mdConnected120Count, totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected120Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(scConnected120Count, totalScConnectedCount)
+        ));
+        saleStateVO.setConnected240ContactPercent(Arrays.asList(
+                CommonUtil.parsePercent(mdConnected240Count, totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected240Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(scConnected240Count, totalScConnectedCount)
         ));
 
-        //有意向线索量，ec_customer_operation
-        Long intentTotalCount = ecCustomerOperationManager.countByIntentedAndTimeBetween(beginTime, endTime);
-        Long mdIntentTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndIsIntent(beginTime,
+        //有意向线索量
+        Integer intentTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(0, 1, beginTime, endTime);
+        Integer mdIntentTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(1, 1, beginTime,
                 endTime);
-        Long shichangIntentTotalCount = ecCustomerOperationManager.countShiChangIntentedAndTimeBetween(beginTime,
+        Integer scIntentTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(2, 1, beginTime,
                 endTime);
-        Long otherIntentTotalCount = intentTotalCount - mdIntentTotalCount - shichangIntentTotalCount;
+        Integer otherIntentTotalCount = intentTotalCount - mdIntentTotalCount - scIntentTotalCount;
         saleStateVO.setIntentedContact(Arrays.asList(mdIntentTotalCount, otherIntentTotalCount,
-                shichangIntentTotalCount,
+                scIntentTotalCount,
                 intentTotalCount));
         //意向率是：技术意向量/技术接通量
         saleStateVO.setIntentedContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdIntentTotalCount, mdConnectedCount),
                 CommonUtil.parsePercent(otherIntentTotalCount, otherConnectedCount),
-                CommonUtil.parsePercent(shichangIntentTotalCount, shichangConnectedCount)));
+                CommonUtil.parsePercent(scIntentTotalCount, scConnectedCount)));
 
         //有效沟通量
-        Long validCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(30, beginTime, endTime);
-        Long mdValidCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(30, beginTime,
+        Integer validCount = ptPhoneHistoryManager.findTotalCountByCallTimeGreaterThan(30, beginTime, endTime);
+        Integer mdValidCount = ptPushSuccessResultRepository.countCallTimeGreaterThanAndStartTimeBetween(30, beginTime,
                 endTime);
-        Long shichangValidCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(30, beginTime, endTime);
-        Long otherValidCount = validCount - mdValidCount - shichangValidCount;
-        saleStateVO.setValidedContact(Arrays.asList(mdValidCount, otherValidCount, shichangValidCount, validCount));
+        Integer scValidCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(30, beginTime, endTime);
+        Integer otherValidCount = validCount - mdValidCount - scValidCount;
+        saleStateVO.setValidedContact(Arrays.asList(mdValidCount, otherValidCount, scValidCount, validCount));
         //有效沟通率是：技术有效沟通量 / 技术接通量
         saleStateVO.setValidedContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdValidCount, mdConnectedCount),
                 CommonUtil.parsePercent(otherValidCount, otherConnectedCount),
-                CommonUtil.parsePercent(shichangValidCount, shichangConnectedCount)
+                CommonUtil.parsePercent(scValidCount, scConnectedCount)
         ));
 
         //成交线索量，customer里status_code为5
-        Long saledTotalCount = ecCustomerManager.findTotalSaledCount("5", beginTime, endTime);
-        Long mdSaledTotalCount = ptPushSuccessResultRepository.countByCrmIdInListAndIsSaled("5", beginTime,
+        Integer saledTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(0, 2, beginTime, endTime);
+        Integer mdSaledTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(1, 2, beginTime, endTime);
+        Integer scSaledTotalCount = ptCustomerStateManager.countByIntentedAndTimeBetween(2, 2, beginTime,
                 endTime);
-        Long shichangSaledTotalCount = 0L;
-        Long otherSaledTotalCount = saledTotalCount - mdSaledTotalCount - shichangSaledTotalCount;
-        saleStateVO.setSaledContact(Arrays.asList(mdSaledTotalCount, saledTotalCount - mdSaledTotalCount, 0L,
-                saledTotalCount));
+        Integer otherSaledTotalCount = saledTotalCount - mdSaledTotalCount - scSaledTotalCount;
+        saleStateVO.setSaledContact(Arrays.asList(mdSaledTotalCount, saledTotalCount - mdSaledTotalCount -
+                scSaledTotalCount, scSaledTotalCount, saledTotalCount));
         //成单率是：技术成单量/技术接通量
         saleStateVO.setSaledContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdSaledTotalCount, mdConnectedCount),
                 CommonUtil.parsePercent(otherSaledTotalCount, otherConnectedCount),
-                CommonUtil.parsePercent(shichangSaledTotalCount, shichangConnectedCount)
+                CommonUtil.parsePercent(scSaledTotalCount, scConnectedCount)
         ));
 
         saleStateCache.saveSaleState(begin, end, saleStateVO);

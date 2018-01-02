@@ -13,6 +13,18 @@ import java.util.Collection;
  */
 public class Restrictions {
 
+    public static SimpleSelector count(String fieldName) {
+        return new SimpleSelector(fieldName, MySelector.Operator.COUNT);
+    }
+
+    public static SimpleSelector countDistinct(String fieldName) {
+        return new SimpleSelector(fieldName, MySelector.Operator.COUNT_DISTINCT);
+    }
+
+    public static SimpleSelector sum(String fieldName) {
+        return new SimpleSelector(fieldName, MySelector.Operator.SUM);
+    }
+
     /**
      * 等于
      */

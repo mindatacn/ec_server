@@ -2,8 +2,8 @@ package com.mindata.ecserver.main.manager.es;
 
 import com.mindata.ecserver.global.bean.SimplePage;
 import com.mindata.ecserver.global.constant.Constant;
-import com.mindata.ecserver.main.manager.CodeSizeManager;
-import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.ec.CodeSizeManager;
+import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.repository.es.EsContactRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -134,6 +135,16 @@ public class EsContactManager extends BaseService {
             size = contactRequestBody.getSize();
         }
         Pageable pageable = new PageRequest(page, size);
+        //可能会按评分排序
+        if (contactRequestBody.getOrderBy() != null) {
+            //companyScore
+            String orderBy = contactRequestBody.getOrderBy();
+            Sort.Direction direction = Sort.Direction.DESC;
+            if (contactRequestBody.getOrder() != null && contactRequestBody.getOrder()) {
+                direction = Sort.Direction.ASC;
+            }
+            pageable = new PageRequest(page, size, direction, orderBy);
+        }
 
         SearchQuery searchQuery = builder.withPageable(pageable).build();
         List<EsContact> esContacts = elasticsearchTemplate.queryForList(searchQuery, EsContact.class);

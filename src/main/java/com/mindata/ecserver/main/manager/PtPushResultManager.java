@@ -3,6 +3,7 @@ package com.mindata.ecserver.main.manager;
 import com.mindata.ecserver.ec.model.response.CreateFailureRecord;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.ContactPushResultEvent;
+import com.mindata.ecserver.main.manager.ec.EcContactManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;

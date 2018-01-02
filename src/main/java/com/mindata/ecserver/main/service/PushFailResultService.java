@@ -5,7 +5,7 @@ import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
-import com.mindata.ecserver.main.manager.EcContactManager;
+import com.mindata.ecserver.main.manager.ec.EcContactManager;
 import com.mindata.ecserver.main.manager.PtPushResultManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtPushFailureResult;

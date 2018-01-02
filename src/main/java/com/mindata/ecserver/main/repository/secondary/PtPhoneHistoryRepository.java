@@ -35,7 +35,7 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      * @return 总数量
      */
     @Query("select count(distinct crmId) from PtPhoneHistory where callTime > ?1 and startTime between ?2 and ?3")
-    Long countCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
+    Integer countCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
 
     /**
      * 查询市场的 某段时间通话大于多少秒的总数量
@@ -50,14 +50,10 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      */
     @Query(value = "SELECT count(DISTINCT crm_id) FROM ec_server.pt_phone_history WHERE call_time > ?1 " +
             "AND start_time BETWEEN ?2 " +
-            "AND" +
-            " ?3 AND " +
-            "crm_id IN (SELECT DISTINCT crm_id FROM company.ec_customer_operation WHERE" +
-            " (content " +
-            "LIKE '%百度技术%' OR content LIKE '%网站咨询%' OR content LIKE '%400%') AND crm_id NOT IN ( SELECT crm_id FROM " +
-            "company.ec_bjmd_olddata" +
-            "))", nativeQuery = true)
-    Long countShiChangCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
+            "AND ?3 AND " +
+            "crm_id IN (SELECT DISTINCT crm_id FROM ec_server.pt_customer_operation WHERE old_data = 0 AND " +
+            "source_from = 2)", nativeQuery = true)
+    Integer countShiChangCallTimeGreaterThanAndStartTimeBetween(Integer seconds, Date begin, Date end);
 
     List<PtPhoneHistory> findByEcUserIdAndStartTimeBetween(Long ecUserId, Date begin, Date end);
 

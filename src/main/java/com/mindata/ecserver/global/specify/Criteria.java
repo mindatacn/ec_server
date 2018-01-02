@@ -2,10 +2,7 @@ package com.mindata.ecserver.global.specify;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +35,15 @@ public class Criteria<T> implements Specification<T> {
      * @Create In 2012-2-8 By lee
      */
     public void add(Criterion criterion) {
-        if (criterion != null) {
-            criterions.add(criterion);
-        }
+        criterions.add(criterion);
     }
+
+    public List<Criterion> getCriterions() {
+        return criterions;
+    }
+
+    public void setCriterions(List<Criterion> criterions) {
+        this.criterions = criterions;
+    }
+
 }

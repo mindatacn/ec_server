@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.controller.base;
 
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
-import com.mindata.ecserver.main.manager.EcVocationCodeManager;
+import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.manager.PtSearchConditionManager;
 import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.ContactService;

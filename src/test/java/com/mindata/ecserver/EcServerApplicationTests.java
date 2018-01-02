@@ -1,6 +1,9 @@
 package com.mindata.ecserver;
 
 import com.mindata.ecserver.main.manager.*;
+import com.mindata.ecserver.main.manager.ec.EcCodeAreaManager;
+import com.mindata.ecserver.main.manager.ec.EcContactManager;
+import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;

@@ -11,43 +11,51 @@ public class SaleStateVO {
     /**
      * 线索总量
      */
-    private List<Long> totalContact;
+    private List<Integer> totalContact;
     private List<Double> totalContactPercent;
     /**
      * 新增线索量
      */
-    private List<Long> addedContact;
+    private List<Integer> addedContact;
     private List<Double> addedContactPercent;
     /**
      * 有意向线索量
      */
-    private List<Long> intentedContact;
+    private List<Integer> intentedContact;
     private List<Double> intentedContactPercent;
     /**
      * 接通量
      */
-    private List<Long> connectedContact;
+    private List<Integer> connectedContact;
+    private List<Integer> connected30Contact;
+    private List<Integer> connected60Contact;
+    private List<Integer> connected120Contact;
+    private List<Integer> connected240Contact;
     private List<Double> connectedContactPercent;
+    private List<Double> connected30ContactPercent;
+    private List<Double> connected60ContactPercent;
+    private List<Double> connected120ContactPercent;
+    private List<Double> connected240ContactPercent;
     /**
      * 有效沟通量
      */
-    private List<Long> validedContact;
+    private List<Integer> validedContact;
     private List<Double> validedContactPercent;
     /**
      * 成单量
      */
-    private List<Long> saledContact;
+    private List<Integer> saledContact;
     private List<Double> saledContactPercent;
 
-    public List<Long> getTotalContact() {
+    public List<Integer> getTotalContact() {
         return totalContact;
     }
 
-    public void setTotalContact(List<Long> totalContact) {
+    public void setTotalContact(List<Integer> totalContact) {
         this.totalContact = totalContact;
     }
 
-    public List<Long> getAddedContact() {
+    public List<Integer> getAddedContact() {
         return addedContact;
     }
 
@@ -59,12 +67,76 @@ public class SaleStateVO {
         this.totalContactPercent = totalContactPercent;
     }
 
+    public List<Double> getConnected30ContactPercent() {
+        return connected30ContactPercent;
+    }
+
+    public void setConnected30ContactPercent(List<Double> connected30ContactPercent) {
+        this.connected30ContactPercent = connected30ContactPercent;
+    }
+
+    public List<Double> getConnected60ContactPercent() {
+        return connected60ContactPercent;
+    }
+
+    public void setConnected60ContactPercent(List<Double> connected60ContactPercent) {
+        this.connected60ContactPercent = connected60ContactPercent;
+    }
+
+    public List<Double> getConnected120ContactPercent() {
+        return connected120ContactPercent;
+    }
+
+    public void setConnected120ContactPercent(List<Double> connected120ContactPercent) {
+        this.connected120ContactPercent = connected120ContactPercent;
+    }
+
+    public List<Double> getConnected240ContactPercent() {
+        return connected240ContactPercent;
+    }
+
+    public void setConnected240ContactPercent(List<Double> connected240ContactPercent) {
+        this.connected240ContactPercent = connected240ContactPercent;
+    }
+
     public List<Double> getAddedContactPercent() {
         return addedContactPercent;
     }
 
     public void setAddedContactPercent(List<Double> addedContactPercent) {
         this.addedContactPercent = addedContactPercent;
+    }
+
+    public List<Integer> getConnected30Contact() {
+        return connected30Contact;
+    }
+
+    public void setConnected30Contact(List<Integer> connected30Contact) {
+        this.connected30Contact = connected30Contact;
+    }
+
+    public List<Integer> getConnected60Contact() {
+        return connected60Contact;
+    }
+
+    public void setConnected60Contact(List<Integer> connected60Contact) {
+        this.connected60Contact = connected60Contact;
+    }
+
+    public List<Integer> getConnected120Contact() {
+        return connected120Contact;
+    }
+
+    public void setConnected120Contact(List<Integer> connected120Contact) {
+        this.connected120Contact = connected120Contact;
+    }
+
+    public List<Integer> getConnected240Contact() {
+        return connected240Contact;
+    }
+
+    public void setConnected240Contact(List<Integer> connected240Contact) {
+        this.connected240Contact = connected240Contact;
     }
 
     public List<Double> getIntentedContactPercent() {
@@ -99,39 +171,39 @@ public class SaleStateVO {
         this.saledContactPercent = saledContactPercent;
     }
 
-    public void setAddedContact(List<Long> addedContact) {
+    public void setAddedContact(List<Integer> addedContact) {
         this.addedContact = addedContact;
     }
 
-    public List<Long> getIntentedContact() {
+    public List<Integer> getIntentedContact() {
         return intentedContact;
     }
 
-    public void setIntentedContact(List<Long> intentedContact) {
+    public void setIntentedContact(List<Integer> intentedContact) {
         this.intentedContact = intentedContact;
     }
 
-    public List<Long> getConnectedContact() {
+    public List<Integer> getConnectedContact() {
         return connectedContact;
     }
 
-    public void setConnectedContact(List<Long> connectedContact) {
+    public void setConnectedContact(List<Integer> connectedContact) {
         this.connectedContact = connectedContact;
     }
 
-    public List<Long> getValidedContact() {
+    public List<Integer> getValidedContact() {
         return validedContact;
     }
 
-    public void setValidedContact(List<Long> validedContact) {
+    public void setValidedContact(List<Integer> validedContact) {
         this.validedContact = validedContact;
     }
 
-    public List<Long> getSaledContact() {
+    public List<Integer> getSaledContact() {
         return saledContact;
     }
 
-    public void setSaledContact(List<Long> saledContact) {
+    public void setSaledContact(List<Integer> saledContact) {
         this.saledContact = saledContact;
     }
 
@@ -139,11 +211,25 @@ public class SaleStateVO {
     public String toString() {
         return "SaleStateVO{" +
                 "totalContact=" + totalContact +
+                ", totalContactPercent=" + totalContactPercent +
                 ", addedContact=" + addedContact +
+                ", addedContactPercent=" + addedContactPercent +
                 ", intentedContact=" + intentedContact +
+                ", intentedContactPercent=" + intentedContactPercent +
                 ", connectedContact=" + connectedContact +
+                ", connected30Contact=" + connected30Contact +
+                ", connected60Contact=" + connected60Contact +
+                ", connected120Contact=" + connected120Contact +
+                ", connected240Contact=" + connected240Contact +
+                ", connectedContactPercent=" + connectedContactPercent +
+                ", connected30ContactPercent=" + connected30ContactPercent +
+                ", connected60ContactPercent=" + connected60ContactPercent +
+                ", connected120ContactPercent=" + connected120ContactPercent +
+                ", connected240ContactPercent=" + connected240ContactPercent +
                 ", validedContact=" + validedContact +
+                ", validedContactPercent=" + validedContactPercent +
                 ", saledContact=" + saledContact +
+                ", saledContactPercent=" + saledContactPercent +
                 '}';
     }
 }

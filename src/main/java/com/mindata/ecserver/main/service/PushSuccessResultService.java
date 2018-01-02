@@ -6,6 +6,7 @@ import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.manager.*;
+import com.mindata.ecserver.main.manager.ec.EcCustomerManager;
 import com.mindata.ecserver.main.model.secondary.PtPushSuccessResult;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.PushResultRequestBody;

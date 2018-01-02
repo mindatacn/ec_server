@@ -1,4 +1,4 @@
-package com.mindata.ecserver.main.manager;
+package com.mindata.ecserver.main.manager.ec;
 
 import com.mindata.ecserver.main.model.primary.CodeSizeEntity;
 import com.mindata.ecserver.main.repository.primary.CodeSizeRepository;

@@ -53,12 +53,12 @@ public class PtPhoneHistoryManager {
      *         多少秒
      * @return 数量
      */
-    public Long findTotalCountByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
+    public Integer findTotalCountByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
         return ptPhoneHistoryRepository.countCallTimeGreaterThanAndStartTimeBetween(seconds, begin,
                 end);
     }
 
-    public Long findShiChangByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
+    public Integer findShiChangByCallTimeGreaterThan(Integer seconds, Date begin, Date end) {
         return ptPhoneHistoryRepository.countShiChangCallTimeGreaterThanAndStartTimeBetween(seconds, begin, end);
     }
 

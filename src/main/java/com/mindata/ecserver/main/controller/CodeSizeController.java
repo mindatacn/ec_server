@@ -2,7 +2,7 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.manager.CodeSizeManager;
+import com.mindata.ecserver.main.manager.ec.CodeSizeManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -59,7 +59,7 @@ public class CommonUtil {
         return Double.parseDouble(df.format(d));
     }
 
-    public static Double parsePercent(Long var1, Long var2) {
+    public static Double parsePercent(Integer var1, Integer var2) {
         try {
             return cutDouble2(var1 * 1.0 / var2);
         } catch (Exception e) {

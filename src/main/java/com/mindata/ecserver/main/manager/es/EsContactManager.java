@@ -177,7 +177,11 @@ public class EsContactManager extends BaseService {
             }
             vo.setName(esContact.getName());
             vo.setAddress(esContact.getAddress());
-            vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore() / 100));
+            if (esContact.getCompanyScore() == null) {
+                vo.setCompanyScore(0.0);
+            } else {
+                vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore() / 100.0));
+            }
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             vo.setMemberSizeTag(codeSizeManager.findNameById(esContact.getMemberSizeTag()));

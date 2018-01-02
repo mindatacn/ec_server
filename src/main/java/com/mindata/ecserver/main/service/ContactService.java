@@ -120,6 +120,12 @@ public class ContactService extends BaseService {
             size = contactRequestBody.getSize();
         }
         Sort.Direction direction = Constant.DIRECTION;
+        //可能会按评分排序
+        if (contactRequestBody.getOrder() != null) {
+            if (contactRequestBody.getOrder()) {
+                direction = Sort.Direction.ASC;
+            }
+        }
         Sort sort = new Sort(direction, "companyScore", "id");
         Pageable pageable = new PageRequest(page, size, sort);
         Page<EcContactEntity> ecContactEntities = ecContactManager.findAll(criteria, pageable);

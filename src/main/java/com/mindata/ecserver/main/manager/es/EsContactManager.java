@@ -134,16 +134,20 @@ public class EsContactManager extends BaseService {
         if (contactRequestBody.getSize() != null) {
             size = contactRequestBody.getSize();
         }
-        Pageable pageable = new PageRequest(page, size);
+
+        Pageable pageable;
         //可能会按评分排序
-        if (contactRequestBody.getOrderBy() != null) {
+        if (contactRequestBody.getOrder() != null) {
             //companyScore
-            String orderBy = contactRequestBody.getOrderBy();
+            String orderBy = "companyScore";
             Sort.Direction direction = Sort.Direction.DESC;
-            if (contactRequestBody.getOrder() != null && contactRequestBody.getOrder()) {
+            if (contactRequestBody.getOrder()) {
                 direction = Sort.Direction.ASC;
             }
-            pageable = new PageRequest(page, size, direction, orderBy);
+            Sort.Order order = new Sort.Order(direction, orderBy);
+            pageable = new PageRequest(page, size, new Sort(order));
+        } else {
+            pageable = new PageRequest(page, size);
         }
 
         SearchQuery searchQuery = builder.withPageable(pageable).build();
@@ -173,7 +177,7 @@ public class EsContactManager extends BaseService {
             }
             vo.setName(esContact.getName());
             vo.setAddress(esContact.getAddress());
-            vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore()));
+            vo.setCompanyScore(CommonUtil.cutDouble2(esContact.getCompanyScore() / 100));
             vo.setVocation(ecVocationCodeManager.findNameByCode(esContact.getVocation()));
             vo.setProvince(ecCodeAreaManager.findById(esContact.getProvince() + ""));
             vo.setMemberSizeTag(codeSizeManager.findNameById(esContact.getMemberSizeTag()));

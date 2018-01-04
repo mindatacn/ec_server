@@ -52,6 +52,15 @@ public class EcContactManager {
     }
 
     /**
+     * 查询每个省份下的数量，在某个时间范围
+     *
+     * @return list
+     */
+    public List<Object[]> findCountByProvinceBetween(Date begin, Date end) {
+        return contactRepository.findCountByProvinceBetween(begin, end);
+    }
+
+    /**
      * 查询每个省份下按城市分组的数量
      *
      * @return list

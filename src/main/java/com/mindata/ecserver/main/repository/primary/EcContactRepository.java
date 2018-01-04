@@ -73,9 +73,19 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Long
     Page<EcContactEntity> findByFax(String fax, Pageable pageable);
 
     /**
-     * 按省份查询数据总量
+     * 按省份查询数据总量，按时间范围查询
      * @return
      * 分组后的集合
+     */
+    @Query(value = "SELECT province, COUNT(province) FROM EcContactEntity WHERE state = 0 AND insertTime between " +
+            "?1 and ?2 GROUP BY " +
+            "province")
+    List<Object[]> findCountByProvinceBetween(Date begin, Date end);
+
+    /**
+     * 按省份查询数据总量
+     *
+     * @return 分组后的集合
      */
     @Query(value = "SELECT province, COUNT(province) FROM EcContactEntity WHERE state = 0 GROUP BY province")
     List<Object[]> findCountByProvince();

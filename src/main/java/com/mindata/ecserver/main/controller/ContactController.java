@@ -40,18 +40,18 @@ public class ContactController {
      * @return 按省份区分后的聚合分组数据
      */
     @GetMapping("/province")
-    public BaseData findCountByProvince(){
-        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(null, null));
+    public BaseData findCountByProvince(String begin, String end) {
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(null, null, begin, end));
     }
 
     @GetMapping("/province/{province}")
     public BaseData findCountByProvince(@PathVariable Integer province) {
-        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, null));
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, null, null, null));
     }
 
     @GetMapping("/province/{province}/{city}")
     public BaseData findCountByProvince(@PathVariable Integer province, @PathVariable Integer city) {
-        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, city));
+        return ResultGenerator.genSuccessResult(contactService.findCountByProvince(province, city, null, null));
     }
 
     /**

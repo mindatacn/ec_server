@@ -153,16 +153,22 @@ public class ContactService extends BaseService {
     /**
      * 查询每个省份下的数量
      *
-     * @return
-     * list
+     * @return list
      */
-    public ContactGroupVO findCountByProvince(Integer province, Integer city) {
+    public ContactGroupVO findCountByProvince(Integer province, Integer city, String begin, String end) {
         List<Map<String, Object>> list = new ArrayList<>();
         Long totalCount = 0L;
 
         //分别按省、市、行业分组
         if (province == null && city == null) {
-            List<Object[]> objList = ecContactManager.findCountByProvince();
+            List<Object[]> objList;
+            if (begin != null && end != null) {
+                Date beginDate = CommonUtil.beginOfDay(begin);
+                Date endDate = CommonUtil.endOfDay(end);
+                objList = ecContactManager.findCountByProvinceBetween(beginDate, endDate);
+            } else {
+                objList = ecContactManager.findCountByProvince();
+            }
             for (Object[] objects : objList) {
                 long count = CommonUtil.parseObject(objects[1]);
                 if (count < PROVINCE_MIN_COUNT) {

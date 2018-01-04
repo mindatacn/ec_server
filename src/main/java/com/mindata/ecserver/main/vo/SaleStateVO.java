@@ -24,9 +24,13 @@ public class SaleStateVO {
     private List<Integer> intentedContact;
     private List<Double> intentedContactPercent;
     /**
-     * 接通量
+     * 接通量(大于0的)
      */
     private List<Integer> connectedContact;
+    /**
+     * 接通量(包含0的)
+     */
+    private List<Integer> totalConnectedContact;
     private List<Integer> connected30Contact;
     private List<Integer> connected60Contact;
     private List<Integer> connected120Contact;
@@ -46,6 +50,14 @@ public class SaleStateVO {
      */
     private List<Integer> saledContact;
     private List<Double> saledContactPercent;
+
+    public List<Integer> getTotalConnectedContact() {
+        return totalConnectedContact;
+    }
+
+    public void setTotalConnectedContact(List<Integer> totalConnectedContact) {
+        this.totalConnectedContact = totalConnectedContact;
+    }
 
     public List<Integer> getTotalContact() {
         return totalContact;
@@ -217,6 +229,7 @@ public class SaleStateVO {
                 ", intentedContact=" + intentedContact +
                 ", intentedContactPercent=" + intentedContactPercent +
                 ", connectedContact=" + connectedContact +
+                ", totalConnectedContact=" + totalConnectedContact +
                 ", connected30Contact=" + connected30Contact +
                 ", connected60Contact=" + connected60Contact +
                 ", connected120Contact=" + connected120Contact +

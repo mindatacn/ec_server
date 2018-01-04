@@ -99,6 +99,7 @@ public class CustomerService {
         Integer scConnected60Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(60, beginTime, endTime);
         Integer scConnected120Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(120, beginTime, endTime);
         Integer scConnected240Count = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(240, beginTime, endTime);
+        //其他的包含0的通话量
         Integer totalScConnectedCount = ptPhoneHistoryManager.findShiChangByCallTimeGreaterThan(-1, beginTime,
                 endTime);
         Integer otherConnectedCount = connectedCount - mdConnectedCount - scConnectedCount;
@@ -119,30 +120,37 @@ public class CustomerService {
         saleStateVO.setConnected240Contact(Arrays.asList(mdConnected240Count, otherConnected240Count,
                 scConnected240Count,
                 connected240Count));
+
+        //其他的通话量，包含0的
+        Integer totalOtherConnectedCount = totalConnectedCount - totalMdConnectedCount - totalScConnectedCount;
+        //所有的通话量信息，包含0
+        saleStateVO.setTotalConnectedContact(Arrays.asList(totalMdConnectedCount, totalOtherConnectedCount,
+                totalScConnectedCount, totalConnectedCount));
+
         //接通率 技术接通量/包含时长为0的接通量
         saleStateVO.setConnectedContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnectedCount, totalMdConnectedCount),
-                CommonUtil.parsePercent(otherConnectedCount, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnectedCount, totalOtherConnectedCount),
                 CommonUtil.parsePercent(scConnectedCount, totalScConnectedCount)
         ));
         saleStateVO.setConnected30ContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnected30Count, totalMdConnectedCount),
-                CommonUtil.parsePercent(otherConnected30Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected30Count, totalOtherConnectedCount),
                 CommonUtil.parsePercent(scConnected30Count, totalScConnectedCount)
         ));
         saleStateVO.setConnected60ContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnected60Count, totalMdConnectedCount),
-                CommonUtil.parsePercent(otherConnected60Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected60Count, totalOtherConnectedCount),
                 CommonUtil.parsePercent(scConnected60Count, totalScConnectedCount)
         ));
         saleStateVO.setConnected120ContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnected120Count, totalMdConnectedCount),
-                CommonUtil.parsePercent(otherConnected120Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected120Count, totalOtherConnectedCount),
                 CommonUtil.parsePercent(scConnected120Count, totalScConnectedCount)
         ));
         saleStateVO.setConnected240ContactPercent(Arrays.asList(
                 CommonUtil.parsePercent(mdConnected240Count, totalMdConnectedCount),
-                CommonUtil.parsePercent(otherConnected240Count, totalConnectedCount - totalMdConnectedCount),
+                CommonUtil.parsePercent(otherConnected240Count, totalOtherConnectedCount),
                 CommonUtil.parsePercent(scConnected240Count, totalScConnectedCount)
         ));
 

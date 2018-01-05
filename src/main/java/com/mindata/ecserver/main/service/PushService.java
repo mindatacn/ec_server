@@ -16,6 +16,7 @@ import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushResultCountVO;
 import com.mindata.ecserver.main.vo.PushResultVO;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,6 +119,7 @@ public class PushService extends BaseService {
         fieldList.add("f_gender");
         fieldList.add("f_company_province");
         fieldList.add("f_company_city");
+        fieldList.add("f_company_region");
 //      fieldList.add("f_vocation");
         //TODO 如果是别的公司，则该channel需要修改
         //fieldList.add("f_channel");
@@ -145,12 +147,17 @@ public class PushService extends BaseService {
             v.add(e.getUrl() == null ? "" : e.getUrl());
             v.add(e.getMemo() == null ? "" : e.getMemo());
             v.add(e.getGender() == null ? 0 : e.getGender());
-            v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
-            String city = ecCodeAreaManager.findById(e.getCity() + "");
-            if ("滨海新区".equals(city)) {
-                city = "";
+            //判断是否是直辖市
+            if (CommonUtil.isZhiXiaShi(e.getProvince())) {
+                //省为空
+                v.add("");
+                v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
+                v.add(ecCodeAreaManager.findById(e.getCity() + ""));
+            } else {
+                v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
+                v.add(ecCodeAreaManager.findById(e.getCity() + ""));
+                v.add("");
             }
-            v.add(city);
             //v.add("82014661");
             valueList.add(v.toArray());
         }

@@ -147,7 +147,7 @@ public class PushService extends BaseService {
             v.add(e.getGender() == null ? 0 : e.getGender());
             v.add(ecCodeAreaManager.findById(e.getProvince() + ""));
             String city = ecCodeAreaManager.findById(e.getCity() + "");
-            if ("滨海新区".equals(city)) {
+            if ("滨海新区".equals(city) || "河北区".equals(city)) {
                 city = "";
             }
             v.add(city);

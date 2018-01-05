@@ -78,6 +78,9 @@ public class DruidDBConfig {
     @Value("false")
     private boolean testOnReturn;
 
+    @Value("false")
+    private boolean removeAbandoned;
+
     /**
      * 打开PSCache，并且指定每个连接上PSCache的大小
      */
@@ -129,6 +132,7 @@ public class DruidDBConfig {
         datasource.setTestWhileIdle(testWhileIdle);
         datasource.setTestOnBorrow(testOnBorrow);
         datasource.setTestOnReturn(testOnReturn);
+        datasource.setRemoveAbandoned(removeAbandoned);
         datasource.setPoolPreparedStatements(poolPreparedStatements);
         datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
         try {

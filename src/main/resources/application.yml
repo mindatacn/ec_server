@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ec_server
+    name: ${APP_NAME:ec_server}
   data:
     elasticsearch:
       cluster-name: elasticsearch

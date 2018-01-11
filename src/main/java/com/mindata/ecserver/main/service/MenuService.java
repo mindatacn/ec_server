@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.manager.PtMenuManager;
@@ -38,7 +39,11 @@ public class MenuService extends BaseService {
         ptMenu.setCreateTime(CommonUtil.getNow());
         ptMenu.setUpdateTime(CommonUtil.getNow());
 
-        return ptMenuManager.save(ptMenu);
+        ptMenu = ptMenuManager.save(ptMenu);
+        //新增的任何菜单，都要给超级管理员赋值，不需要额外设置
+        ptRoleMenuManager.add(ptMenu.getId(), ptRoleManager.findIdByName(Constant.ROLE_ADMIN));
+
+        return ptMenu;
     }
 
     /**

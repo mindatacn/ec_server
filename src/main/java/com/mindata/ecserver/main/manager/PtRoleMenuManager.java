@@ -50,6 +50,21 @@ public class PtRoleMenuManager {
         return ptMenuRole;
     }
 
+    /**
+     * 删除某个role的menu
+     *
+     * @param menuId
+     *         菜单id
+     * @param roleId
+     *         roleId
+     */
+    public Integer delete(Long menuId, Long roleId) {
+        return ptMenuRoleRepository.deleteByMenuIdAndRoleId(menuId, roleId);
+    }
+
+    public boolean checkExist(Long menuId, Long roleId) {
+        return ptMenuRepository.exists(menuId) && ptRoleManager.exists(roleId);
+    }
 
     /**
      * 查询拥有某个菜单的所有role

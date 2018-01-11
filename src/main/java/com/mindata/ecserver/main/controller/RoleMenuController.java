@@ -5,6 +5,7 @@ import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.manager.PtRoleMenuManager;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,22 @@ public class RoleMenuController {
         if (roleId == null || menuId == null) {
             return ResultGenerator.genFailResult("roleId和menuId都不能为空");
         }
+        if (!ptRoleMenuManager.checkExist(menuId, roleId)) {
+            return ResultGenerator.genFailResult("roleId或menuId不存在");
+        }
         return ResultGenerator.genSuccessResult(ptRoleMenuManager.add(menuId, roleId));
+    }
+
+    /**
+     * 给某个role删除菜单
+     */
+    @DeleteMapping("")
+    @RequiresRoles(Constant.ROLE_ADMIN)
+    public BaseData delete(Long roleId, Long menuId) {
+        if (roleId == null || menuId == null) {
+            return ResultGenerator.genFailResult("roleId和menuId都不能为空");
+        }
+
+        return ResultGenerator.genSuccessResult(ptRoleMenuManager.delete(menuId, roleId));
     }
 }

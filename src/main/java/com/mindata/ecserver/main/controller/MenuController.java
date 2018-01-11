@@ -44,12 +44,15 @@ public class MenuController {
     @PutMapping("")
     @RequiresRoles(Constant.ROLE_ADMIN)
     public BaseData update(@ModelAttribute PtMenu ptMenu) {
+        if (ptMenu.getId() == null) {
+            return ResultGenerator.genFailResult("菜单Id不能为空");
+        }
         return ResultGenerator.genSuccessResult(menuService.update(ptMenu));
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     @RequiresRoles(Constant.ROLE_ADMIN)
-    public BaseData delete(Long id) {
+    public BaseData delete(@PathVariable Long id) {
         menuService.delete(id);
         return ResultGenerator.genSuccessResult("删除成功");
     }

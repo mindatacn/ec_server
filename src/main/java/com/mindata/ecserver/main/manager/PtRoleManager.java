@@ -108,4 +108,8 @@ public class PtRoleManager {
     public List<PtRole> findAll() {
         return ptRoleRepository.findAll();
     }
+
+    public boolean exists(Long id) {
+        return ptRoleRepository.exists(id);
+    }
 }

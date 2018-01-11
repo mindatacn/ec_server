@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
+import com.mindata.ecserver.main.manager.PtRoleMenuManager;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -23,6 +24,8 @@ public class MenuService extends BaseService {
     private PtMenuManager ptMenuManager;
     @Resource
     private PtRoleManager ptRoleManager;
+    @Resource
+    private PtRoleMenuManager ptRoleMenuManager;
 
     /**
      * 添加菜单
@@ -64,7 +67,7 @@ public class MenuService extends BaseService {
         ptMenuManager.delete(id);
         notifyMenuChangeEvent(id);
         //删除MenuRole中关于该menu的记录
-        ptMenuManager.deleteMenuRoleByMenuId(id);
+        ptRoleMenuManager.deleteMenuRoleByMenuId(id);
     }
 
     /**
@@ -75,7 +78,7 @@ public class MenuService extends BaseService {
      */
     private void notifyMenuChangeEvent(Long menuId) {
         //查询有该菜单的所有role
-        List<PtRole> roles = ptRoleManager.findRolesByMenu(menuId);
+        List<PtRole> roles = ptRoleMenuManager.findRolesByMenu(menuId);
 
         //发布菜单事件
         eventPublisher.publishEvent(new RoleMenuChangeEvent(roles.stream().map(PtRole::getId).collect(Collectors
@@ -92,7 +95,7 @@ public class MenuService extends BaseService {
         long id = parentId == null ? 0 : parentId;
         List<PtRole> ptRoleList = ptRoleManager.findByUserId(ShiroKit.getCurrentUser().getId());
         //得到该用户所有菜单
-        List<PtMenu> menuList = ptMenuManager.findAllByRoles(ptRoleList);
+        List<PtMenu> menuList = ptRoleMenuManager.findAllMenuByRoles(ptRoleList);
         return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).sorted().collect(Collectors.toList());
     }
 }

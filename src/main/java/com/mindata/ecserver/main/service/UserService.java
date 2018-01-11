@@ -8,10 +8,7 @@ import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.bean.TokenExpire;
 import com.mindata.ecserver.global.cache.UserTokenCache;
 import com.mindata.ecserver.global.shiro.ShiroKit;
-import com.mindata.ecserver.main.manager.PtMenuManager;
-import com.mindata.ecserver.main.manager.PtRoleManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
-import com.mindata.ecserver.main.manager.PtUserPushCountManager;
+import com.mindata.ecserver.main.manager.*;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -40,8 +37,6 @@ public class UserService extends BaseService {
     @Resource
     private PtRoleManager roleManager;
     @Resource
-    private PtMenuManager menuManager;
-    @Resource
     private PtUserManager userManager;
     @Resource
     private PtUserPushCountManager ptUserPushCountManager;
@@ -51,6 +46,8 @@ public class UserService extends BaseService {
     private ServiceBuilder serviceBuilder;
     @Resource
     private CallManager callManager;
+    @Resource
+    private PtRoleMenuManager ptRoleMenuManager;
 
     /**
      * 查询用户的所有权限集合
@@ -60,7 +57,7 @@ public class UserService extends BaseService {
      */
     public Set<String> findPermissionsByUser(PtUser user) {
         List<PtRole> roles = roleManager.findRolesByUser(user);
-        List<PtMenu> menus = menuManager.findAllByRoles(roles);
+        List<PtMenu> menus = ptRoleMenuManager.findAllMenuByRoles(roles);
         return menus.stream().map(PtMenu::getPermission).collect(Collectors.toSet());
     }
 

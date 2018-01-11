@@ -35,4 +35,15 @@ public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Long> {
      * @return 删除的数量
      */
     Integer deleteByMenuId(Long menuId);
+
+    /**
+     * 查询某个对应关系是否存在
+     *
+     * @param menuId
+     *         菜单id
+     * @param roleId
+     *         roleId
+     * @return menuRole
+     */
+    PtMenuRole findFirstByMenuIdAndRoleId(Long menuId, Long roleId);
 }

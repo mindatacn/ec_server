@@ -2,11 +2,9 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.cache.UserRoleCache;
 import com.mindata.ecserver.global.constant.Constant;
-import com.mindata.ecserver.main.model.secondary.PtMenuRole;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
-import com.mindata.ecserver.main.repository.secondary.PtMenuRoleRepository;
 import com.mindata.ecserver.main.repository.secondary.PtRoleRepository;
 import com.mindata.ecserver.main.repository.secondary.PtUserRoleRepository;
 import com.xiaoleilu.hutool.util.CollectionUtil;
@@ -28,8 +26,7 @@ public class PtRoleManager {
     private PtUserRoleRepository ptUserRoleRepository;
     @Resource
     private UserRoleCache userRoleCache;
-    @Resource
-    private PtMenuRoleRepository ptMenuRoleRepository;
+
     @Resource
     private PtUserManager ptUserManager;
 
@@ -91,17 +88,6 @@ public class PtRoleManager {
         return roles;
     }
 
-    /**
-     * 查询拥有某个菜单的所有role
-     *
-     * @param menuId
-     *         菜单id
-     * @return role集合
-     */
-    public List<PtRole> findRolesByMenu(Long menuId) {
-        List<PtMenuRole> menuRoles = ptMenuRoleRepository.findByMenuId(menuId);
-        return menuRoles.stream().map(PtMenuRole::getRoleId).map(this::findByRoleId).collect(Collectors.toList());
-    }
 
     /**
      * 判断是否是管理员

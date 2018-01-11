@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,58 +92,6 @@ public class PushController {
     public BaseData get(@ModelAttribute PushFailRequestBody pushFailRequestBody) {
 
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
-    }
-
-    @CheckEcAnnotation
-    @RequestMapping("/push")
-    public Object push() throws IOException, InterruptedException {
-        Long beginId = 218302L;
-        Long endId = 223301L;
-        long optUserId = 4;//侯学明
-        long qizhi = 46;
-        long zhao = 47;
-
-        int count = 1;
-        List<Long> ids = new ArrayList<>();
-
-        PushBody pushBody = new PushBody();
-        pushBody.setOptUserId(optUserId);
-        pushBody.setFollowUserId(qizhi);
-        for (Long i = beginId; i <= 220802; i++) {
-            ids.add(i);
-            if (count != 0 && count % 50 == 0) {
-                pushBody.setIds(ids);
-                pushService.push(pushBody);
-                Thread.sleep(300);
-                ids.clear();
-                logger.info("已推送50个");
-            }
-            count++;
-        }
-        if (ids.size() > 0) {
-            pushService.push(pushBody);
-            logger.info("给qizhi的推送完毕");
-        }
-
-        ids.clear();
-        count = 1;
-        pushBody.setFollowUserId(zhao);
-        for (Long i = 220803L; i <= endId; i++) {
-            ids.add(i);
-            if (count != 0 && count % 50 == 0) {
-                pushBody.setIds(ids);
-                pushService.push(pushBody);
-                Thread.sleep(300);
-                ids.clear();
-                logger.info("已推送50个");
-            }
-            count++;
-        }
-        if (ids.size() > 0) {
-            pushService.push(pushBody);
-            logger.info("给qizhi的推送完毕");
-        }
-        return "success";
     }
 
     /**

@@ -32,9 +32,26 @@ public class MenuController {
         return ResultGenerator.genSuccessResult(menuService.find(parentId));
     }
 
+    /**
+     * 添加菜单
+     */
     @PostMapping("")
     @RequiresRoles(Constant.ROLE_ADMIN)
     public BaseData add(@ModelAttribute PtMenu ptMenu) {
         return ResultGenerator.genSuccessResult(menuService.add(ptMenu));
     }
+
+    @PutMapping("")
+    @RequiresRoles(Constant.ROLE_ADMIN)
+    public BaseData update(@ModelAttribute PtMenu ptMenu) {
+        return ResultGenerator.genSuccessResult(menuService.update(ptMenu));
+    }
+
+    @DeleteMapping("")
+    @RequiresRoles(Constant.ROLE_ADMIN)
+    public BaseData delete(Long id) {
+        menuService.delete(id);
+        return ResultGenerator.genSuccessResult("删除成功");
+    }
+
 }

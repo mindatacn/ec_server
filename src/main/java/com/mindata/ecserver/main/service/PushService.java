@@ -98,7 +98,7 @@ public class PushService extends BaseService {
         customerCreateRequest.setFieldNameMapping(fieldName());
         customerCreateRequest.setFieldValueList(fieldValueList(contactEntities));
         CustomerService customerService = serviceBuilder.getCustomerService();
-        //得到返回值
+        //得到返回值，如果是全部失败，则CustomerCreateData里面的为null
         return (CustomerCreateData) callManager.execute(customerService.batchCreate
                 (customerCreateRequest));
     }

@@ -19,6 +19,10 @@ public class CallManager {
      */
     private final static int PART_SUCCESS = 201;
     /**
+     * 全部失败
+     */
+    private final static int ALL_FAIL = 202;
+    /**
      * 没有token
      */
     private final static int NO_AUTH = 2002;
@@ -39,7 +43,7 @@ public class CallManager {
 
         BaseEcData baseEcData = (BaseEcData) response.body();
         int errCode = baseEcData.getErrCode();
-        if (SUCCESS == errCode || PART_SUCCESS == errCode) {
+        if (SUCCESS == errCode || PART_SUCCESS == errCode || ALL_FAIL == errCode) {
             return (T) response.body();
         }
 

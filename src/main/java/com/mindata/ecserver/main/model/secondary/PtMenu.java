@@ -27,6 +27,10 @@ public class PtMenu extends BaseEntity implements Comparable {
      */
     private String url;
     /**
+     * 描述
+     */
+    private String descrition;
+    /**
      * 权限字符串（"role:add","contact:push"）
      */
     private String permission;
@@ -46,6 +50,14 @@ public class PtMenu extends BaseEntity implements Comparable {
      * 是否隐藏
      */
     private boolean hide;
+
+    public String getDescrition() {
+        return descrition;
+    }
+
+    public void setDescrition(String descrition) {
+        this.descrition = descrition;
+    }
 
     public boolean isHide() {
         return hide;
@@ -125,5 +137,20 @@ public class PtMenu extends BaseEntity implements Comparable {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "PtMenu{" +
+                "name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", url='" + url + '\'' +
+                ", descrition='" + descrition + '\'' +
+                ", permission='" + permission + '\'' +
+                ", type=" + type +
+                ", icon='" + icon + '\'' +
+                ", orderNum=" + orderNum +
+                ", hide=" + hide +
+                '}';
     }
 }

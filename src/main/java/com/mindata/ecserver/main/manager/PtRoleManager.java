@@ -101,6 +101,18 @@ public class PtRoleManager {
         return Constant.ROLE_MANAGER.equals(getRoleStr(ptUser));
     }
 
+    /**
+     * 是否是超管
+     *
+     * @param userId
+     *         userId
+     * @return 是否
+     */
+    public boolean isAdmin(Long userId) {
+        PtUser ptUser = ptUserManager.findByUserId(userId);
+        return Constant.ROLE_ADMIN.equals(getRoleStr(ptUser));
+    }
+
     public Long findIdByName(String name) {
         return ptRoleRepository.findByName(name).getId();
     }

@@ -99,11 +99,24 @@ public class MenuService extends BaseService {
     public List<PtMenu> find(final Long parentId, String name) {
         long id = parentId == null ? 0 : parentId;
         String tempName = name == null ? "" : name;
-        List<PtRole> ptRoleList = ptRoleManager.findByUserId(ShiroKit.getCurrentUser().getId());
+        Long userId = ShiroKit.getCurrentUser().getId();
+        List<PtRole> ptRoleList = ptRoleManager.findByUserId(userId);
+        boolean isAdmin = ptRoleManager.isAdmin(userId);
         //得到该用户所有菜单
         List<PtMenu> menuList = ptRoleMenuManager.findAllMenuByRoles(ptRoleList);
+        //超管显示已隐藏的菜单
+        if (isAdmin) {
+            return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu.getName()
+                    .contains(tempName))
+                    .sorted()
+                    .collect
+                            (Collectors
+                                    .toList());
+        }
+        //其他人不显示已隐藏的菜单
         return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu.getName()
                 .contains(tempName))
+                .filter(ptMenu -> !ptMenu.isHide())
                 .sorted()
                 .collect
                         (Collectors

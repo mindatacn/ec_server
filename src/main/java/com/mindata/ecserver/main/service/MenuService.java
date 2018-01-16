@@ -2,6 +2,7 @@ package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.event.MenuDeleteEvent;
 import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.manager.PtMenuManager;
 import com.mindata.ecserver.main.manager.PtRoleManager;
@@ -47,7 +48,7 @@ public class MenuService extends BaseService {
     }
 
     /**
-     * 添加菜单
+     * 修改菜单
      *
      * @param ptMenu
      *         菜单
@@ -72,7 +73,7 @@ public class MenuService extends BaseService {
         ptMenuManager.delete(id);
         notifyMenuChangeEvent(id);
         //删除MenuRole中关于该menu的记录
-        ptRoleMenuManager.deleteMenuRoleByMenuId(id);
+        eventPublisher.publishEvent(new MenuDeleteEvent(id));
     }
 
     /**

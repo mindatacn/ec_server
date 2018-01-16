@@ -1,16 +1,21 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.cache.RoleMenuCache;
+import com.mindata.ecserver.main.event.MenuDeleteEvent;
+import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtMenuRole;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.repository.secondary.PtMenuRepository;
 import com.mindata.ecserver.main.repository.secondary.PtMenuRoleRepository;
 import com.mindata.ecserver.util.CommonUtil;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +32,8 @@ public class PtRoleMenuManager {
     private RoleMenuCache roleMenuCache;
     @Resource
     private PtMenuRepository ptMenuRepository;
+    @Resource
+    private ApplicationEventPublisher eventPublisher;
 
     /**
      * 给某个role赋值权限
@@ -47,6 +54,9 @@ public class PtRoleMenuManager {
             ptMenuRole.setUpdateTime(CommonUtil.getNow());
             ptMenuRole = ptMenuRoleRepository.save(ptMenuRole);
         }
+
+        //发布角色菜单事件
+        eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
         return ptMenuRole;
     }
 
@@ -59,6 +69,8 @@ public class PtRoleMenuManager {
      *         roleId
      */
     public Integer delete(Long menuId, Long roleId) {
+        //发布角色菜单事件
+        eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
         return ptMenuRoleRepository.deleteByMenuIdAndRoleId(menuId, roleId);
     }
 
@@ -83,10 +95,12 @@ public class PtRoleMenuManager {
     /**
      * 根据菜单id删除menuRole表的记录
      *
-     * @param menuId
-     *         menuId
+     * @param event
+     *         event
      */
-    public void deleteMenuRoleByMenuId(Long menuId) {
+    @EventListener
+    public void deleteMenuRoleByMenuId(MenuDeleteEvent event) {
+        Long menuId = (Long) event.getSource();
         ptMenuRoleRepository.deleteByMenuId(menuId);
     }
 

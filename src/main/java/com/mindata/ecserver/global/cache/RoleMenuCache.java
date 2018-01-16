@@ -55,7 +55,7 @@ public class RoleMenuCache extends BaseCache {
     }
 
     /**
-     * 菜单的增删改查，会导致该缓存被清空
+     * 菜单的增删改查，和RoleMenu表的增加、删除会导致该缓存被清空
      *
      * @param roleMenuChangeEvent
      *         菜单事件
@@ -63,7 +63,7 @@ public class RoleMenuCache extends BaseCache {
     @SuppressWarnings("unchecked")
     @EventListener
     @Order(0)
-    public void menuCrud(RoleMenuChangeEvent roleMenuChangeEvent) {
+    public void roleMenuChange(RoleMenuChangeEvent roleMenuChangeEvent) {
         List<Long> roleIds = (List<Long>) roleMenuChangeEvent.getSource();
         for (Long roleId : roleIds) {
             remove(roleId);

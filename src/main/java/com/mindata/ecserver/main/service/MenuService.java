@@ -96,11 +96,17 @@ public class MenuService extends BaseService {
      * @param parentId
      *         父菜单id
      */
-    public List<PtMenu> find(final Long parentId) {
+    public List<PtMenu> find(final Long parentId, String name) {
         long id = parentId == null ? 0 : parentId;
+        String tempName = name == null ? "" : name;
         List<PtRole> ptRoleList = ptRoleManager.findByUserId(ShiroKit.getCurrentUser().getId());
         //得到该用户所有菜单
         List<PtMenu> menuList = ptRoleMenuManager.findAllMenuByRoles(ptRoleList);
-        return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).sorted().collect(Collectors.toList());
+        return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu.getName()
+                .contains(tempName))
+                .sorted()
+                .collect
+                        (Collectors
+                                .toList());
     }
 }

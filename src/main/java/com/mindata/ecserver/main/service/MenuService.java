@@ -11,6 +11,7 @@ import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.util.CommonUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,8 +57,10 @@ public class MenuService extends BaseService {
      */
     public PtMenu update(PtMenu ptMenu) {
         ptMenu.setUpdateTime(CommonUtil.getNow());
+        PtMenu oldMenu = ptMenuManager.findOne(ptMenu.getId());
+        BeanUtils.copyProperties(ptMenu, oldMenu);
         //发布菜单事件
-        PtMenu menu = ptMenuManager.save(ptMenu);
+        PtMenu menu = ptMenuManager.save(oldMenu);
 
         notifyMenuChangeEvent(ptMenu.getId());
         return menu;

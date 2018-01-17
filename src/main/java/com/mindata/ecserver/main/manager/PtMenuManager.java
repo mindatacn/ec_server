@@ -27,4 +27,7 @@ public class PtMenuManager {
         ptMenuRepository.delete(id);
     }
 
+    public PtMenu findOne(Long id) {
+        return ptMenuRepository.findOne(id);
+    }
 }

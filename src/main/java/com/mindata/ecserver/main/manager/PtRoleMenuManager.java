@@ -77,10 +77,11 @@ public class PtRoleMenuManager {
      * @param roleId
      *         roleId
      */
-    public Integer delete(Long menuId, Long roleId) {
+    public void delete(Long menuId, Long roleId) {
         //发布角色菜单事件
         eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
-        return ptMenuRoleRepository.deleteByMenuIdAndRoleId(menuId, roleId);
+        PtMenuRole ptMenuRole = ptMenuRoleRepository.findFirstByMenuIdAndRoleId(menuId, roleId);
+        ptMenuRoleRepository.delete(ptMenuRole);
     }
 
     public boolean checkExist(Long menuId, Long roleId) {

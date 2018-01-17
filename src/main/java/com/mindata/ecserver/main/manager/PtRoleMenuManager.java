@@ -13,6 +13,7 @@ import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -109,6 +110,7 @@ public class PtRoleMenuManager {
      *         event
      */
     @EventListener
+    @Transactional
     public void deleteMenuRoleByMenuId(MenuDeleteEvent event) {
         Long menuId = (Long) event.getSource();
         ptMenuRoleRepository.deleteByMenuId(menuId);

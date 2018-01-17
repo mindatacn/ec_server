@@ -2,6 +2,8 @@ package com.mindata.ecserver.main.repository.secondary;
 
 import com.mindata.ecserver.main.model.secondary.PtMenuRole;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -34,7 +36,9 @@ public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Long> {
      *         菜单id
      * @return 删除的数量
      */
-    Integer deleteByMenuId(Long menuId);
+    @Modifying
+    @Query("delete from PtMenuRole where menuId = ?1")
+    void deleteByMenuId(Long menuId);
 
     /**
      * 查询某个对应关系是否存在

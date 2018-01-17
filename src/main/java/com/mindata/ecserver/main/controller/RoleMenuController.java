@@ -47,7 +47,7 @@ public class RoleMenuController {
         if (roleId == null || menuId == null) {
             return ResultGenerator.genFailResult("roleId和menuId都不能为空");
         }
-
-        return ResultGenerator.genSuccessResult(ptRoleMenuManager.delete(menuId, roleId));
+        ptRoleMenuManager.delete(menuId, roleId);
+        return ResultGenerator.genSuccessResult("删除成功");
     }
 }

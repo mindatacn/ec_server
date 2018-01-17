@@ -4,6 +4,7 @@ import com.mindata.ecserver.main.model.secondary.PtMenuRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Long> {
      * @return 删除的数量
      */
     @Modifying
+    @Transactional(rollbackFor = Exception.class)
     @Query("delete from PtMenuRole where menuId = ?1")
     void deleteByMenuId(Long menuId);
 

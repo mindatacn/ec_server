@@ -4,6 +4,8 @@ import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.manager.PtRoleMenuManager;
+import com.mindata.ecserver.main.requestbody.RoleMenuDto;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,14 +30,12 @@ public class RoleMenuController {
      */
     @PostMapping("")
     @RequiresRoles(Constant.ROLE_ADMIN)
-    public BaseData add(Long roleId, Long menuId) {
-        if (roleId == null || menuId == null) {
+    public BaseData add(RoleMenuDto roleMenuDto) {
+        if (roleMenuDto.getRoleId() == null || CollectionUtil.isEmpty(roleMenuDto.getMenuIds())) {
             return ResultGenerator.genFailResult("roleId和menuId都不能为空");
         }
-        if (!ptRoleMenuManager.checkExist(menuId, roleId)) {
-            return ResultGenerator.genFailResult("roleId或menuId不存在");
-        }
-        return ResultGenerator.genSuccessResult(ptRoleMenuManager.add(menuId, roleId));
+
+        return ResultGenerator.genSuccessResult(ptRoleMenuManager.add(roleMenuDto));
     }
 
     /**

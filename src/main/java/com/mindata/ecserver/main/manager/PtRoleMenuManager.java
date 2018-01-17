@@ -8,6 +8,7 @@ import com.mindata.ecserver.main.model.secondary.PtMenuRole;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.repository.secondary.PtMenuRepository;
 import com.mindata.ecserver.main.repository.secondary.PtMenuRoleRepository;
+import com.mindata.ecserver.main.requestbody.RoleMenuDto;
 import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -58,6 +59,14 @@ public class PtRoleMenuManager {
         //发布角色菜单事件
         eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
         return ptMenuRole;
+    }
+
+    public List<PtMenuRole> add(RoleMenuDto roleMenuDto) {
+        List<PtMenuRole> list = new ArrayList<>();
+        for (Long menuId : roleMenuDto.getMenuIds()) {
+            list.add(add(menuId, roleMenuDto.getRoleId()));
+        }
+        return list;
     }
 
     /**

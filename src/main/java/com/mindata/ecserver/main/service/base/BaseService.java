@@ -27,7 +27,7 @@ public class BaseService {
     protected List<String> getCities(List<String> provinces, List<String> cities) {
         //如果勾了某省，但是没勾它对应的市，则默认选中它所有的市
         for (String province : provinces) {
-            if (!checkCityInProvice(cities, province)) {
+            if (!checkCityInProvince(cities, province)) {
                 cities.addAll(ecCodeAreaManager.findCitiesByProvince(province));
             }
         }
@@ -58,7 +58,7 @@ public class BaseService {
      *         省
      * @return 是否包含
      */
-    private boolean checkCityInProvice(List<String> cities, String province) {
+    private boolean checkCityInProvince(List<String> cities, String province) {
         String provinceHead = province.substring(0, 2);
         for (String city : cities) {
             if (city.substring(0, 2).equals(provinceHead)) {

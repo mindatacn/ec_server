@@ -44,6 +44,14 @@ public class PtProductManager {
     }
 
     /**
+     * 查询所有
+     * @return List
+     */
+    public List<PtProduct> findAll() {
+        return ptProductRepository.findAll();
+    }
+
+    /**
      * 根据id查询
      *
      * @param id id

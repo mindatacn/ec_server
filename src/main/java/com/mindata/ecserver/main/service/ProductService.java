@@ -5,6 +5,7 @@ import com.mindata.ecserver.main.manager.PtProductManager;
 import com.mindata.ecserver.main.model.secondary.PtProduct;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.BeanUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -65,6 +66,10 @@ public class ProductService {
      * @return List
      */
     public List<PtProduct> findByName(String name) {
+        if (StrUtil.isEmpty(name)) {
+            return ptProductManager.findAll();
+        }
         return ptProductManager.findByName(name);
     }
+
 }

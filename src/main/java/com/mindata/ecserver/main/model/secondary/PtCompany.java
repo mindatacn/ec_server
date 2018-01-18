@@ -72,6 +72,10 @@ public class PtCompany extends BaseEntity {
      * 在EC的公司id
      */
     private Long corpId;
+    /**
+     * 产品id
+     */
+    private Long productId;
 
     public Long getCorpId() {
         return corpId;
@@ -191,5 +195,13 @@ public class PtCompany extends BaseEntity {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

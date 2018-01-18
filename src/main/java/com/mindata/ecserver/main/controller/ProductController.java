@@ -63,8 +63,8 @@ public class ProductController {
      * @param name name
      * @return result
      */
-    @GetMapping("/{name}")
-    public BaseData find(@PathVariable String name) {
+    @GetMapping("")
+    public BaseData find(String name) {
         return ResultGenerator.genSuccessResult(productService.findByName(name));
     }
 }

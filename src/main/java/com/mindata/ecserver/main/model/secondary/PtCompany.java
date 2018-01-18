@@ -21,7 +21,7 @@ public class PtCompany extends BaseEntity {
      */
     private String prefix;
     /**
-     * 公司状态（0正常，欠费等等）
+     * 公司状态（0正常，1欠费，-1产品故障等等）
      */
     private Integer status;
     /**

@@ -6,6 +6,7 @@ import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/31.
@@ -29,5 +30,16 @@ public class PtUserRoleManager {
         ptUserRole.setCreateTime(CommonUtil.getNow());
         ptUserRole.setUpdateTime(CommonUtil.getNow());
         return ptUserRoleRepository.save(ptUserRole);
+    }
+
+    /**
+     * 根据roleId查询
+     *
+     * @param roleId
+     *         roleId
+     * @return 集合
+     */
+    public List<PtUserRole> findByRoleId(Long roleId) {
+        return ptUserRoleRepository.findByRoleId(roleId);
     }
 }

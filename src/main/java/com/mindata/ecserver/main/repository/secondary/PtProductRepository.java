@@ -12,7 +12,9 @@ public interface PtProductRepository extends JpaRepository<PtProduct, Long> {
     /**
      * 根据名称模糊查询
      * @param name
+     * name
      * @return
+     * list
      */
     List<PtProduct> findByNameLike(String name);
 }

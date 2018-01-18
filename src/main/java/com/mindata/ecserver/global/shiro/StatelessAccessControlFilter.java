@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.mindata.ecserver.global.bean.ResultCode.NO_LOGIN;
+import static com.mindata.ecserver.global.bean.ResultCode.STATE_ERROR;
 import static com.mindata.ecserver.global.constant.Constant.AUTHORIZATION;
 
 /**
@@ -54,9 +55,16 @@ public class StatelessAccessControlFilter extends FormAuthenticationFilter {
             return false;
         }
         UsernamePasswordToken token1 = new UsernamePasswordToken(user.getAccount(), user.getPassword());
-        //5、委托给Realm进行登录
-        getSubject(request, response).login(token1);
-        return true;
+        try {
+            //5、委托给Realm进行登录
+            getSubject(request, response).login(token1);
+            return true;
+        } catch (Exception e) {
+            //登录失败有几种情况，1用户被删除，2公司状态异常，3公司的产品如EC发生故障
+            stateError(response);
+            return false;
+        }
+
     }
 
     private void gotoLogin(ServletResponse response) throws IOException {
@@ -64,6 +72,13 @@ public class StatelessAccessControlFilter extends FormAuthenticationFilter {
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.getWriter().write(JSONUtil.toJsonStr(JSONUtil.parse(ResultGenerator.genFailResult(NO_LOGIN,
                 "you have not login"))));
+    }
+
+    private void stateError(ServletResponse response) throws IOException {
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.getWriter().write(JSONUtil.toJsonStr(JSONUtil.parse(ResultGenerator.genFailResult(STATE_ERROR,
+                "state error"))));
     }
 
 }

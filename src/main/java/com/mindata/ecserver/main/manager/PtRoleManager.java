@@ -2,11 +2,13 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.cache.UserRoleCache;
 import com.mindata.ecserver.global.constant.Constant;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import com.mindata.ecserver.main.repository.secondary.PtRoleRepository;
 import com.mindata.ecserver.main.repository.secondary.PtUserRoleRepository;
+import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,6 @@ public class PtRoleManager {
     private PtUserRoleRepository ptUserRoleRepository;
     @Resource
     private UserRoleCache userRoleCache;
-
     @Resource
     private PtUserManager ptUserManager;
 
@@ -45,6 +46,34 @@ public class PtRoleManager {
 
     public PtRole findByRoleId(Long roleId) {
         return ptRoleRepository.findOne(roleId);
+    }
+
+    /**
+     * 添加一个role
+     *
+     * @param ptRole
+     *         ptRole
+     * @return ptRole
+     */
+    public PtRole add(PtRole ptRole) {
+        ptRole.setCreateTime(CommonUtil.getNow());
+        ptRole.setUpdateTime(CommonUtil.getNow());
+        return ptRoleRepository.save(ptRole);
+    }
+
+    public PtRole update(PtRole ptRole) {
+        ptRole.setUpdateTime(CommonUtil.getNow());
+        return ptRoleRepository.save(ptRole);
+    }
+
+    /**
+     * 删除角色
+     *
+     * @param roleId
+     *         roleId
+     */
+    public void delete(Long roleId) {
+        ptRoleRepository.delete(roleId);
     }
 
     /**
@@ -117,8 +146,15 @@ public class PtRoleManager {
         return ptRoleRepository.findByName(name).getId();
     }
 
+    /**
+     * 查询所有role
+     * @return
+     * role集合
+     */
     public List<PtRole> findAll() {
-        return ptRoleRepository.findAll();
+        PtUser ptUser = ShiroKit.getCurrentUser();
+
+        return ptRoleRepository.findByCompanyId(ptUser.getCompanyId());
     }
 
     public boolean exists(Long id) {

@@ -50,5 +50,14 @@ public class PtCompanyManager {
         return companyRepository.findOne(id);
     }
 
+    /**
+     * 根据productId 查询
+     * @param productId productId
+     * @return Integer
+     */
+    public Integer countByProductId(Long productId){
+        return companyRepository.countByProductId(productId);
+    }
+
 
 }

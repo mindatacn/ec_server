@@ -12,8 +12,7 @@ import javax.persistence.Table;
  * @author wuweifeng wrote on 2018/1/18.
  */
 @Entity
-@Table(name = "pt_menu", indexes = {@Index(name = "parent_id", columnList =
-        "parentId")})
+@Table(name = "pt_product")
 public class PtProduct extends BaseEntity {
     /**
      * 产品名字

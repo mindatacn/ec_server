@@ -2,8 +2,10 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
+import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.model.secondary.PtProduct;
 import com.mindata.ecserver.main.service.ProductService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,6 +14,7 @@ import javax.annotation.Resource;
  * @author hanliqiang wrote on 2018/1/18
  */
 @RestController
+@RequiresRoles(value = Constant.ROLE_ADMIN)
 @RequestMapping("/product")
 public class ProductController {
     @Resource

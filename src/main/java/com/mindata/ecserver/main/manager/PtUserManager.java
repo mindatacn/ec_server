@@ -216,4 +216,15 @@ public class PtUserManager {
         ptUser.setThreshold(threshold);
         userRepository.save(ptUser);
     }
+
+    /**
+     * 用户状态异常，不可登录
+     *
+     * @param ptUser
+     *         user
+     * @return 是否异常状态
+     */
+    public boolean isErrorUser(PtUser ptUser) {
+        return null == ptUser || ptUser.getState() == -1;
+    }
 }

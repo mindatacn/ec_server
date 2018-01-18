@@ -35,12 +35,22 @@ public interface PtMenuRoleRepository extends JpaRepository<PtMenuRole, Long> {
      *
      * @param menuId
      *         菜单id
-     * @return 删除的数量
      */
     @Modifying
     @Transactional(rollbackFor = Exception.class)
     @Query("delete from PtMenuRole where menuId = ?1")
     void deleteByMenuId(Long menuId);
+
+    /**
+     * 删除某个菜单的所有记录
+     *
+     * @param roleId
+     *         角色id
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query("delete from PtMenuRole where roleId = ?1")
+    void deleteByRoleId(Long roleId);
 
     /**
      * 查询某个对应关系是否存在

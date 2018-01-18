@@ -17,6 +17,8 @@ import java.util.Date;
 public class PtCompanyManager {
     @Resource
     private PtCompanyRepository companyRepository;
+    @Resource
+    private PtProductManager ptProductManager;
 
     /**
      * 新增一个Company
@@ -59,5 +61,16 @@ public class PtCompanyManager {
         return companyRepository.countByProductId(productId);
     }
 
+    /**
+     * 判断该公司状态是否异常(status不为0，或者对应的product的state为-1)
+     *
+     * @param companyId
+     *         公司id
+     * @return 是否异常
+     */
+    public boolean isStatusError(Long companyId) {
+        PtCompany ptCompany = companyRepository.findOne(companyId);
+        return ptCompany != null && (ptCompany.getStatus() != 0 || ptProductManager.isError(ptCompany.getProductId()));
+    }
 
 }

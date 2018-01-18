@@ -60,4 +60,16 @@ public class PtProductManager {
     public PtProduct findById(Long id) {
         return ptProductRepository.findOne(id);
     }
+
+    /**
+     * 该产品有故障
+     *
+     * @param id
+     *         id
+     * @return 是否故障
+     */
+    public boolean isError(Long id) {
+        PtProduct ptProduct = findById(id);
+        return ptProduct != null && ptProduct.getState() == -1;
+    }
 }

@@ -18,7 +18,7 @@ public class PtProduct extends BaseEntity {
      */
     private String name;
     /**
-     * 当前状态（0正常，1内测，2异常）
+     * 当前状态（0正常，1内测，-1异常，异常时使用该产品的所有用户禁止操作）
      */
     private Integer state;
     /**

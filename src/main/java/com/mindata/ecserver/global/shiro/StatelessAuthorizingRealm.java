@@ -38,11 +38,11 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         PtUser user = ptUserManager.findByAccount(token.getUsername());
         //用户不存在或者已被删除
-        if (null == user || user.getState() == -1) {
+        if (ptUserManager.isErrorUser(user)) {
             return null;
         }
-        //如果公司state不为0，公司所有人不可登录
-        if (user.getCompanyId() != 0 && ptCompanyManager.findOne(user.getCompanyId()).getStatus() == -1) {
+        //如果公司state不为0，公司所有人不可登录。如果公司产品有故障，也不可登录
+        if (ptCompanyManager.isStatusError(user.getCompanyId())) {
             return null;
         }
 

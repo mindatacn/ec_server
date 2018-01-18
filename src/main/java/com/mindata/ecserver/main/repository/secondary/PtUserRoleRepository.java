@@ -19,4 +19,13 @@ public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Long> {
     List<PtUserRole> findByUserId(Long userId);
 
     PtUserRole findByUserIdAndRoleId(Long userId, Long roleId);
+
+    /**
+     * 根据roleId查询
+     *
+     * @param roleId
+     *         roleId
+     * @return 集合
+     */
+    List<PtUserRole> findByRoleId(Long roleId);
 }

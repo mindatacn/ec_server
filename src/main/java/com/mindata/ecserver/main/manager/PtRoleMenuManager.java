@@ -2,6 +2,7 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.cache.RoleMenuCache;
 import com.mindata.ecserver.main.event.MenuDeleteEvent;
+import com.mindata.ecserver.main.event.RoleDeleteEvent;
 import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtMenuRole;
@@ -112,6 +113,12 @@ public class PtRoleMenuManager {
     public void deleteMenuRoleByMenuId(MenuDeleteEvent event) {
         Long menuId = (Long) event.getSource();
         ptMenuRoleRepository.deleteByMenuId(menuId);
+    }
+
+    @EventListener
+    public void deleteMenuRoleByRoleId(RoleDeleteEvent event) {
+        Long roleId = (Long) event.getSource();
+        ptMenuRoleRepository.deleteByRoleId(roleId);
     }
 
     public List<PtMenu> findByRoleId(Long roleId) {

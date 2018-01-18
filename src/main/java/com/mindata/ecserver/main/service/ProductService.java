@@ -53,6 +53,7 @@ public class ProductService {
      */
     public PtProduct update(PtProduct ptProduct) {
         PtProduct product = ptProductManager.findById(ptProduct.getId());
+        product.setUpdateTime(CommonUtil.getNow());
         BeanUtil.copyProperties(ptProduct, product, BeanUtil.CopyOptions.create().setIgnoreNullValue(true));
         return ptProductManager.save(product);
     }

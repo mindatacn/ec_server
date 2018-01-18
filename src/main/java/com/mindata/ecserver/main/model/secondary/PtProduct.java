@@ -3,7 +3,6 @@ package com.mindata.ecserver.main.model.secondary;
 import com.mindata.ecserver.main.model.base.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.Index;
 import javax.persistence.Table;
 
 /**

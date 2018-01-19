@@ -70,4 +70,5 @@ public class ProductController {
     public BaseData find(String name) {
         return ResultGenerator.genSuccessResult(productService.findByName(name));
     }
+
 }

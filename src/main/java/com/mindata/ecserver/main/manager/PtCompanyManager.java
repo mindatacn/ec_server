@@ -4,11 +4,13 @@ import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.repository.secondary.PtCompanyRepository;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -73,4 +75,25 @@ public class PtCompanyManager {
         return ptCompany != null && (ptCompany.getStatus() != 0 || ptProductManager.isError(ptCompany.getProductId()));
     }
 
+    /**
+     * 查询所有公司的阈值
+     */
+    public List<PtCompany> find(String name){
+        if(StrUtil.isEmpty(name)){
+            return companyRepository.findAll();
+        }
+        return companyRepository.findByNameLike("%" + name + "%");
+    }
+
+    /**
+     * 根据id修改阈值
+     * @param id id
+     * @param threshold threshold
+     * @return PtCompany
+     */
+    public PtCompany updateThresholdById(Long id,Integer threshold){
+        PtCompany ptCompany = companyRepository.findOne(id);
+        ptCompany.setThreshold(threshold);
+        return companyRepository.save(ptCompany);
+    }
 }

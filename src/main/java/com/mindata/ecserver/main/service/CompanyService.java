@@ -14,12 +14,14 @@ import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.CompanyVO;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,5 +113,35 @@ public class CompanyService extends BaseService {
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId, force);
         ptUserManager.addUsers(userBeanList, companyId, force);
+    }
+
+    /**
+     * 根据名称模糊查询
+     *
+     * @param name name
+     * @return List
+     */
+    public List<CompanyVO> find(String name) {
+        List<CompanyVO> companyVOS = new ArrayList<>();
+        List<PtCompany> companies = ptCompanyManager.find(name);
+        for (PtCompany ptCompany : companies) {
+            CompanyVO companyVO = new CompanyVO();
+            companyVO.setId(ptCompany.getId());
+            companyVO.setName(ptCompany.getName());
+            companyVO.setThreshold(ptCompany.getThreshold());
+            companyVOS.add(companyVO);
+        }
+        return companyVOS;
+    }
+
+    /**
+     * 根据id修改阈值
+     *
+     * @param id        id
+     * @param threshold threshold
+     * @return PtCompany
+     */
+    public PtCompany updateThresholdById(Long id, Integer threshold) {
+        return ptCompanyManager.updateThresholdById(id, threshold);
     }
 }

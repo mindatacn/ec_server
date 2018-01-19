@@ -26,8 +26,7 @@ public class CompanyController {
     /**
      * 添加一家新的公司
      *
-     * @param company
-     *         公司各信息
+     * @param company 公司各信息
      * @return 结果
      */
     @PostMapping({"", "/"})
@@ -46,5 +45,31 @@ public class CompanyController {
     @CheckEcAnnotation
     public BaseData sync(Boolean force) throws IOException {
         return ResultGenerator.genSuccessResult(companyService.syncFromEc(force));
+    }
+
+    /**
+     * 根据名称模糊查询
+     *
+     * @param name name
+     * @return result
+     */
+    @GetMapping("")
+    public BaseData find(String name) {
+        return ResultGenerator.genSuccessResult(companyService.find(name));
+    }
+
+    /**
+     * 根据id修改阈值
+     *
+     * @param id        id
+     * @param threshold threshold
+     * @return result
+     */
+    @PutMapping("")
+    public BaseData updateThresholdById(Long id, Integer threshold) {
+        if (id == null) {
+            return ResultGenerator.genFailResult("公司id不能为空");
+        }
+        return ResultGenerator.genSuccessResult(companyService.updateThresholdById(id, threshold));
     }
 }

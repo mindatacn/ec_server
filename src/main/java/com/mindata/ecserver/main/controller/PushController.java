@@ -6,6 +6,7 @@ import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
@@ -15,6 +16,8 @@ import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
+import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.date.DateUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
@@ -39,6 +42,8 @@ public class PushController {
     private PushSuccessResultService pushSuccessResultService;
     @Resource
     private PushFailResultService pushFailResultService;
+    @Resource
+    private PtCompanyManager ptCompanyManager;
 
 
     private static final int MAX_SIZE = 50;
@@ -70,6 +75,11 @@ public class PushController {
         PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);
         if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日最大限制");
+        }
+        // 检查已推送的数量是否大于公司规定的推送数量
+        Long total = (Long) ptUserPushCountManager.findByPushDateTime(DateUtil.formatDate(CommonUtil.getNow()), DateUtil.formatDate(CommonUtil.getNow())).get(0).get("total");
+        if (total > ptCompanyManager.findOne(ShiroKit.getCurrentUser().getCompanyId()).getThreshold()) {
+            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日公司规定最大限制");
         }
         return ResultGenerator.genSuccessResult(pushService.push(pushBody));
     }
@@ -105,5 +115,4 @@ public class PushController {
     public BaseData getCount(String begin, String end) {
         return ResultGenerator.genSuccessResult(ptUserPushCountManager.findByPushDateTime(begin, end));
     }
-
 }

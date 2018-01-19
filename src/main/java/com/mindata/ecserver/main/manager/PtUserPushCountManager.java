@@ -131,6 +131,10 @@ public class PtUserPushCountManager extends BaseService {
     public Integer getPushedCountSum(Long companyId) {
         Date beginTime = DateUtil.beginOfDay(CommonUtil.getNow());
         Date endTime = DateUtil.endOfDay(CommonUtil.getNow());
-        return ptUserPushCountRepository.getPushedCountSum(companyId, beginTime, endTime);
+        Integer count = ptUserPushCountRepository.getPushedCountSum(companyId, beginTime, endTime);
+        if (count == null) {
+            return 0;
+        }
+        return count;
     }
 }

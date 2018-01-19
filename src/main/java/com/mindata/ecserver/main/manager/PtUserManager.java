@@ -1,7 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CompanyUserBean;
-import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.util.CommonUtil;
@@ -36,7 +35,7 @@ public class PtUserManager {
      *
      * @return 用户
      */
-    public PtUser addAdmin(String account, String password, Long companyId) {
+    public PtUser addAdmin(String account, String password, Long roleId, Long companyId) {
         Date now = CommonUtil.getNow();
         PtUser ptUser = new PtUser();
         ptUser.setCreateTime(now);
@@ -50,7 +49,7 @@ public class PtUserManager {
         ptUser.setTitle("公司管理员");
         ptUser = userRepository.save(ptUser);
         //添加role信息
-        userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_MANAGER));
+        userRoleManager.add(ptUser.getId(), roleId);
         return ptUser;
     }
 
@@ -83,8 +82,6 @@ public class PtUserManager {
         ptUser.setThreshold(departmentManager.findByEcDeptId(companyUserBean.getDeptId()).getThreshold());
         ptUser = userRepository.save(ptUser);
 
-        //添加role信息
-        userRoleManager.add(ptUser.getId(), roleManager.findIdByName(Constant.ROLE_USER));
         return ptUser;
     }
 

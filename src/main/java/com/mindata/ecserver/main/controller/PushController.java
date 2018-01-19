@@ -4,7 +4,6 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -15,10 +14,6 @@ import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -42,7 +37,6 @@ public class PushController {
 
 
     private static final int MAX_SIZE = 50;
-    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     /**
      * 推送指定的id集合到ec
@@ -52,7 +46,6 @@ public class PushController {
      */
     @PostMapping({"", "/"})
     @CheckEcAnnotation
-    @RequiresRoles(value = {Constant.ROLE_USER, Constant.ROLE_LEADER}, logical = Logical.OR)
     public BaseData push(@RequestBody PushBody pushBody) throws IOException {
         //没传跟进人，默认为自己
         if (pushBody.getFollowUserId() == null) {

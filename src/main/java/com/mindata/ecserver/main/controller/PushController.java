@@ -67,12 +67,16 @@ public class PushController {
         //检查被推送的用户每日上限
         PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);
         if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
-            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日最大限制");
+            Integer surplusCount = userCount.getThreshold() - userCount.getPushedCount();
+            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "当前只允许推送【"+surplusCount+"】条");
         }
         // 检查已推送的数量是否大于公司规定的推送数量
-        Long total = (Long) ptUserPushCountManager.findByPushDateTime(DateUtil.formatDate(CommonUtil.getNow()), DateUtil.formatDate(CommonUtil.getNow())).get(0).get("total");
-        if (total > ptCompanyManager.findOne(ShiroKit.getCurrentUser().getCompanyId()).getThreshold()) {
-            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日公司规定最大限制");
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Integer companyThreshold = ptCompanyManager.findOne(companyId).getThreshold();
+        Integer pushedCount = ptUserPushCountManager.getPushedCountSum(companyId);
+        if (ids.size() + pushedCount > companyThreshold) {
+            Integer surplusCount = companyThreshold - pushedCount;
+            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "当前公司只允许推送【"+surplusCount+"】条");
         }
         return ResultGenerator.genSuccessResult(pushService.push(pushBody));
     }
@@ -93,7 +97,6 @@ public class PushController {
      */
     @GetMapping("/failure")
     public BaseData get(@ModelAttribute PushFailRequestBody pushFailRequestBody) {
-
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }
 

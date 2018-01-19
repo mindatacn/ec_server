@@ -121,4 +121,16 @@ public class PtUserPushCountManager extends BaseService {
         }
         return list;
     }
+
+    /**
+     * 查询某公司当天推送的总和
+     *
+     * @param companyId companyId
+     * @return Integer
+     */
+    public Integer getPushedCountSum(Long companyId) {
+        Date beginTime = DateUtil.beginOfDay(CommonUtil.getNow());
+        Date endTime = DateUtil.endOfDay(CommonUtil.getNow());
+        return ptUserPushCountRepository.getPushedCountSum(companyId, beginTime, endTime);
+    }
 }

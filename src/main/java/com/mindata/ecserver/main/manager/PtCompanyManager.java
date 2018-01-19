@@ -78,7 +78,7 @@ public class PtCompanyManager {
     /**
      * 查询所有公司的阈值
      */
-    public List<PtCompany> find(String name){
+    public List<PtCompany> findThreshold(String name){
         if(StrUtil.isEmpty(name)){
             return companyRepository.findAll();
         }

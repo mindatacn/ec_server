@@ -65,10 +65,15 @@ public class RoleMenuCache extends BaseCache {
     @Order(0)
     public void roleMenuChange(RoleMenuChangeEvent roleMenuChangeEvent) {
         List<Long> roleIds = (List<Long>) roleMenuChangeEvent.getSource();
+        RedisBatchUtil.pipelined(stringRedisTemplate, s -> removeAll(roleIds));
+    }
+
+    private void removeAll(List<Long> roleIds) {
         for (Long roleId : roleIds) {
             remove(roleId);
         }
     }
+
 
     private void remove(Long roleId) {
         stringRedisTemplate.delete(keyOfRole(roleId));

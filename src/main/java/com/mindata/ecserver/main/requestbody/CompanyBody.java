@@ -56,6 +56,14 @@ public class CompanyBody {
      * APPSecret
      */
     private String appSecret;
+    /**
+     * 产品ID
+     */
+    private Long productId;
+    /**
+     * 角色ID
+     */
+    private Long roleId;
 
     private String account;
 
@@ -171,6 +179,22 @@ public class CompanyBody {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public String getAppSecret() {

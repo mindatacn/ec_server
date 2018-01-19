@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.mindata.ecserver.global.constant.Constant.*;
-
 /**
  * @author wuweifeng wrote on 2017/10/26.
  * 条件查询联系人数据（推送成功的）
@@ -56,22 +54,16 @@ public class PushSuccessResultService extends BaseService {
     public SimplePage<PushSuccessResultVO> findByConditions(PushResultRequestBody
                                                                     pushResultRequestBody) {
         Criteria<PtPushSuccessResult> criteria = new Criteria<>();
-        String roleName = ptRoleManager.getRoleStr(ShiroKit.getCurrentUser());
+        PtUser nowUser = ShiroKit.getCurrentUser();
         //管理员
-        if (roleName.equals(ROLE_MANAGER)) {
-            Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        if (ptRoleManager.isManager(nowUser.getId())) {
+            Long companyId = nowUser.getCompanyId();
             criteria.add(Restrictions.eq("companyId", companyId, true));
         }
         //部门领导
-        if (roleName.equals(ROLE_LEADER)) {
-            Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
-            criteria.add(Restrictions.eq("departmentId", deptId, true));
-        }
-        //职员
-        if (roleName.equals(ROLE_USER)) {
-            Long userId = ShiroKit.getCurrentUser().getId();
-            criteria.add(Restrictions.eq("followUserId", userId, true));
-        }
+        Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
+        criteria.add(Restrictions.eq("departmentId", deptId, true));
+
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {
             Date date = CommonUtil.beginOfDay(pushResultRequestBody.getBeginTime());

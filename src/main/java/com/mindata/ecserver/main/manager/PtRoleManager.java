@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -83,20 +82,9 @@ public class PtRoleManager {
      *         用户
      * @return 角色名
      */
-    public String getRoleStr(PtUser ptUser) {
+    public List<PtRole> getRolesByUser(PtUser ptUser) {
         //判断用户角色
-        List<PtRole> roles = findRolesByUser(ptUser);
-        Set<String> roleNames = roles.stream().map(PtRole::getName).collect(Collectors.toSet());
-        if (roleNames.contains(Constant.ROLE_ADMIN)) {
-            return Constant.ROLE_ADMIN;
-        }
-        if (roleNames.contains(Constant.ROLE_MANAGER)) {
-            return Constant.ROLE_MANAGER;
-        }
-        if (roleNames.contains(Constant.ROLE_LEADER)) {
-            return Constant.ROLE_LEADER;
-        }
-        return Constant.ROLE_USER;
+        return findRolesByUser(ptUser);
     }
 
     /**
@@ -117,17 +105,23 @@ public class PtRoleManager {
         return roles;
     }
 
+    public List<PtRole> findRolesByUserId(Long userId) {
+        PtUser ptUser = ptUserManager.findByUserId(userId);
+        return findRolesByUser(ptUser);
+    }
+
 
     /**
-     * 判断是否是管理员
+     * 判断是否是公司管理员
      *
      * @param userId
      *         用户id
      * @return 是否是管理员
      */
     public boolean isManager(Long userId) {
-        PtUser ptUser = ptUserManager.findByUserId(userId);
-        return Constant.ROLE_MANAGER.equals(getRoleStr(ptUser));
+        List<PtRole> ptRoles = findRolesByUserId(userId);
+        return ptRoles.stream().map(PtRole::getCompanyId).collect(Collectors.toSet()).contains(Constant
+                .MANAGER_COMPANY_ID);
     }
 
     /**
@@ -138,8 +132,8 @@ public class PtRoleManager {
      * @return 是否
      */
     public boolean isAdmin(Long userId) {
-        PtUser ptUser = ptUserManager.findByUserId(userId);
-        return Constant.ROLE_ADMIN.equals(getRoleStr(ptUser));
+        List<PtRole> ptRoles = findRolesByUserId(userId);
+        return ptRoles.stream().map(PtRole::getName).collect(Collectors.toSet()).contains(Constant.ROLE_ADMIN);
     }
 
     public Long findIdByName(String name) {

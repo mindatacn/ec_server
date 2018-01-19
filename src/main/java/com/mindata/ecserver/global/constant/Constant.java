@@ -25,9 +25,11 @@ public interface Constant {
     int FAILURE = 0;
 
     String ROLE_ADMIN = "admin";
-    String ROLE_MANAGER = "manager";
-    String ROLE_LEADER = "leader";
-    String ROLE_USER = "user";
+    //String ROLE_MANAGER = "manager";
+    //String ROLE_LEADER = "leader";
+    //String ROLE_USER = "user";
+
+    Long MANAGER_COMPANY_ID = 0L;
 
     String CONTENT_TYPE = "Content-Type";
     String APP_JSON = "application/json";

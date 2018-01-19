@@ -3,12 +3,9 @@ package com.mindata.ecserver.main.controller;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -78,7 +75,6 @@ public class UserController {
      * @param name 名字
      * @return 集合
      */
-    @RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("")
     public BaseData findUserByNameLike(String name) {
         return ResultGenerator.genSuccessResult(userService.findByNameLike(name));
@@ -87,7 +83,6 @@ public class UserController {
     /**
      * 获取自己的推送数量
      */
-    @RequiresRoles(value = {Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("/pushCount")
     public BaseData queryThreshold() {
         return ResultGenerator.genSuccessResult(userService.findPushCount());

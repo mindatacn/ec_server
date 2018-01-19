@@ -62,7 +62,8 @@ public class CompanyService extends BaseService {
     public PtCompany addCompany(CompanyBody companyBody) {
         PtCompany ptCompany = ptCompanyManager.add(companyBody);
         //添加公司管理员
-        ptUserManager.addAdmin(companyBody.getAccount(), companyBody.getPassword(), ptCompany.getId());
+        ptUserManager.addAdmin(companyBody.getAccount(), companyBody.getPassword(), companyBody.getRoleId(), ptCompany
+                .getId());
         return ptCompany;
     }
 

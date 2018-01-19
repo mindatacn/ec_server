@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 
 import static com.mindata.ecserver.global.constant.Constant.ROLE_ADMIN;
-import static com.mindata.ecserver.global.constant.Constant.ROLE_MANAGER;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -41,7 +40,6 @@ public class CompanyController {
      * @return 结果
      */
     @GetMapping("/sync")
-    @RequiresRoles(value = ROLE_MANAGER)
     @CheckEcAnnotation
     public BaseData sync(Boolean force) throws IOException {
         return ResultGenerator.genSuccessResult(companyService.syncFromEc(force));

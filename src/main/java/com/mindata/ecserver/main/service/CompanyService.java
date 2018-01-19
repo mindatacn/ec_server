@@ -122,9 +122,9 @@ public class CompanyService extends BaseService {
      * @param name name
      * @return List
      */
-    public List<CompanyVO> find(String name) {
+    public List<CompanyVO> findThreshold(String name) {
         List<CompanyVO> companyVOS = new ArrayList<>();
-        List<PtCompany> companies = ptCompanyManager.find(name);
+        List<PtCompany> companies = ptCompanyManager.findThreshold(name);
         for (PtCompany ptCompany : companies) {
             CompanyVO companyVO = new CompanyVO();
             companyVO.setId(ptCompany.getId());

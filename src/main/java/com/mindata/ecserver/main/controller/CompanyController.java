@@ -46,14 +46,14 @@ public class CompanyController {
     }
 
     /**
-     * 根据名称模糊查询
+     * 查询公司的阈值
      *
      * @param name name
      * @return result
      */
-    @GetMapping("")
-    public BaseData find(String name) {
-        return ResultGenerator.genSuccessResult(companyService.find(name));
+    @GetMapping("/threshold")
+    public BaseData findThreshold(String name) {
+        return ResultGenerator.genSuccessResult(companyService.findThreshold(name));
     }
 
     /**
@@ -64,6 +64,7 @@ public class CompanyController {
      * @return result
      */
     @PutMapping("")
+    @RequiresRoles(ROLE_ADMIN)
     public BaseData updateThresholdById(Long id, Integer threshold) {
         if (id == null) {
             return ResultGenerator.genFailResult("公司id不能为空");

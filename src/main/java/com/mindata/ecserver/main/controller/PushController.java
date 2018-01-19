@@ -70,8 +70,8 @@ public class PushController {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日最大限制");
         }
         // 检查已推送的数量是否大于公司规定的推送数量
-        Long total = (Long) ptUserPushCountManager.findByPushDateTime(DateUtil.formatDate(CommonUtil.getNow()), DateUtil.formatDate(CommonUtil.getNow())).get(0).get("total");
-        if (total > ptCompanyManager.findOne(ShiroKit.getCurrentUser().getCompanyId()).getThreshold()) {
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        if (ptUserPushCountManager.getPushedCountSum(companyId) > ptCompanyManager.findOne(companyId).getThreshold()) {
             return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "已超出今日公司规定最大限制");
         }
         return ResultGenerator.genSuccessResult(pushService.push(pushBody));
@@ -93,7 +93,6 @@ public class PushController {
      */
     @GetMapping("/failure")
     public BaseData get(@ModelAttribute PushFailRequestBody pushFailRequestBody) {
-
         return ResultGenerator.genSuccessResult(pushFailResultService.findByConditions(pushFailRequestBody));
     }
 

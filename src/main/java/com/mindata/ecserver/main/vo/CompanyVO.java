@@ -37,4 +37,13 @@ public class CompanyVO {
     public void setThreshold(Integer threshold) {
         this.threshold = threshold;
     }
+
+    @Override
+    public String toString() {
+        return "CompanyVO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", threshold=" + threshold +
+                '}';
+    }
 }

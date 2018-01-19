@@ -45,6 +45,7 @@ public class PtProductManager {
 
     /**
      * 查询所有
+     *
      * @return List
      */
     public List<PtProduct> findAll() {

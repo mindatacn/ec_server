@@ -3,6 +3,8 @@ package com.mindata.ecserver.main.repository.secondary;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
@@ -23,4 +25,10 @@ public interface PtCompanyRepository extends JpaRepository<PtCompany, Long> {
      */
     Integer countByProductId(Long productId);
 
+    /**
+     * 根据名称模糊查询
+     * @param name name
+     * @return List
+     */
+    List<PtCompany> findByNameLike(String name);
 }

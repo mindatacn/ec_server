@@ -15,8 +15,6 @@ import com.mindata.ecserver.main.requestbody.PushResultRequestBody;
 import com.mindata.ecserver.main.service.PushFailResultService;
 import com.mindata.ecserver.main.service.PushService;
 import com.mindata.ecserver.main.service.PushSuccessResultService;
-import com.mindata.ecserver.util.CommonUtil;
-import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,7 +44,8 @@ public class PushController {
     /**
      * 推送指定的id集合到ec
      *
-     * @param pushBody id集合
+     * @param pushBody
+     *         id集合
      * @return 结果
      */
     @PostMapping({"", "/"})
@@ -68,7 +67,8 @@ public class PushController {
         PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);
         if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
             Integer surplusCount = userCount.getThreshold() - userCount.getPushedCount();
-            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "当前只允许推送【"+surplusCount+"】条");
+            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "今日推送额度剩余【" + surplusCount
+                    + "】条");
         }
         // 检查已推送的数量是否大于公司规定的推送数量
         Long companyId = ShiroKit.getCurrentUser().getCompanyId();
@@ -76,7 +76,8 @@ public class PushController {
         Integer pushedCount = ptUserPushCountManager.getPushedCountSum(companyId);
         if (ids.size() + pushedCount > companyThreshold) {
             Integer surplusCount = companyThreshold - pushedCount;
-            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "当前公司只允许推送【"+surplusCount+"】条");
+            return ResultGenerator.genFailResult(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT,
+                    "公司今日推送额度剩余【" + surplusCount + "】条");
         }
         return ResultGenerator.genSuccessResult(pushService.push(pushBody));
     }
@@ -84,7 +85,8 @@ public class PushController {
     /**
      * 查看推送成功的历史
      *
-     * @param pushResultRequestBody body
+     * @param pushResultRequestBody
+     *         body
      * @return 结果
      */
     @GetMapping("/success")
@@ -102,12 +104,16 @@ public class PushController {
 
     /**
      * 查询某段时间内每天共有多少人推送了多少条数据
+     * (该接口已废弃)
      *
-     * @param begin 开始时间
-     * @param end   结束时间
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
      * @return 每天的聚合数据[{"date":2017-08-09, "total":203, "user":14}]
      */
     @GetMapping("/count")
+    @Deprecated
     public BaseData getCount(String begin, String end) {
         return ResultGenerator.genSuccessResult(ptUserPushCountManager.findByPushDateTime(begin, end));
     }

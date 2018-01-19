@@ -1,6 +1,8 @@
 package com.mindata.ecserver;
 
-import com.mindata.ecserver.main.manager.*;
+import com.mindata.ecserver.main.manager.PtSearchConditionManager;
+import com.mindata.ecserver.main.manager.PtUserManager;
+import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.manager.ec.EcCodeAreaManager;
 import com.mindata.ecserver.main.manager.ec.EcContactManager;
 import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
@@ -56,12 +58,18 @@ public class EcServerApplicationTests {
     private EcContactRepository ecContactRepository;
     @Resource
     private SaveUserTrajectoryService saveUserTrajectoryService;
+    @Resource
+    private PtUserPushCountManager ptUserPushCountManager;
 
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
     public void contextLoads() throws IOException {
+        //Integer pushedCount = ptUserPushCountManager.getPushedCountSum(1L);
+        //if (1 + pushedCount > 10) {
+        //    System.out.println(1);
+        //}
         //excelToTrajectory();
         //List<PtSearchCondition> conditions = ptSearchConditionManager.find();
         //System.out.println(codeAreaManager.findCitiesByProvince("110000"));

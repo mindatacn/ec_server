@@ -59,10 +59,12 @@ public class PushSuccessResultService extends BaseService {
         if (ptRoleManager.isManager(nowUser.getId())) {
             Long companyId = nowUser.getCompanyId();
             criteria.add(Restrictions.eq("companyId", companyId, true));
+        } else {
+            criteria.add(Restrictions.eq("followUserId", nowUser.getId(), true));
         }
         //部门领导
-        Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
-        criteria.add(Restrictions.eq("departmentId", deptId, true));
+        //Long deptId = ShiroKit.getCurrentUser().getDepartmentId();
+        //criteria.add(Restrictions.eq("departmentId", deptId, true));
 
         //开始时间
         if (!StrUtil.isEmpty(pushResultRequestBody.getBeginTime())) {

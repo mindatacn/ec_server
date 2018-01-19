@@ -101,6 +101,7 @@ public class PtUserPushCountManager extends BaseService {
      * @param end   结束时间
      * @return 结果
      */
+    @Deprecated
     public List<Map<String, Object>> findByPushDateTime(String begin, String end) {
         List<Map<String, Object>> list = new ArrayList<>();
         Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));

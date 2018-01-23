@@ -111,4 +111,8 @@ public class UserController {
         userService.updateThresholdByUserId(userId, threshold);
         return ResultGenerator.genSuccessResult("设置成功");
     }
+    @GetMapping("/test")
+    public BaseData test() {
+        return ResultGenerator.genSuccessResult(userService.findManagerUser(1L));
+    }
 }

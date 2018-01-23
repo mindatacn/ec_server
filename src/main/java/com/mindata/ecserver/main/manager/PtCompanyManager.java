@@ -6,6 +6,9 @@ import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +35,8 @@ public class PtCompanyManager {
     public PtCompany add(CompanyBody companyBody) {
         Date now = CommonUtil.getNow();
         PtCompany ptCompany = new PtCompany();
+        // 初次购买
+        ptCompany.setBuyStatus(1);
         ptCompany.setStatus(0);
         ptCompany.setCreateTime(now);
         ptCompany.setUpdateTime(now);
@@ -39,6 +44,14 @@ public class PtCompanyManager {
         return companyRepository.save(ptCompany);
     }
 
+    /**
+     * 修改
+     * @param ptCompany ptCompany
+     * @return PtCompany
+     */
+    public PtCompany update(PtCompany ptCompany) {
+        return companyRepository.save(ptCompany);
+    }
     /**
      * 根据corpId查询公司
      *
@@ -95,5 +108,18 @@ public class PtCompanyManager {
         PtCompany ptCompany = companyRepository.findOne(id);
         ptCompany.setThreshold(threshold);
         return companyRepository.save(ptCompany);
+    }
+    /**
+     * 分页查找
+     * @param var1 var1
+     * @param var2 var2
+     * @return  Page
+     */
+    public Page<PtCompany> findAll(Specification<PtCompany> var1, Pageable var2) {
+        return companyRepository.findAll(var1, var2);
+    }
+
+    public List<PtCompany> findPtCompanyByBuyStatus(){
+        return companyRepository.findByBuyStatusNot(4);
     }
 }

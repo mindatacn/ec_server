@@ -158,4 +158,5 @@ public class PtRoleManager {
     public boolean exists(Long id) {
         return ptRoleRepository.exists(id);
     }
+
 }

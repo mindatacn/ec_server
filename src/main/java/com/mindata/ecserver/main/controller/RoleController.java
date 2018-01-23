@@ -63,7 +63,5 @@ public class RoleController {
             return ResultGenerator.genSuccessResult("删除成功");
         }
         return ResultGenerator.genFailResult("请先删除所有该角色的用户对应关系");
-
     }
-
 }

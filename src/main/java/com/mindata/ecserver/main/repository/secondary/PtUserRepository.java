@@ -4,6 +4,7 @@ import com.mindata.ecserver.main.model.secondary.PtUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,4 +97,19 @@ public interface PtUserRepository extends JpaRepository<PtUser, Long> {
      */
     List<PtUser> findByIdBetweenAndCompanyId(Long beginId, Long endId, Long companyId);
 
+    /**
+     * 根据公司id查找当前公司下用户最小的创建时间
+     * @param companyId companyId
+     * @return Date
+     */
+    @Query(value = "select min(createTime) from PtUser where companyId = ?1")
+    Date findMinDateByCompanyId(Long companyId);
+
+    /**
+     * 根据最小时间和公司id去查找数据
+     * @param createTime createTime
+     * @param companyId companyId
+     * @return PtUser
+     */
+    PtUser findByCreateTimeAndCompanyId(Date createTime,Long companyId);
 }

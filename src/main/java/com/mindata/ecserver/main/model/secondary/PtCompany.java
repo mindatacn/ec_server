@@ -25,6 +25,10 @@ public class PtCompany extends BaseEntity {
      */
     private Integer status;
     /**
+     * 购买状态(1初次购买，2已续费，3快过期，4已过期)
+     */
+    private Integer buyStatus;
+    /**
      * 默认推送数量阈值
      */
     private Integer threshold;
@@ -76,6 +80,10 @@ public class PtCompany extends BaseEntity {
      * 产品id
      */
     private Long productId;
+    /**
+     * 公司地址
+     */
+    private String address;
 
     public Long getCorpId() {
         return corpId;
@@ -203,5 +211,21 @@ public class PtCompany extends BaseEntity {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Integer getBuyStatus() {
+        return buyStatus;
+    }
+
+    public void setBuyStatus(Integer buyStatus) {
+        this.buyStatus = buyStatus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

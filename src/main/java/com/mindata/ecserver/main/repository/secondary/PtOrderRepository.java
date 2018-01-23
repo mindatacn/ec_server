@@ -19,10 +19,10 @@ public interface PtOrderRepository extends JpaRepository<PtOrder, Long> {
      * @return Long
      */
     @Query(value = "select max(id) from PtOrder where companyId = ?1 and productId=?2")
-    Long findPtOrderByMaxId(Long companyId, Long productId);
+    Long findPtOrderByMaxIdAndProductId(Long companyId, Long productId);
 
     /**
-     *
+     * 根据公司id和商品id统计有多少数据
      * @param companyId
      * @param productId
      * @return
@@ -30,9 +30,10 @@ public interface PtOrderRepository extends JpaRepository<PtOrder, Long> {
     Integer countByCompanyIdAndProductId(Long companyId, Long productId);
 
     /**
-     *
-     * @param nowTime
-     * @return
+     * 根据id查找订单
+     * @param companyId companyId
+     * @return List
      */
-    List<PtOrder> findByExpiryDateLessThan(Date nowTime);
+    @Query(value = "select max(id) from PtOrder where companyId = ?1")
+    Long findByCompanyId(Long companyId);
 }

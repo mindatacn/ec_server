@@ -13,10 +13,7 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.*;
-import com.mindata.ecserver.main.model.secondary.PtCompany;
-import com.mindata.ecserver.main.model.secondary.PtOrder;
-import com.mindata.ecserver.main.model.secondary.PtRole;
-import com.mindata.ecserver.main.model.secondary.PtUser;
+import com.mindata.ecserver.main.model.secondary.*;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -64,6 +61,8 @@ public class CompanyService extends BaseService {
     private PtProductManager ptProductManager;
     @Resource
     private PtRoleManager ptRoleManager;
+    @Resource
+    private PtUserRoleManager ptUserRoleManager;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -232,7 +231,7 @@ public class CompanyService extends BaseService {
         companyVO.setMemo(ptCompany.getMemo());
         companyVO.setCreateTime(ptCompany.getCreateTime());
 
-        PtOrder ptOrder = ptOrderManager.findByCompanyId(companyId, ptCompany.getProductId());
+        PtOrder ptOrder = ptOrderManager.findByCompanyIdAndProductId(companyId, ptCompany.getProductId());
         companyVO.setEffectiveDate(ptOrder.getEffectiveDate());
         companyVO.setExpiryDate(ptOrder.getExpiryDate());
         PtUser ptUser = userService.findManagerUser(ptCompany.getId());
@@ -253,12 +252,17 @@ public class CompanyService extends BaseService {
         ptCompany.setUpdateTime(CommonUtil.getNow());
         BeanUtils.copyProperties(companyBody, ptCompany);
         ptCompanyManager.update(ptCompany);
-        PtOrder ptOrder = ptOrderManager.findByCompanyId(companyBody.getId(), ptCompany.getProductId());
-        BeanUtils.copyProperties(companyBody, ptOrder);
+        PtOrder ptOrder =  ptOrderManager.findByCompanyId(companyBody.getId());
+        ptOrder.setEffectiveDate(companyBody.getEffectiveDate());
+        ptOrder.setExpiryDate(companyBody.getExpiryDate());
+        ptOrder.setProductId(companyBody.getProductId());
         ptOrderManager.update(ptOrder);
         PtUser ptUser = userService.findManagerUser(companyBody.getId());
-        BeanUtils.copyProperties(companyBody, ptUser);
+        ptUser.setAccount(companyBody.getAccount());
         ptUserManager.update(ptUser);
+        List<PtUserRole> ptUserRoles = ptUserRoleManager.findByUserId(ptUser.getId());
+        ptUserRoles.get(0).setRoleId(companyBody.getRoleId());
+        ptUserRoleManager.update(ptUserRoles.get(0));
         return ptCompany;
     }
 
@@ -268,7 +272,7 @@ public class CompanyService extends BaseService {
     public void timingUpdateBuyStatus() {
         List<PtCompany> companies = ptCompanyManager.findPtCompanyByBuyStatus();
         for (PtCompany ptCompany : companies) {
-            PtOrder ptOrder = ptOrderManager.findByCompanyId(ptCompany.getId(), ptCompany.getProductId());
+            PtOrder ptOrder = ptOrderManager.findByCompanyIdAndProductId(ptCompany.getId(), ptCompany.getProductId());
             if (DateUtil.betweenDay(CommonUtil.getNow(), ptOrder.getExpiryDate(), true) == 3) {
                 PtCompany company = ptCompanyManager.findOne(ptCompany.getId());
                 company.setBuyStatus(3);

@@ -44,13 +44,13 @@ public class PtOrderManager {
      * @param companyId companyId
      * @return PtOrder
      */
-    public PtOrder findByCompanyId(Long companyId,Long productId){
-        Long orderId = ptOrderRepository.findPtOrderByMaxId(companyId,productId);
+    public PtOrder findByCompanyIdAndProductId(Long companyId,Long productId){
+        Long orderId = ptOrderRepository.findPtOrderByMaxIdAndProductId(companyId,productId);
         return ptOrderRepository.findOne(orderId);
     }
 
     /**
-     *
+     * 根据公司id和商品id统计有多少个订单
      * @param companyId companyId
      * @param productId productId
      * @return Integer
@@ -59,5 +59,14 @@ public class PtOrderManager {
         return ptOrderRepository.countByCompanyIdAndProductId(companyId,productId);
     }
 
+    /**
+     * 查找当前公司最新的一条数据
+     * @param companyId companyId
+     * @return List
+     */
+    public PtOrder findByCompanyId(Long companyId){
+        Long orderId = ptOrderRepository.findByCompanyId(companyId);
+        return ptOrderRepository.findOne(orderId);
+    }
 
 }

@@ -45,12 +45,20 @@ public class PtUserRoleManager {
     }
 
     /**
-     * 根据多个roleId查询对应的userId
-     * @param roleIds roleIds
+     * 根据userId查找角色
+     * @param userId userId
      * @return List
      */
-    public List<Long> findUserIdsByRoleId(List<Long> roleIds){
-        List<PtUserRole> ptUserRoles = ptUserRoleRepository.findByRoleIdIn(roleIds);
-        return ptUserRoles.stream().map(role -> role.getUserId()).collect(Collectors.toList());
+    public List<PtUserRole> findByUserId(Long userId) {
+        return ptUserRoleRepository.findByUserId(userId);
     }
+
+    /**
+     * 修改
+     * @param ptUserRole ptUserRole
+     */
+    public void update(PtUserRole ptUserRole){
+        ptUserRoleRepository.save(ptUserRole);
+    }
+
 }

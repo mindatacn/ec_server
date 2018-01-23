@@ -19,4 +19,6 @@ public interface PtRoleRepository extends JpaRepository<PtRole, Long> {
      * @return 角色集合
      */
     List<PtRole> findByCompanyId(Long companyId);
+
+    List<PtRole> findByCompanyIdAndNameLike(Long companyId, String name);
 }

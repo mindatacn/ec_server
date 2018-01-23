@@ -10,6 +10,7 @@ import com.mindata.ecserver.main.repository.secondary.PtRoleRepository;
 import com.mindata.ecserver.main.repository.secondary.PtUserRoleRepository;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -145,10 +146,13 @@ public class PtRoleManager {
      * @return
      * role集合
      */
-    public List<PtRole> findAll() {
+    public List<PtRole> findAll(String name) {
         PtUser ptUser = ShiroKit.getCurrentUser();
-
-        return ptRoleRepository.findByCompanyId(ptUser.getCompanyId());
+        if (StrUtil.isEmpty(name)) {
+            return ptRoleRepository.findByCompanyId(ptUser.getCompanyId());
+        } else {
+            return ptRoleRepository.findByCompanyIdAndNameLike(ptUser.getCompanyId(), "%" + name + "%");
+        }
     }
 
     public boolean exists(Long id) {

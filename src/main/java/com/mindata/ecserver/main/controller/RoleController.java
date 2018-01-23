@@ -23,8 +23,8 @@ public class RoleController {
      * 获取所有角色
      */
     @GetMapping("")
-    public BaseData get() {
-        return ResultGenerator.genSuccessResult(ptRoleManager.findAll());
+    public BaseData get(String name) {
+        return ResultGenerator.genSuccessResult(ptRoleManager.findAll(name));
     }
 
     /**

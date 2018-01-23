@@ -11,6 +11,7 @@ import com.mindata.ecserver.main.repository.secondary.PtMenuRepository;
 import com.mindata.ecserver.main.repository.secondary.PtMenuRoleRepository;
 import com.mindata.ecserver.main.requestbody.RoleMenuDto;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -80,9 +81,19 @@ public class PtRoleMenuManager {
      */
     public void delete(Long menuId, Long roleId) {
         //发布角色菜单事件
-        eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
+        eventPublisher.publishEvent(new RoleMenuChangeEvent(CollectionUtil.newArrayList(roleId)));
         PtMenuRole ptMenuRole = ptMenuRoleRepository.findFirstByMenuIdAndRoleId(menuId, roleId);
         ptMenuRoleRepository.delete(ptMenuRole);
+    }
+
+    /**
+     * 批量删除role和menu的对应关系
+     *
+     * @param roleMenuDto
+     *         dto
+     */
+    public void delete(RoleMenuDto roleMenuDto) {
+        roleMenuDto.getMenuIds().forEach(menuId -> delete(roleMenuDto.getRoleId(), menuId));
     }
 
     public boolean checkExist(Long menuId, Long roleId) {

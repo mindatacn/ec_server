@@ -20,5 +20,5 @@ public interface PtRoleRepository extends JpaRepository<PtRole, Long> {
      */
     List<PtRole> findByCompanyId(Long companyId);
 
-
+    List<PtRole> findByCompanyIdAndNameLike(Long companyId, String name);
 }

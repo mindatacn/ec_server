@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/10/31.
@@ -41,5 +42,15 @@ public class PtUserRoleManager {
      */
     public List<PtUserRole> findByRoleId(Long roleId) {
         return ptUserRoleRepository.findByRoleId(roleId);
+    }
+
+    /**
+     * 根据多个roleId查询对应的userId
+     * @param roleIds roleIds
+     * @return List
+     */
+    public List<Long> findUserIdsByRoleId(List<Long> roleIds){
+        List<PtUserRole> ptUserRoles = ptUserRoleRepository.findByRoleIdIn(roleIds);
+        return ptUserRoles.stream().map(role -> role.getUserId()).collect(Collectors.toList());
     }
 }

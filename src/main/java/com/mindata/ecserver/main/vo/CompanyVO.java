@@ -1,18 +1,34 @@
 package com.mindata.ecserver.main.vo;
 
 /**
- * @author hanliqiang wrote on 2018/1/19
+ * @author hanliqiang wrote on 2018/1/22
  */
 public class CompanyVO {
     private Long id;
     /**
+     * 商品名称
+     */
+    private String productName;
+    /**
      * 公司名称
      */
-    private String name;
+    private String companyName;
     /**
-     * 默认推送数量阈值
+     * 联系人
      */
-    private Integer threshold;
+    private String contactPerson;
+    /**
+     * 账号
+     */
+    private String account;
+    /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
+     * 状态
+     */
+    private Integer status;
 
     public Long getId() {
         return id;
@@ -22,28 +38,64 @@ public class CompanyVO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Integer getThreshold() {
-        return threshold;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setThreshold(Integer threshold) {
-        this.threshold = threshold;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "CompanyVO{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", threshold=" + threshold +
+                ", productName='" + productName + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", contactPerson='" + contactPerson + '\'' +
+                ", account='" + account + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

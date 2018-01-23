@@ -224,4 +224,24 @@ public class PtUserManager {
     public boolean isErrorUser(PtUser ptUser) {
         return null == ptUser || ptUser.getState() == -1;
     }
+
+
+    /**
+     * 根据公司id查找当前公司下用户最小的创建时间
+     * @param companyId companyId
+     * @return Date
+     */
+    public Date findMinDateByCompanyId(Long companyId){
+        return userRepository.findMinDateByCompanyId(companyId);
+    }
+
+    /**
+     * 根据最小时间和公司id查找管理员用户
+     * @param createTime createTime
+     * @param companyId companyId
+     * @return PtUser
+     */
+    public PtUser findByCreateTimeAndCompanyId(Date createTime,Long companyId){
+        return userRepository.findByCreateTimeAndCompanyId(createTime,companyId);
+    }
 }

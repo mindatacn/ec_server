@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +49,8 @@ public class UserService extends BaseService {
     private CallManager callManager;
     @Resource
     private PtRoleMenuManager ptRoleMenuManager;
+    @Resource
+    private PtUserRoleManager ptUserRoleManager;
 
     /**
      * 查询用户的所有权限集合
@@ -253,5 +256,15 @@ public class UserService extends BaseService {
      */
     public void updateThresholdByUserId(Long userId, Integer threshold) {
         userManager.updateThresholdByUserId(userId, threshold);
+    }
+
+    /**
+     * 根据公司id查找管理员账号
+     * @param companyId companyId
+     * @return PtUser
+     */
+    public PtUser findManagerUser(Long companyId){
+        Date createTime = userManager.findMinDateByCompanyId(companyId);
+        return userManager.findByCreateTimeAndCompanyId(createTime,companyId);
     }
 }

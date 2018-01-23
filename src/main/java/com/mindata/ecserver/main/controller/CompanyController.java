@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
+import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
 import com.mindata.ecserver.main.service.CompanyService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class CompanyController {
      * @return 结果
      */
     @PostMapping({"", "/"})
-    @RequiresRoles(ROLE_ADMIN)
+//    @RequiresRoles(ROLE_ADMIN)
     public BaseData add(@RequestBody CompanyBody company) {
         return ResultGenerator.genSuccessResult(companyService.addCompany(company));
     }
@@ -63,12 +64,36 @@ public class CompanyController {
      * @param threshold threshold
      * @return result
      */
-    @PutMapping("")
+    @PutMapping("/threshold")
     @RequiresRoles(ROLE_ADMIN)
     public BaseData updateThresholdById(Long id, Integer threshold) {
         if (id == null) {
             return ResultGenerator.genFailResult("公司id不能为空");
         }
         return ResultGenerator.genSuccessResult(companyService.updateThresholdById(id, threshold));
+    }
+    @PutMapping("")
+    public BaseData updateCompanyById(@ModelAttribute CompanyBody companyBody) {
+        return ResultGenerator.genSuccessResult(companyService.updateCompanyById(companyBody));
+    }
+    /**
+     * 查询公司列表
+     */
+    @GetMapping("/list")
+    public BaseData get(@ModelAttribute CompanyRequestBody companyRequestBody) {
+        return ResultGenerator.genSuccessResult(companyService.findByConditions(companyRequestBody));
+    }
+    /**
+     * 查询某个公司详情
+     */
+    @GetMapping("/detail")
+    public BaseData get(Long companyId) {
+        return ResultGenerator.genSuccessResult(companyService.findCompanyDeatilById(companyId));
+    }
+
+    @GetMapping("/test")
+    public BaseData test() {
+        companyService.timingUpdateBuyStatus();
+        return ResultGenerator.genSuccessResult("test");
     }
 }

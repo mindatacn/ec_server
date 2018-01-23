@@ -154,4 +154,12 @@ public class PtRoleManager {
     public boolean exists(Long id) {
         return ptRoleRepository.exists(id);
     }
+
+    /**
+     * 查询公司管理员
+     */
+    public List<Long> findManager(){
+       List<PtRole> ptRoles =  ptRoleRepository.findByCompanyId(0L);
+        return ptRoles.stream().map(role -> role.getId()).collect(Collectors.toList());
+    }
 }

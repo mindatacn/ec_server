@@ -1,9 +1,13 @@
 package com.mindata.ecserver.main.requestbody;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
 public class CompanyBody {
+    private Long id;
     /**
      * 公司名称
      */
@@ -24,6 +28,10 @@ public class CompanyBody {
      * 城市code
      */
     private String city;
+    /**
+     * 公司地址
+     */
+    private String address;
     /**
      * 联系人
      */
@@ -60,6 +68,19 @@ public class CompanyBody {
      * 产品ID
      */
     private Long productId;
+    /**
+     * 购买金额
+     */
+    private BigDecimal money;
+    /**
+     * 生效日期
+     */
+    private Date effectiveDate;
+    /**
+     * 失效日期
+     */
+    private Date expiryDate;
+
     /**
      * 角色ID
      */
@@ -203,5 +224,45 @@ public class CompanyBody {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

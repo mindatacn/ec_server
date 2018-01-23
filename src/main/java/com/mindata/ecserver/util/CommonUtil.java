@@ -3,6 +3,7 @@ package com.mindata.ecserver.util;
 
 import com.mindata.ecserver.global.constant.Constant;
 import com.xiaoleilu.hutool.date.DatePattern;
+import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.io.file.FileReader;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
@@ -174,7 +175,8 @@ public class CommonUtil {
     }
 
     public static void main(String[] args) {
-        //System.out.println(password("admin"));
+        String datestr = "2018-01-26 00:00:00";
+        System.out.println(DateUtil.betweenDay(CommonUtil.getNow(), DateUtil.parseDate(datestr), true));
         jisuan();
     }
 

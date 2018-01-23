@@ -26,11 +26,12 @@ public class CompanyController {
     /**
      * 添加一家新的公司
      *
-     * @param company 公司各信息
+     * @param company
+     *         公司各信息
      * @return 结果
      */
     @PostMapping({"", "/"})
-//    @RequiresRoles(ROLE_ADMIN)
+    @RequiresRoles(ROLE_ADMIN)
     public BaseData add(@RequestBody CompanyBody company) {
         return ResultGenerator.genSuccessResult(companyService.addCompany(company));
     }
@@ -49,7 +50,8 @@ public class CompanyController {
     /**
      * 查询公司的阈值
      *
-     * @param name name
+     * @param name
+     *         name
      * @return result
      */
     @GetMapping("/threshold")
@@ -60,8 +62,10 @@ public class CompanyController {
     /**
      * 根据id修改阈值
      *
-     * @param id        id
-     * @param threshold threshold
+     * @param id
+     *         id
+     * @param threshold
+     *         threshold
      * @return result
      */
     @PutMapping("/threshold")
@@ -72,23 +76,26 @@ public class CompanyController {
         }
         return ResultGenerator.genSuccessResult(companyService.updateThresholdById(id, threshold));
     }
+
     @PutMapping("")
     public BaseData updateCompanyById(@ModelAttribute CompanyBody companyBody) {
         return ResultGenerator.genSuccessResult(companyService.updateCompanyById(companyBody));
     }
+
     /**
      * 查询公司列表
      */
-    @GetMapping("/list")
+    @GetMapping("")
     public BaseData get(@ModelAttribute CompanyRequestBody companyRequestBody) {
         return ResultGenerator.genSuccessResult(companyService.findByConditions(companyRequestBody));
     }
+
     /**
      * 查询某个公司详情
      */
-    @GetMapping("/detail")
-    public BaseData get(Long companyId) {
-        return ResultGenerator.genSuccessResult(companyService.findCompanyDeatilById(companyId));
+    @GetMapping("/{id}")
+    public BaseData get(@PathVariable Long id) {
+        return ResultGenerator.genSuccessResult(companyService.findCompanyDetailById(id));
     }
 
     @GetMapping("/test")

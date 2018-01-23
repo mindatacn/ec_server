@@ -28,7 +28,7 @@ public class CompanyVO {
     /**
      * 状态
      */
-    private Integer status;
+    private Integer buyStatus;
 
     public Long getId() {
         return id;
@@ -78,12 +78,12 @@ public class CompanyVO {
         this.roleName = roleName;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getBuyStatus() {
+        return buyStatus;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setBuyStatus(Integer buyStatus) {
+        this.buyStatus = buyStatus;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class CompanyVO {
                 ", contactPerson='" + contactPerson + '\'' +
                 ", account='" + account + '\'' +
                 ", roleName='" + roleName + '\'' +
-                ", status=" + status +
+                ", buyStatus=" + buyStatus +
                 '}';
     }
 }

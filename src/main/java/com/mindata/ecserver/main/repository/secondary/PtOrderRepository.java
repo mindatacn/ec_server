@@ -2,7 +2,6 @@ package com.mindata.ecserver.main.repository.secondary;
 
 import com.mindata.ecserver.main.model.secondary.PtOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -15,11 +14,9 @@ public interface PtOrderRepository extends JpaRepository<PtOrder, Long> {
      * 根据公司ID 查找当前公司最新的一条消息
      *
      * @param companyId companyId
-     * @param productId productId
      * @return Long
      */
-    @Query(value = "select max(id) from PtOrder where companyId = ?1 and productId=?2")
-    Long findPtOrderByMaxId(Long companyId, Long productId);
+    PtOrder findByCompanyIdOrderByExpiryDateDesc(Long companyId);
 
     /**
      *

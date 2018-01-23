@@ -1,5 +1,7 @@
 package com.mindata.ecserver.main.model.secondary;
 
+import com.mindata.ecserver.main.model.base.BaseEntity;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,10 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "pt_order")
-public class PtOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class PtOrder extends BaseEntity {
     /**
      * 产品id
      */
@@ -22,7 +21,7 @@ public class PtOrder {
      */
     private Long companyId;
     /**
-     * 购买金额
+     * 购买金额（元）
      */
     private BigDecimal money;
     /**
@@ -34,21 +33,9 @@ public class PtOrder {
      */
     private Date expiryDate;
     /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
      * 备注
      */
     private String memo;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getProductId() {
         return productId;
@@ -74,14 +61,6 @@ public class PtOrder {
         this.expiryDate = expiryDate;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public BigDecimal getMoney() {
         return money;
     }
@@ -104,5 +83,17 @@ public class PtOrder {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    @Override
+    public String toString() {
+        return "PtOrder{" +
+                "productId=" + productId +
+                ", companyId=" + companyId +
+                ", money=" + money +
+                ", effectiveDate=" + effectiveDate +
+                ", expiryDate=" + expiryDate +
+                ", memo='" + memo + '\'' +
+                '}';
     }
 }

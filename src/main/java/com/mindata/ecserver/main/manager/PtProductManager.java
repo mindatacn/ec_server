@@ -63,6 +63,17 @@ public class PtProductManager {
     }
 
     /**
+     * 查询产品名字
+     *
+     * @param id
+     *         id
+     * @return 名字
+     */
+    public String findProductNameById(Long id) {
+        return findById(id).getName();
+    }
+
+    /**
      * 该产品有故障
      *
      * @param id

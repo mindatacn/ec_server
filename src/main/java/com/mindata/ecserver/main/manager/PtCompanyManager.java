@@ -35,23 +35,26 @@ public class PtCompanyManager {
     public PtCompany add(CompanyBody companyBody) {
         Date now = CommonUtil.getNow();
         PtCompany ptCompany = new PtCompany();
+        BeanUtils.copyProperties(companyBody, ptCompany);
         // 初次购买
         ptCompany.setBuyStatus(1);
         ptCompany.setStatus(0);
         ptCompany.setCreateTime(now);
         ptCompany.setUpdateTime(now);
-        BeanUtils.copyProperties(companyBody, ptCompany);
         return companyRepository.save(ptCompany);
     }
 
     /**
      * 修改
-     * @param ptCompany ptCompany
+     *
+     * @param ptCompany
+     *         ptCompany
      * @return PtCompany
      */
     public PtCompany update(PtCompany ptCompany) {
         return companyRepository.save(ptCompany);
     }
+
     /**
      * 根据corpId查询公司
      *
@@ -69,10 +72,12 @@ public class PtCompanyManager {
 
     /**
      * 根据productId 查询
-     * @param productId productId
+     *
+     * @param productId
+     *         productId
      * @return Integer
      */
-    public Integer countByProductId(Long productId){
+    public Integer countByProductId(Long productId) {
         return companyRepository.countByProductId(productId);
     }
 
@@ -91,8 +96,8 @@ public class PtCompanyManager {
     /**
      * 查询所有公司的阈值
      */
-    public List<PtCompany> findThreshold(String name){
-        if(StrUtil.isEmpty(name)){
+    public List<PtCompany> findThreshold(String name) {
+        if (StrUtil.isEmpty(name)) {
             return companyRepository.findAll();
         }
         return companyRepository.findByNameLike("%" + name + "%");
@@ -100,26 +105,33 @@ public class PtCompanyManager {
 
     /**
      * 根据id修改阈值
-     * @param id id
-     * @param threshold threshold
+     *
+     * @param id
+     *         id
+     * @param threshold
+     *         threshold
      * @return PtCompany
      */
-    public PtCompany updateThresholdById(Long id,Integer threshold){
+    public PtCompany updateThresholdById(Long id, Integer threshold) {
         PtCompany ptCompany = companyRepository.findOne(id);
         ptCompany.setThreshold(threshold);
         return companyRepository.save(ptCompany);
     }
+
     /**
      * 分页查找
-     * @param var1 var1
-     * @param var2 var2
-     * @return  Page
+     *
+     * @param var1
+     *         var1
+     * @param var2
+     *         var2
+     * @return Page
      */
     public Page<PtCompany> findAll(Specification<PtCompany> var1, Pageable var2) {
         return companyRepository.findAll(var1, var2);
     }
 
-    public List<PtCompany> findPtCompanyByBuyStatus(){
-        return companyRepository.findByBuyStatusNot(4);
+    public List<PtCompany> findByBuyStatusNot(Integer buyStatus) {
+        return companyRepository.findByBuyStatusNot(buyStatus);
     }
 }

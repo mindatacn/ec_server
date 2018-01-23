@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -264,7 +263,6 @@ public class UserService extends BaseService {
      * @return PtUser
      */
     public PtUser findManagerUser(Long companyId){
-        Date createTime = userManager.findMinDateByCompanyId(companyId);
-        return userManager.findByCreateTimeAndCompanyId(createTime,companyId);
+        return userManager.findManagerByCompanyId(companyId);
     }
 }

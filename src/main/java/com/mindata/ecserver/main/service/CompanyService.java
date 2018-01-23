@@ -13,10 +13,7 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.*;
-import com.mindata.ecserver.main.model.secondary.PtCompany;
-import com.mindata.ecserver.main.model.secondary.PtOrder;
-import com.mindata.ecserver.main.model.secondary.PtRole;
-import com.mindata.ecserver.main.model.secondary.PtUser;
+import com.mindata.ecserver.main.model.secondary.*;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -25,7 +22,6 @@ import com.mindata.ecserver.main.vo.CompanyThresholdVO;
 import com.mindata.ecserver.main.vo.CompanyVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUtil;
-import com.xiaoleilu.hutool.util.ObjectUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.event.EventListener;
@@ -64,6 +60,8 @@ public class CompanyService extends BaseService {
     private PtProductManager ptProductManager;
     @Resource
     private PtRoleManager ptRoleManager;
+    @Resource
+    private PtUserRoleManager ptUserRoleManager;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -183,8 +181,8 @@ public class CompanyService extends BaseService {
         if (StrUtil.isNotEmpty(companyRequestBody.getCompanyName())) {
             criteria.add(Restrictions.like("name", companyRequestBody.getCompanyName(), true));
         }
-        if (companyRequestBody.getCompanyStatus() != null) {
-            criteria.add(Restrictions.eq("status", companyRequestBody.getCompanyStatus(), true));
+        if (companyRequestBody.getBuyStatus() != null) {
+            criteria.add(Restrictions.eq("buyStatus", companyRequestBody.getBuyStatus(), true));
         }
         if (companyRequestBody.getProductId() != null) {
             criteria.add(Restrictions.eq("productId", companyRequestBody.getProductId(), true));
@@ -200,13 +198,13 @@ public class CompanyService extends BaseService {
         for (PtCompany ptCompany : ptCompanies) {
             CompanyVO companyVO = new CompanyVO();
             companyVO.setId(ptCompany.getId());
-            companyVO.setProductName(ptProductManager.findById(ptCompany.getProductId()).getName());
+            companyVO.setProductName(ptProductManager.findProductNameById(ptCompany.getProductId()));
             companyVO.setCompanyName(ptCompany.getName());
             companyVO.setContactPerson(ptCompany.getContactPerson());
             PtUser ptUser = userService.findManagerUser(ptCompany.getId());
             companyVO.setAccount(ptUser.getAccount());
             companyVO.setRoleName(ptRoleManager.findByUserId(ptUser.getId()).get(0).getName());
-            companyVO.setStatus(ptCompany.getBuyStatus());
+            companyVO.setBuyStatus(ptCompany.getBuyStatus());
             vos.add(companyVO);
         }
         return new SimplePage<>(ptCompanies.getTotalPages(), ptCompanies.getTotalElements(), vos);
@@ -215,29 +213,20 @@ public class CompanyService extends BaseService {
     /**
      * 查看客户详情
      */
-    public CompanyDetailVO findCompanyDeatilById(Long companyId) {
+    public CompanyDetailVO findCompanyDetailById(Long companyId) {
         CompanyDetailVO companyVO = new CompanyDetailVO();
         PtCompany ptCompany = ptCompanyManager.findOne(companyId);
-        companyVO.setCompanyName(ptCompany.getName());
-        companyVO.setProductName(ptProductManager.findById(ptCompany.getProductId()).getName());
-        companyVO.setAppId(ptCompany.getAppId());
-        companyVO.setAppSecret(ptCompany.getAppSecret());
 
-        companyVO.setAddress(ptCompany.getAddress());
-        companyVO.setVocation(ptCompany.getVocationTag());
-        companyVO.setContactPerson(ptCompany.getContactPerson());
-        companyVO.setMobile(ptCompany.getMobile());
-        companyVO.setPhone(ptCompany.getPhone());
-        companyVO.setEmail(ptCompany.getEmail());
-        companyVO.setMemo(ptCompany.getMemo());
-        companyVO.setCreateTime(ptCompany.getCreateTime());
+        BeanUtils.copyProperties(ptCompany, companyVO);
 
-        PtOrder ptOrder = ptOrderManager.findByCompanyId(companyId, ptCompany.getProductId());
+        companyVO.setProductName(ptProductManager.findProductNameById(ptCompany.getProductId()));
+
+        PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(companyId);
         companyVO.setEffectiveDate(ptOrder.getEffectiveDate());
         companyVO.setExpiryDate(ptOrder.getExpiryDate());
+
         PtUser ptUser = userService.findManagerUser(ptCompany.getId());
         companyVO.setAccount(ptUser.getAccount());
-        companyVO.setPassword(ptUser.getPassword());
         List<PtRole> ptRoles = ptRoleManager.findByUserId(ptUser.getId());
         companyVO.setRoleName(ptRoles.get(0).getName());
         return companyVO;
@@ -253,12 +242,12 @@ public class CompanyService extends BaseService {
         ptCompany.setUpdateTime(CommonUtil.getNow());
         BeanUtils.copyProperties(companyBody, ptCompany);
         ptCompanyManager.update(ptCompany);
-        PtOrder ptOrder = ptOrderManager.findByCompanyId(companyBody.getId(), ptCompany.getProductId());
-        BeanUtils.copyProperties(companyBody, ptOrder);
-        ptOrderManager.update(ptOrder);
+
         PtUser ptUser = userService.findManagerUser(companyBody.getId());
-        BeanUtils.copyProperties(companyBody, ptUser);
-        ptUserManager.update(ptUser);
+        if (!StrUtil.equals(ptUser.getAccount(), companyBody.getAccount())) {
+            ptUser.setAccount(companyBody.getAccount());
+            ptUserManager.update(ptUser);
+        }
         return ptCompany;
     }
 
@@ -266,19 +255,18 @@ public class CompanyService extends BaseService {
      * 定时修改购买状态
      */
     public void timingUpdateBuyStatus() {
-        List<PtCompany> companies = ptCompanyManager.findPtCompanyByBuyStatus();
+        //查所有没过期的Company
+        List<PtCompany> companies = ptCompanyManager.findByBuyStatusNot(4);
         for (PtCompany ptCompany : companies) {
-            PtOrder ptOrder = ptOrderManager.findByCompanyId(ptCompany.getId(), ptCompany.getProductId());
-            if (DateUtil.betweenDay(CommonUtil.getNow(), ptOrder.getExpiryDate(), true) == 3) {
-                PtCompany company = ptCompanyManager.findOne(ptCompany.getId());
-                company.setBuyStatus(3);
-                ptCompanyManager.update(company);
+            PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(ptCompany.getId());
+            if (CommonUtil.getNow().after(ptOrder.getExpiryDate())) {
+                ptCompany.setBuyStatus(4);
+                ptCompanyManager.update(ptCompany);
+            } else if (DateUtil.betweenDay(CommonUtil.getNow(), ptOrder.getExpiryDate(), true) <= 30) {
+                ptCompany.setBuyStatus(3);
+                ptCompanyManager.update(ptCompany);
             }
-            if (CommonUtil.getNow().getTime() >= ptOrder.getExpiryDate().getTime()) {
-                PtCompany company = ptCompanyManager.findOne(ptCompany.getId());
-                company.setBuyStatus(4);
-                ptCompanyManager.update(company);
-            }
+
         }
     }
 }

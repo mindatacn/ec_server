@@ -10,7 +10,7 @@ FROM daocloud.io/brave8/maven-jdk8
 #        #清理编译痕迹
 #        && cd / && rm -rf /tmp/build
 #
-#VOLUME /tmp
-#EXPOSE 8080
-ADD ec_server-*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ADD ec_server-0.0.1-SNAPSHOT.jar /tmp/app.jar
+VOLUME /tmp
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/tmp/app.jar"]

@@ -6,17 +6,23 @@ import com.mindata.ecserver.ec.model.response.CustomerCreateDataBean;
 import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.CustomerService;
 import com.mindata.ecserver.ec.util.CallManager;
+import com.mindata.ecserver.global.bean.ResultCode;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.ContactPushResultEvent;
+import com.mindata.ecserver.main.manager.PtCompanyManager;
+import com.mindata.ecserver.main.manager.PtUserManager;
+import com.mindata.ecserver.main.manager.PtUserPushCountManager;
 import com.mindata.ecserver.main.manager.ec.EcCodeAreaManager;
 import com.mindata.ecserver.main.manager.ec.EcContactManager;
-import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
+import com.mindata.ecserver.main.model.secondary.PtUser;
+import com.mindata.ecserver.main.model.secondary.PtUserPushCount;
 import com.mindata.ecserver.main.requestbody.PushBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.main.vo.PushResultCountVO;
 import com.mindata.ecserver.main.vo.PushResultVO;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +31,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +50,59 @@ public class PushService extends BaseService {
     private CallManager callManager;
     @Resource
     private PtUserManager ptUserManager;
+    @Resource
+    private PtUserPushCountManager ptUserPushCountManager;
+    @Resource
+    private PtCompanyManager ptCompanyManager;
+
+    private static final int MAX_SIZE = 50;
+
+    /**
+     * 推送前校验
+     *
+     * @param pushBody
+     *         pushBody
+     * @return 能否推送的结果
+     */
+    public Map<String, Object> pushCheck(PushBody pushBody) {
+
+        PtUser ptUser = ShiroKit.getCurrentUser();
+        //没传跟进人，默认为自己
+        if (pushBody.getFollowUserId() == null) {
+            if (ptUser.getEcUserId() == null) {
+                return buildMap(ResultCode.FAIL, "用户没绑定EC账号");
+            }
+            pushBody.setFollowUserId(ptUser.getId());
+        }
+        List<Long> ids = pushBody.getIds();
+        if (ids.size() > MAX_SIZE) {
+            return buildMap(ResultCode.PUSH_COUNT_TO_LARGE, "用户没绑定EC账号");
+        }
+        //检查被推送的用户每日上限
+        PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);
+        if (ids.size() + userCount.getPushedCount() > userCount.getThreshold()) {
+            Integer surplusCount = userCount.getThreshold() - userCount.getPushedCount();
+            return buildMap(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "今日推送额度剩余【" +
+                    surplusCount
+                    + "】条");
+        }
+        // 检查已推送的数量是否大于公司规定的推送数量
+        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Integer companyThreshold = ptCompanyManager.findOne(companyId).getThreshold();
+        Integer pushedCount = ptUserPushCountManager.getPushedCountSum(companyId);
+        if (ids.size() + pushedCount > companyThreshold) {
+            Integer surplusCount = companyThreshold - pushedCount;
+            return buildMap(ResultCode.PUSH_COUNT_BEYOND_TODAY_LIMIT, "公司今日推送额度剩余【" + surplusCount + "】条");
+        }
+        return buildMap(ResultCode.SUCCESS, "");
+    }
+
+    private Map<String, Object> buildMap(ResultCode resultCode, String msg) {
+        Map<String, Object> map = CollectionUtil.newHashMap(3);
+        map.put("resultCode", resultCode);
+        map.put("msg", msg);
+        return map;
+    }
 
 
     /**

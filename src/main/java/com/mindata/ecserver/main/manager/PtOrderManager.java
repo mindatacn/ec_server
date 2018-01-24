@@ -18,7 +18,6 @@ public class PtOrderManager {
     @Resource
     private PtOrderRepository ptOrderRepository;
 
-
     /**
      * 新增一个订单
      */
@@ -45,6 +44,16 @@ public class PtOrderManager {
         return ptOrderRepository.save(ptOrder);
     }
 
+    public PtOrder findOne(Long id) {
+        return ptOrderRepository.findOne(id);
+    }
+
+    public void delete(PtOrder ptOrder) {
+        if (ptOrder != null) {
+            ptOrderRepository.delete(ptOrder);
+        }
+    }
+
     /**
      * 根据公司id查找最新的订单
      *
@@ -54,6 +63,11 @@ public class PtOrderManager {
      */
     public PtOrder findNewOrderByCompanyId(Long companyId) {
         return ptOrderRepository.findByCompanyIdOrderByExpiryDateDesc(companyId);
+    }
+
+    public Integer countByCompanyId(Long companyId) {
+        Integer count = ptOrderRepository.countByCompanyId(companyId);
+        return count == null ? 0 : count;
     }
 
 }

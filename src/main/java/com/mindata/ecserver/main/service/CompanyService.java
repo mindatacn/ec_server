@@ -13,6 +13,7 @@ import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
+import com.mindata.ecserver.main.event.OrderChangeEvent;
 import com.mindata.ecserver.main.manager.*;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,7 +80,8 @@ public class CompanyService extends BaseService {
     /**
      * 添加一个Company
      *
-     * @param companyBody body
+     * @param companyBody
+     *         body
      * @return Company
      */
     @Transactional(rollbackFor = Exception.class)
@@ -105,7 +108,8 @@ public class CompanyService extends BaseService {
      * 从Ec同步公司信息，返回新增的用户列表集合
      *
      * @return CompanyData
-     * @throws IOException 异常
+     * @throws IOException
+     *         异常
      */
     @Transactional(rollbackFor = Exception.class)
     public Object syncFromEc(Boolean force) throws IOException {
@@ -125,7 +129,8 @@ public class CompanyService extends BaseService {
     /**
      * 监听公司同步信息
      *
-     * @throws IOException EC
+     * @throws IOException
+     *         EC
      */
     @EventListener(CompanySyncEvent.class)
     public void listen(CompanySyncEvent syncEvent) throws IOException {
@@ -141,9 +146,46 @@ public class CompanyService extends BaseService {
     }
 
     /**
+     * 订单状态有变化时，修改Company的status和buyState
+     *
+     * @param orderChangeEvent
+     *         orderChangeEvent
+     */
+    @EventListener(OrderChangeEvent.class)
+    public void orderChange(OrderChangeEvent orderChangeEvent) {
+        Long companyId = (Long) orderChangeEvent.getSource();
+        PtCompany ptCompany = ptCompanyManager.findOne(companyId);
+        PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(companyId);
+        Date now = CommonUtil.getNow();
+        if (now.after(ptOrder.getExpiryDate())) {
+            //已过期
+            ptCompany.setBuyStatus(4);
+            //欠费
+            ptCompany.setStatus(1);
+            ptCompanyManager.update(ptCompany);
+        } else if (DateUtil.betweenDay(now, ptOrder.getExpiryDate(), true) <= 30) {
+            //快过期
+            ptCompany.setBuyStatus(3);
+            ptCompany.setStatus(0);
+            ptCompanyManager.update(ptCompany);
+        } else if (ptOrderManager.countByCompanyId(companyId) > 1) {
+            // 已续费
+            ptCompany.setBuyStatus(2);
+            ptCompany.setStatus(0);
+        } else {
+            //新购买
+            ptCompany.setBuyStatus(1);
+            ptCompany.setStatus(0);
+        }
+
+        ptCompanyManager.update(ptCompany);
+    }
+
+    /**
      * 根据名称模糊查询
      *
-     * @param name name
+     * @param name
+     *         name
      * @return List
      */
     public List<CompanyThresholdVO> findThreshold(String name) {
@@ -162,8 +204,10 @@ public class CompanyService extends BaseService {
     /**
      * 根据id修改阈值
      *
-     * @param id        id
-     * @param threshold threshold
+     * @param id
+     *         id
+     * @param threshold
+     *         threshold
      * @return PtCompany
      */
     public PtCompany updateThresholdById(Long id, Integer threshold) {
@@ -173,7 +217,8 @@ public class CompanyService extends BaseService {
     /**
      * 根据条件查询公司信息
      *
-     * @param companyRequestBody companyRequestBody
+     * @param companyRequestBody
+     *         companyRequestBody
      * @return SimplePage
      */
     public SimplePage<CompanyVO> findByConditions(CompanyRequestBody companyRequestBody) {
@@ -236,13 +281,16 @@ public class CompanyService extends BaseService {
     /**
      * 修改公司信息
      *
-     * @param companyBody companyBody
+     * @param companyBody
+     *         companyBody
      */
     public PtCompany updateCompanyById(CompanyBody companyBody) {
         PtCompany ptCompany = ptCompanyManager.update(companyBody);
 
         PtUser ptUser = userService.findManagerUser(companyBody.getId());
-        if (!StrUtil.equals(ptUser.getAccount(), companyBody.getAccount())) {
+        if (StrUtil.isNotEmpty(companyBody.getAccount()) && !StrUtil.equals(ptUser.getAccount(), companyBody
+                .getAccount()
+        )) {
             ptUser.setAccount(companyBody.getAccount());
             ptUserManager.update(ptUser);
         }
@@ -252,18 +300,11 @@ public class CompanyService extends BaseService {
     /**
      * 定时修改购买状态
      */
-    public void timingUpdateBuyStatus() {
+    public void timingUpdateStatus() {
         //查所有没过期的Company
         List<PtCompany> companies = ptCompanyManager.findByBuyStatusNot(4);
         for (PtCompany ptCompany : companies) {
-            PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(ptCompany.getId());
-            if (CommonUtil.getNow().after(ptOrder.getExpiryDate())) {
-                ptCompany.setBuyStatus(4);
-                ptCompanyManager.update(ptCompany);
-            } else if (DateUtil.betweenDay(CommonUtil.getNow(), ptOrder.getExpiryDate(), true) <= 30) {
-                ptCompany.setBuyStatus(3);
-                ptCompanyManager.update(ptCompany);
-            }
+            eventPublisher.publishEvent(new OrderChangeEvent(ptCompany.getId()));
         }
     }
 }

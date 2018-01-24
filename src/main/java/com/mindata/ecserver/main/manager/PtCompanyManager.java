@@ -38,8 +38,6 @@ public class PtCompanyManager {
         PtCompany ptCompany = new PtCompany();
         BeanUtils.copyProperties(companyBody, ptCompany);
         // 初次购买
-        ptCompany.setBuyStatus(1);
-        ptCompany.setStatus(0);
         ptCompany.setCreateTime(now);
         ptCompany.setUpdateTime(now);
         return companyRepository.save(ptCompany);

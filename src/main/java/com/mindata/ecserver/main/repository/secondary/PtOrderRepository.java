@@ -15,4 +15,12 @@ public interface PtOrderRepository extends JpaRepository<PtOrder, Long> {
      */
     PtOrder findByCompanyIdOrderByExpiryDateDesc(Long companyId);
 
+    /**
+     * 某公司的订单数量
+     *
+     * @param companyId
+     *         companyId
+     * @return 数量
+     */
+    Integer countByCompanyId(Long companyId);
 }

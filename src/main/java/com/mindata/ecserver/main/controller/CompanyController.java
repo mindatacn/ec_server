@@ -98,9 +98,9 @@ public class CompanyController {
         return ResultGenerator.genSuccessResult(companyService.findCompanyDetailById(id));
     }
 
-    @GetMapping("/test")
+    @GetMapping("/refreshState")
     public BaseData test() {
-        companyService.timingUpdateBuyStatus();
-        return ResultGenerator.genSuccessResult("test");
+        companyService.timingUpdateStatus();
+        return ResultGenerator.genSuccessResult("刷新公司状态成功");
     }
 }

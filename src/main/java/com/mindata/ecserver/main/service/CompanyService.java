@@ -11,9 +11,13 @@ import com.mindata.ecserver.global.constant.Constant;
 import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.global.specify.Criteria;
 import com.mindata.ecserver.global.specify.Restrictions;
+import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.manager.*;
-import com.mindata.ecserver.main.model.secondary.*;
+import com.mindata.ecserver.main.model.secondary.PtCompany;
+import com.mindata.ecserver.main.model.secondary.PtOrder;
+import com.mindata.ecserver.main.model.secondary.PtRole;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
 import com.mindata.ecserver.main.service.base.BaseService;
@@ -22,8 +26,8 @@ import com.mindata.ecserver.main.vo.CompanyThresholdVO;
 import com.mindata.ecserver.main.vo.CompanyVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.util.BeanUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,8 +64,6 @@ public class CompanyService extends BaseService {
     private PtProductManager ptProductManager;
     @Resource
     private PtRoleManager ptRoleManager;
-    @Resource
-    private PtUserRoleManager ptUserRoleManager;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -85,8 +87,10 @@ public class CompanyService extends BaseService {
         //添加公司管理员
         ptUserManager.addAdmin(companyBody.getAccount(), companyBody.getPassword(), companyBody.getRoleId(), ptCompany
                 .getId());
-        // 添加一个订单
-        ptOrderManager.add(ptCompany.getId(), companyBody.getMoney(), companyBody.getProductId(), companyBody.getEffectiveDate(), companyBody.getExpiryDate(),companyBody.getMemo());
+
+        companyBody.setId(ptCompany.getId());
+        //发布事件
+        eventPublisher.publishEvent(new CompanyAddEvent(companyBody));
         return ptCompany;
     }
 
@@ -217,7 +221,7 @@ public class CompanyService extends BaseService {
         CompanyDetailVO companyVO = new CompanyDetailVO();
         PtCompany ptCompany = ptCompanyManager.findOne(companyId);
 
-        BeanUtils.copyProperties(ptCompany, companyVO);
+        BeanUtil.copyProperties(ptCompany, companyVO);
 
         companyVO.setProductName(ptProductManager.findProductNameById(ptCompany.getProductId()));
 
@@ -238,10 +242,7 @@ public class CompanyService extends BaseService {
      * @param companyBody companyBody
      */
     public PtCompany updateCompanyById(CompanyBody companyBody) {
-        PtCompany ptCompany = ptCompanyManager.findOne(companyBody.getId());
-        ptCompany.setUpdateTime(CommonUtil.getNow());
-        BeanUtils.copyProperties(companyBody, ptCompany);
-        ptCompanyManager.update(ptCompany);
+        PtCompany ptCompany = ptCompanyManager.update(companyBody);
 
         PtUser ptUser = userService.findManagerUser(companyBody.getId());
         if (!StrUtil.equals(ptUser.getAccount(), companyBody.getAccount())) {

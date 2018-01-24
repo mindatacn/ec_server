@@ -1,8 +1,11 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtOrderManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
+import com.mindata.ecserver.main.requestbody.CompanyBody;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,7 +16,7 @@ import java.util.Date;
  * @author hanliqiang wrote on 2018/1/23
  */
 @Service
-public class PtOrderService {
+public class OrderService {
     @Resource
     private PtOrderManager ptOrderManager;
     @Resource
@@ -45,4 +48,11 @@ public class PtOrderService {
         }
     }
 
+    @EventListener
+    public void companyAdd(CompanyAddEvent companyAddEvent) {
+        CompanyBody companyBody = (CompanyBody) companyAddEvent.getSource();
+        // 添加一个订单
+        ptOrderManager.add(companyBody.getId(), companyBody.getMoney(), companyBody.getProductId(), companyBody
+                .getEffectiveDate(), companyBody.getExpiryDate(), companyBody.getMemo());
+    }
 }

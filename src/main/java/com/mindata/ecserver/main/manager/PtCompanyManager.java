@@ -4,6 +4,7 @@ import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.repository.secondary.PtCompanyRepository;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.BeanUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -47,11 +48,19 @@ public class PtCompanyManager {
     /**
      * 修改
      *
-     * @param ptCompany
-     *         ptCompany
+     * @param companyBody
+     *         companyBody
      * @return PtCompany
      */
+    public PtCompany update(CompanyBody companyBody) {
+        PtCompany ptCompany = findOne(companyBody.getId());
+        BeanUtil.copyProperties(companyBody, ptCompany, BeanUtil.CopyOptions.create().setIgnoreNullValue(true));
+
+        return update(ptCompany);
+    }
+
     public PtCompany update(PtCompany ptCompany) {
+        ptCompany.setUpdateTime(CommonUtil.getNow());
         return companyRepository.save(ptCompany);
     }
 

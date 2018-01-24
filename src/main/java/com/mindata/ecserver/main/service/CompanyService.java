@@ -224,8 +224,8 @@ public class CompanyService extends BaseService {
     public SimplePage<CompanyVO> findByConditions(CompanyRequestBody companyRequestBody) {
         Criteria<PtCompany> criteria = new Criteria<>();
         //公司名称模糊查询
-        if (StrUtil.isNotEmpty(companyRequestBody.getCompanyName())) {
-            criteria.add(Restrictions.like("name", companyRequestBody.getCompanyName(), true));
+        if (StrUtil.isNotEmpty(companyRequestBody.getName())) {
+            criteria.add(Restrictions.like("name", companyRequestBody.getName(), true));
         }
         if (companyRequestBody.getBuyStatus() != null) {
             criteria.add(Restrictions.eq("buyStatus", companyRequestBody.getBuyStatus(), true));

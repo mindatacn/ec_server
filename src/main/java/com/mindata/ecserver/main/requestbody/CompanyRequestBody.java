@@ -7,7 +7,7 @@ public class CompanyRequestBody {
     /**
      * 客户名称
      */
-    private String companyName;
+    private String name;
     /**
      * 客户状态
      */
@@ -26,12 +26,12 @@ public class CompanyRequestBody {
      */
     private Integer page;
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getBuyStatus() {
@@ -70,7 +70,7 @@ public class CompanyRequestBody {
     @Override
     public String toString() {
         return "CompanyRequestBody{" +
-                "companyName='" + companyName + '\'' +
+                "name='" + name + '\'' +
                 ", buyStatus=" + buyStatus +
                 ", productId=" + productId +
                 ", size=" + size +

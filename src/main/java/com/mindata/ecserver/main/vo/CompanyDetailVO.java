@@ -13,7 +13,7 @@ public class CompanyDetailVO {
     /**
      * 公司名称
      */
-    private String companyName;
+    private String name;
     /**
      * 联系人
      */
@@ -35,9 +35,7 @@ public class CompanyDetailVO {
     /**
      * 需确认
      */
-    private Integer vocation;
-
-    private String contentPerson;
+    private Integer vocationTag;
 
     private String mobile;
 
@@ -58,8 +56,6 @@ public class CompanyDetailVO {
      */
     private String appSecret;
 
-    private String password;
-
     /**
      * 生效日期
      */
@@ -69,29 +65,12 @@ public class CompanyDetailVO {
      */
     private Date expiryDate;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getProductName() {
         return productName;
     }
 
-
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getContactPerson() {
@@ -150,22 +129,6 @@ public class CompanyDetailVO {
         this.address = address;
     }
 
-    public Integer getVocation() {
-        return vocation;
-    }
-
-    public void setVocation(Integer vocation) {
-        this.vocation = vocation;
-    }
-
-    public String getContentPerson() {
-        return contentPerson;
-    }
-
-    public void setContentPerson(String contentPerson) {
-        this.contentPerson = contentPerson;
-    }
-
     public String getMobile() {
         return mobile;
     }
@@ -222,18 +185,33 @@ public class CompanyDetailVO {
         this.expiryDate = expiryDate;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getVocationTag() {
+        return vocationTag;
+    }
+
+    public void setVocationTag(Integer vocationTag) {
+        this.vocationTag = vocationTag;
+    }
+
     @Override
     public String toString() {
         return "CompanyDetailVO{" +
                 "productName='" + productName + '\'' +
-                ", companyName='" + companyName + '\'' +
+                ", name='" + name + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
                 ", account='" + account + '\'' +
                 ", roleName='" + roleName + '\'' +
                 ", buyStatus=" + buyStatus +
                 ", address='" + address + '\'' +
-                ", vocation=" + vocation +
-                ", contentPerson='" + contentPerson + '\'' +
+                ", vocationTag=" + vocationTag +
                 ", mobile='" + mobile + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
@@ -241,7 +219,6 @@ public class CompanyDetailVO {
                 ", createTime=" + createTime +
                 ", appId='" + appId + '\'' +
                 ", appSecret='" + appSecret + '\'' +
-                ", password='" + password + '\'' +
                 ", effectiveDate=" + effectiveDate +
                 ", expiryDate=" + expiryDate +
                 '}';

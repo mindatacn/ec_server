@@ -11,7 +11,7 @@ public class CompanyRequestBody {
     /**
      * 客户状态
      */
-    private Integer companyStatus;
+    private Integer buyStatus;
     /**
      * 产品名称
      */
@@ -42,12 +42,12 @@ public class CompanyRequestBody {
         this.companyName = companyName;
     }
 
-    public Integer getCompanyStatus() {
-        return companyStatus;
+    public Integer getBuyStatus() {
+        return buyStatus;
     }
 
-    public void setCompanyStatus(Integer companyStatus) {
-        this.companyStatus = companyStatus;
+    public void setBuyStatus(Integer buyStatus) {
+        this.buyStatus = buyStatus;
     }
 
     public Long getProductId() {
@@ -88,5 +88,19 @@ public class CompanyRequestBody {
 
     public void setOrder(Boolean order) {
         this.order = order;
+    }
+
+
+    @Override
+    public String toString() {
+        return "CompanyRequestBody{" +
+                "companyName='" + companyName + '\'' +
+                ", buyStatus=" + buyStatus +
+                ", productId=" + productId +
+                ", size=" + size +
+                ", page=" + page +
+                ", orderBy='" + orderBy + '\'' +
+                ", order=" + order +
+                '}';
     }
 }

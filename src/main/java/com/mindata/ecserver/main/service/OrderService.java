@@ -3,16 +3,19 @@ package com.mindata.ecserver.main.service;
 import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.event.OrderChangeEvent;
 import com.mindata.ecserver.main.manager.PtOrderManager;
+import com.mindata.ecserver.main.manager.PtProductManager;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.OrderBody;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.OrderVO;
 import com.xiaoleilu.hutool.util.BeanUtil;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ import java.util.List;
 public class OrderService extends BaseService {
     @Resource
     private PtOrderManager ptOrderManager;
+    @Resource
+    private PtProductManager ptProductManager;
 
     /**
      * 新增一条记录同时更改购买状态
@@ -59,8 +64,16 @@ public class OrderService extends BaseService {
         return old;
     }
 
-    public List<PtOrder> findByCompanyId(Long companyId) {
-        return ptOrderManager.findByCompanyId(companyId);
+    public List<OrderVO> findByCompanyId(Long companyId) {
+        List<PtOrder> orders = ptOrderManager.findByCompanyId(companyId);
+        List<OrderVO> vos = new ArrayList<>(orders.size());
+        for (PtOrder ptOrder : orders) {
+            OrderVO orderVO = new OrderVO();
+            BeanUtil.copyProperties(ptOrder, orderVO);
+            orderVO.setProductName(ptProductManager.findProductNameById(ptOrder.getProductId()));
+            vos.add(orderVO);
+        }
+        return vos;
     }
 
     /**

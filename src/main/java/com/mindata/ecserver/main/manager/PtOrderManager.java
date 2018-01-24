@@ -69,7 +69,7 @@ public class PtOrderManager {
      * @return PtOrder
      */
     public PtOrder findNewOrderByCompanyId(Long companyId) {
-        return ptOrderRepository.findByCompanyIdOrderByExpiryDateDesc(companyId);
+        return ptOrderRepository.findFirstByCompanyIdOrderByExpiryDateDesc(companyId);
     }
 
     /**

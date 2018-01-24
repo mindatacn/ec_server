@@ -267,7 +267,6 @@ public class CompanyService extends BaseService {
                 ptCompany.setBuyStatus(3);
                 ptCompanyManager.update(ptCompany);
             }
-
         }
     }
 }

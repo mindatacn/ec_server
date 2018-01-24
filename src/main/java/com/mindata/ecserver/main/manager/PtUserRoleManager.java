@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/10/31.
@@ -36,29 +35,18 @@ public class PtUserRoleManager {
     /**
      * 根据roleId查询
      *
-     * @param roleId
-     *         roleId
+     * @param roleId roleId
      * @return 集合
      */
     public List<PtUserRole> findByRoleId(Long roleId) {
         return ptUserRoleRepository.findByRoleId(roleId);
     }
 
-    /**
-     * 根据多个roleId查询对应的userId
-     * @param roleIds roleIds
-     * @return List
-     */
-    public List<Long> findUserIdsByRoleId(List<Long> roleIds){
-        List<PtUserRole> ptUserRoles = ptUserRoleRepository.findByRoleIdIn(roleIds);
-        return ptUserRoles.stream().map(role -> role.getUserId()).collect(Collectors.toList());
-    }
 
     /**
      * 根据userId查找角色
      *
-     * @param userId
-     *         userId
+     * @param userId userId
      * @return List
      */
     public List<PtUserRole> findByUserId(Long userId) {
@@ -68,8 +56,7 @@ public class PtUserRoleManager {
     /**
      * 修改
      *
-     * @param ptUserRole
-     *         ptUserRole
+     * @param ptUserRole ptUserRole
      */
     public void update(PtUserRole ptUserRole) {
         ptUserRoleRepository.save(ptUserRole);

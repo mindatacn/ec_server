@@ -22,7 +22,7 @@ public class PtOrderManager {
     /**
      * 新增一个订单
      */
-    public void add(Long companyId, BigDecimal money, Long productId, Date effectiveDate, Date expiryDate, String
+    public PtOrder add(Long companyId, BigDecimal money, Long productId, Date effectiveDate, Date expiryDate, String
             memo) {
         PtOrder order = new PtOrder();
         order.setCompanyId(companyId);
@@ -33,12 +33,16 @@ public class PtOrderManager {
         order.setCreateTime(CommonUtil.getNow());
         order.setUpdateTime(CommonUtil.getNow());
         order.setMemo(memo);
-        ptOrderRepository.save(order);
+        return ptOrderRepository.save(order);
     }
 
-    public void update(PtOrder ptOrder) {
+    /**
+     * 修改订单
+     * @param ptOrder ptOrder
+     */
+    public PtOrder update(PtOrder ptOrder) {
         ptOrder.setUpdateTime(CommonUtil.getNow());
-        ptOrderRepository.save(ptOrder);
+        return ptOrderRepository.save(ptOrder);
     }
 
     /**
@@ -51,17 +55,5 @@ public class PtOrderManager {
     public PtOrder findNewOrderByCompanyId(Long companyId) {
         return ptOrderRepository.findByCompanyIdOrderByExpiryDateDesc(companyId);
     }
-
-    /**
-     * @param companyId
-     *         companyId
-     * @param productId
-     *         productId
-     * @return Integer
-     */
-    public Integer countByCompanyIdAndProductId(Long companyId, Long productId) {
-        return ptOrderRepository.countByCompanyIdAndProductId(companyId, productId);
-    }
-
 
 }

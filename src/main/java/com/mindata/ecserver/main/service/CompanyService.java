@@ -84,9 +84,6 @@ public class CompanyService extends BaseService {
     @Transactional(rollbackFor = Exception.class)
     public PtCompany addCompany(CompanyBody companyBody) {
         PtCompany ptCompany = ptCompanyManager.add(companyBody);
-        //添加公司管理员
-        ptUserManager.addAdmin(companyBody.getAccount(), companyBody.getPassword(), companyBody.getRoleId(), ptCompany
-                .getId());
 
         companyBody.setId(ptCompany.getId());
         //发布事件

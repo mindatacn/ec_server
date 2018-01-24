@@ -25,14 +25,6 @@ public class CompanyRequestBody {
      * 当前第几页
      */
     private Integer page;
-    /**
-     * 按什么排序
-     */
-    private String orderBy;
-    /**
-     * 排序方向（默认DESC，true为ASC）
-     */
-    private Boolean order;
 
     public String getCompanyName() {
         return companyName;
@@ -74,22 +66,6 @@ public class CompanyRequestBody {
         this.page = page;
     }
 
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    public Boolean getOrder() {
-        return order;
-    }
-
-    public void setOrder(Boolean order) {
-        this.order = order;
-    }
-
 
     @Override
     public String toString() {
@@ -99,8 +75,6 @@ public class CompanyRequestBody {
                 ", productId=" + productId +
                 ", size=" + size +
                 ", page=" + page +
-                ", orderBy='" + orderBy + '\'' +
-                ", order=" + order +
                 '}';
     }
 }

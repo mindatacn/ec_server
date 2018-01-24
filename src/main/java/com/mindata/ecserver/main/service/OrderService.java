@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -37,7 +36,7 @@ public class OrderService extends BaseService {
      *         expiryDate
      */
     @Transactional(rollbackFor = Exception.class)
-    public void add(Long companyId, BigDecimal money, Long productId, Date effectiveDate, Date expiryDate, String
+    public void add(Long companyId, Integer money, Long productId, Date effectiveDate, Date expiryDate, String
             memo) {
         ptOrderManager.add(companyId, money, productId, effectiveDate, expiryDate, memo);
         eventPublisher.publishEvent(new OrderChangeEvent(companyId));

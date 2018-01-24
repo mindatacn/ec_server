@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.requestbody;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -71,7 +70,7 @@ public class CompanyBody {
     /**
      * 购买金额
      */
-    private BigDecimal money;
+    private Integer money;
     /**
      * 生效日期
      */
@@ -234,11 +233,11 @@ public class CompanyBody {
         this.id = id;
     }
 
-    public BigDecimal getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(BigDecimal money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 

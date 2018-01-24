@@ -7,7 +7,6 @@ import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -21,7 +20,7 @@ public class PtOrderManager {
     /**
      * 新增一个订单
      */
-    public PtOrder add(Long companyId, BigDecimal money, Long productId, Date effectiveDate, Date expiryDate, String
+    public PtOrder add(Long companyId, Integer money, Long productId, Date effectiveDate, Date expiryDate, String
             memo) {
         PtOrder order = new PtOrder();
         order.setCompanyId(companyId);

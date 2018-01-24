@@ -2,8 +2,8 @@ package com.mindata.ecserver.main.model.secondary;
 
 import com.mindata.ecserver.main.model.base.BaseEntity;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -23,7 +23,7 @@ public class PtOrder extends BaseEntity {
     /**
      * 购买金额（元）
      */
-    private BigDecimal money;
+    private Integer money;
     /**
      * 生效日期
      */
@@ -61,11 +61,11 @@ public class PtOrder extends BaseEntity {
         this.expiryDate = expiryDate;
     }
 
-    public BigDecimal getMoney() {
+    public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(BigDecimal money) {
+    public void setMoney(Integer money) {
         this.money = money;
     }
 

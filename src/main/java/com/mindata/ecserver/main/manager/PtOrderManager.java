@@ -6,6 +6,7 @@ import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author hanliqiang wrote on 2018/1/22
@@ -34,6 +35,11 @@ public class PtOrderManager {
 
     public PtOrder add(PtOrder ptOrder) {
         return ptOrderRepository.save(ptOrder);
+    }
+
+
+    public List<PtOrder> findByCompanyId(Long companyId) {
+        return ptOrderRepository.findByCompanyId(companyId);
     }
 
     /**

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2018/1/23
@@ -56,6 +57,10 @@ public class OrderService extends BaseService {
         old = ptOrderManager.update(old);
         eventPublisher.publishEvent(new OrderChangeEvent(old.getCompanyId()));
         return old;
+    }
+
+    public List<PtOrder> findByCompanyId(Long companyId) {
+        return ptOrderManager.findByCompanyId(companyId);
     }
 
     /**

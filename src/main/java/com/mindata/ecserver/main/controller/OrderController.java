@@ -30,6 +30,11 @@ public class OrderController {
         return ResultGenerator.genSuccessResult(orderService.add(orderBody));
     }
 
+    @GetMapping("")
+    public BaseData query(Long companyId) {
+        return ResultGenerator.genSuccessResult(orderService.findByCompanyId(companyId));
+    }
+
     /**
      * 修改一条订单
      *

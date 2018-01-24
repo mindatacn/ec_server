@@ -15,10 +15,10 @@ import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +48,13 @@ public class PtRoleMenuManager {
      * @return menuRole
      */
     public PtMenuRole add(Long menuId, Long roleId) {
+        PtMenuRole menuRole = addOne(menuId, roleId);
+
+        publishRoleEvent(CollectionUtil.newArrayList(roleId));
+        return menuRole;
+    }
+
+    private PtMenuRole addOne(Long menuId, Long roleId) {
         PtMenuRole ptMenuRole = ptMenuRoleRepository.findFirstByMenuIdAndRoleId(menuId, roleId);
         if (ptMenuRole == null) {
             ptMenuRole = new PtMenuRole();
@@ -57,18 +64,35 @@ public class PtRoleMenuManager {
             ptMenuRole.setUpdateTime(CommonUtil.getNow());
             ptMenuRole = ptMenuRoleRepository.save(ptMenuRole);
         }
-
-        //发布角色菜单事件
-        eventPublisher.publishEvent(new RoleMenuChangeEvent(Arrays.asList(roleId)));
         return ptMenuRole;
     }
 
     public List<PtMenuRole> add(RoleMenuDto roleMenuDto) {
-        List<PtMenuRole> list = new ArrayList<>();
-        for (Long menuId : roleMenuDto.getMenuIds()) {
-            list.add(add(menuId, roleMenuDto.getRoleId()));
-        }
-        return list;
+        return roleMenuDto.getMenuIds().stream().map(menuId -> addOne(menuId, roleMenuDto.getRoleId())).collect
+                (Collectors.toList());
+    }
+
+    private void publishRoleEvent(List<Long> roleIds) {
+        //发布角色菜单事件
+        eventPublisher.publishEvent(new RoleMenuChangeEvent(roleIds));
+    }
+
+    /**
+     * 删除全部，再添加全部
+     *
+     * @param roleMenuDto
+     *         传来的
+     * @return 集合
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public List<PtMenuRole> updateAll(RoleMenuDto roleMenuDto) {
+        //删除所有
+        delete(roleMenuDto);
+        //添加所有
+        List<PtMenuRole> ptMenuRoles = add(roleMenuDto);
+
+        publishRoleEvent(CollectionUtil.newArrayList(roleMenuDto.getRoleId()));
+        return ptMenuRoles;
     }
 
     /**
@@ -80,8 +104,6 @@ public class PtRoleMenuManager {
      *         roleId
      */
     public void delete(Long menuId, Long roleId) {
-        //发布角色菜单事件
-        eventPublisher.publishEvent(new RoleMenuChangeEvent(CollectionUtil.newArrayList(roleId)));
         PtMenuRole ptMenuRole = ptMenuRoleRepository.findFirstByMenuIdAndRoleId(menuId, roleId);
         ptMenuRoleRepository.delete(ptMenuRole);
     }

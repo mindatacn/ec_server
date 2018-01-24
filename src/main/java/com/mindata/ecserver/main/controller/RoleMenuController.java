@@ -4,8 +4,7 @@ import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.main.manager.PtRoleMenuManager;
 import com.mindata.ecserver.main.requestbody.RoleMenuDto;
-import com.xiaoleilu.hutool.util.CollectionUtil;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,26 +23,26 @@ public class RoleMenuController {
     private PtRoleMenuManager ptRoleMenuManager;
 
     /**
-     * 给某个role添加菜单
+     * 修改某个role的菜单
      */
     @PostMapping("")
-    public BaseData add(RoleMenuDto roleMenuDto) {
-        if (roleMenuDto.getRoleId() == null || CollectionUtil.isEmpty(roleMenuDto.getMenuIds())) {
-            return ResultGenerator.genFailResult("roleId和menuId都不能为空");
+    public BaseData update(RoleMenuDto roleMenuDto) {
+        if (roleMenuDto.getRoleId() == null) {
+            return ResultGenerator.genFailResult("roleId不能为空");
         }
 
         return ResultGenerator.genSuccessResult(ptRoleMenuManager.add(roleMenuDto));
     }
 
     /**
-     * 给某个role删除菜单
+     * 查询角色的所有菜单
+     * @param roleId
+     * roleId
+     * @return
+     * 结果
      */
-    @DeleteMapping("")
-    public BaseData delete(RoleMenuDto roleMenuDto) {
-        if (roleMenuDto.getRoleId() == null || CollectionUtil.isEmpty(roleMenuDto.getMenuIds())) {
-            return ResultGenerator.genFailResult("roleId和menuId都不能为空");
-        }
-        ptRoleMenuManager.delete(roleMenuDto);
-        return ResultGenerator.genSuccessResult("删除成功");
+    @GetMapping("")
+    public BaseData find(Long roleId) {
+        return ResultGenerator.genSuccessResult(ptRoleMenuManager.findByRoleId(roleId));
     }
 }

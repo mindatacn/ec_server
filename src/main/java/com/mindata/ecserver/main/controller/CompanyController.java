@@ -3,6 +3,8 @@ package com.mindata.ecserver.main.controller;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
+import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
 import com.mindata.ecserver.main.service.CompanyService;
@@ -79,6 +81,11 @@ public class CompanyController {
 
     @PutMapping("")
     public BaseData updateCompanyById(@ModelAttribute CompanyBody companyBody) {
+        PtUser ptUser = ShiroKit.getCurrentUser();
+        //不是管理员，也不是自己的公司，不让修改
+        if (!ptUser.getCompanyId().equals(companyBody.getId()) && ptUser.getCompanyId() != 0) {
+            return ResultGenerator.genFailResult("非法操作");
+        }
         return ResultGenerator.genSuccessResult(companyService.updateCompanyById(companyBody));
     }
 
@@ -91,6 +98,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
+    @RequiresRoles(ROLE_ADMIN)
     public BaseData delete(@PathVariable Long id) {
         boolean flag = companyService.delete(id);
         if (flag) {

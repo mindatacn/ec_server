@@ -4,7 +4,9 @@ import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtOrderManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
+import com.mindata.ecserver.main.model.secondary.PtOrder;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
+import com.mindata.ecserver.util.CommonUtil;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +41,9 @@ public class OrderService {
     public void add(Long companyId, BigDecimal money, Long productId, Date effectiveDate, Date expiryDate, String
             memo) {
         ptOrderManager.add(companyId, money, productId, effectiveDate, expiryDate, memo);
-        Integer count = ptOrderManager.countByCompanyIdAndProductId(companyId, productId);
-        if (count > 1) {
+
+        PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(companyId);
+        if (ptOrder.getExpiryDate().after(CommonUtil.getNow())) {
             PtCompany ptCompany = ptCompanyManager.findOne(companyId);
             // 已续费
             ptCompany.setBuyStatus(2);

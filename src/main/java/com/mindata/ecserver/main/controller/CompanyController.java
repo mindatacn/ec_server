@@ -99,7 +99,7 @@ public class CompanyController {
     }
 
     @GetMapping("/refreshState")
-    public BaseData test() {
+    public BaseData refreshState() {
         companyService.timingUpdateStatus();
         return ResultGenerator.genSuccessResult("刷新公司状态成功");
     }

@@ -64,6 +64,18 @@ public class PtOrderManager {
         return ptOrderRepository.findByCompanyIdOrderByExpiryDateDesc(companyId);
     }
 
+    /**
+     * 判断公司订单是否已经过期
+     *
+     * @param companyId
+     *         id
+     * @return 是
+     */
+    public boolean isExpire(Long companyId) {
+        PtOrder ptOrder = findNewOrderByCompanyId(companyId);
+        return CommonUtil.getNow().after(ptOrder.getExpiryDate());
+    }
+
     public Integer countByCompanyId(Long companyId) {
         Integer count = ptOrderRepository.countByCompanyId(companyId);
         return count == null ? 0 : count;

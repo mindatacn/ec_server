@@ -297,6 +297,15 @@ public class CompanyService extends BaseService {
         return ptCompany;
     }
 
+    public boolean delete(Long companyId) {
+        //最后的订单是否过期
+        if (!ptOrderManager.isExpire(companyId)) {
+            return false;
+        }
+        eventPublisher.publishEvent(new OrderChangeEvent(companyId));
+        return true;
+    }
+
     /**
      * 定时修改购买状态
      */

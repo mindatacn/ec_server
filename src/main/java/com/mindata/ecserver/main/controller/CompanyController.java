@@ -90,6 +90,16 @@ public class CompanyController {
         return ResultGenerator.genSuccessResult(companyService.findByConditions(companyRequestBody));
     }
 
+    @DeleteMapping("/{id}")
+    public BaseData delete(@PathVariable Long id) {
+        boolean flag = companyService.delete(id);
+        if (flag) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        } else {
+            return ResultGenerator.genFailResult("还有未过期的订单");
+        }
+    }
+
     /**
      * 查询某个公司详情
      */

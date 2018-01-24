@@ -3,11 +3,9 @@ package com.mindata.ecserver.main.manager;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
 import com.mindata.ecserver.main.repository.secondary.PtOrderRepository;
 import com.mindata.ecserver.util.CommonUtil;
-import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * @author hanliqiang wrote on 2018/1/22
@@ -20,18 +18,22 @@ public class PtOrderManager {
     /**
      * 新增一个订单
      */
-    public PtOrder add(Long companyId, Integer money, Long productId, Date effectiveDate, Date expiryDate, String
+    public PtOrder add(Long companyId, Integer money, Long productId, String effectiveDate, String expiryDate, String
             memo) {
         PtOrder order = new PtOrder();
         order.setCompanyId(companyId);
         order.setMoney(money);
         order.setProductId(productId);
-        order.setEffectiveDate(effectiveDate);
-        order.setExpiryDate(DateUtil.endOfDay(expiryDate));
+        order.setEffectiveDate(CommonUtil.beginOfDay(effectiveDate));
+        order.setExpiryDate(CommonUtil.endOfDay(expiryDate));
         order.setCreateTime(CommonUtil.getNow());
         order.setUpdateTime(CommonUtil.getNow());
         order.setMemo(memo);
         return ptOrderRepository.save(order);
+    }
+
+    public PtOrder add(PtOrder ptOrder) {
+        return ptOrderRepository.save(ptOrder);
     }
 
     /**

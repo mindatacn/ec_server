@@ -1,7 +1,5 @@
 package com.mindata.ecserver.main.requestbody;
 
-import java.util.Date;
-
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
@@ -74,11 +72,11 @@ public class CompanyBody {
     /**
      * 生效日期
      */
-    private Date effectiveDate;
+    private String effectiveDate;
     /**
      * 失效日期
      */
-    private Date expiryDate;
+    private String expiryDate;
 
     /**
      * 角色ID
@@ -241,19 +239,19 @@ public class CompanyBody {
         this.money = money;
     }
 
-    public Date getEffectiveDate() {
+    public String getEffectiveDate() {
         return effectiveDate;
     }
 
-    public void setEffectiveDate(Date effectiveDate) {
+    public void setEffectiveDate(String effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
 
-    public Date getExpiryDate() {
+    public String getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -263,5 +261,33 @@ public class CompanyBody {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "CompanyBody{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", threshold=" + threshold +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", contactPerson='" + contactPerson + '\'' +
+                ", vocationTag=" + vocationTag +
+                ", mobile='" + mobile + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", memo='" + memo + '\'' +
+                ", appId='" + appId + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", productId=" + productId +
+                ", money=" + money +
+                ", effectiveDate='" + effectiveDate + '\'' +
+                ", expiryDate='" + expiryDate + '\'' +
+                ", roleId=" + roleId +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

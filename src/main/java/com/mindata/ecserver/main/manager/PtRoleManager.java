@@ -44,6 +44,10 @@ public class PtRoleManager {
                 .toList());
     }
 
+    public String findManagerRoleName(Long userId) {
+        return findByUserId(userId).get(0).getName();
+    }
+
     public PtRole findByRoleId(Long roleId) {
         return ptRoleRepository.findOne(roleId);
     }

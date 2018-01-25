@@ -18,7 +18,6 @@ import com.mindata.ecserver.main.manager.*;
 import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
-import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
@@ -252,7 +251,7 @@ public class CompanyService extends BaseService {
             companyVO.setContactPerson(ptCompany.getContactPerson());
             PtUser ptUser = userService.findManagerUser(ptCompany.getId());
             companyVO.setAccount(ptUser.getAccount());
-            companyVO.setRoleName(ptRoleManager.findByUserId(ptUser.getId()).get(0).getName());
+            companyVO.setRoleName(ptRoleManager.findManagerRoleName(ptUser.getId()));
             companyVO.setBuyStatus(ptCompany.getBuyStatus());
             vos.add(companyVO);
         }
@@ -276,8 +275,7 @@ public class CompanyService extends BaseService {
 
         PtUser ptUser = userService.findManagerUser(ptCompany.getId());
         companyVO.setAccount(ptUser.getAccount());
-        List<PtRole> ptRoles = ptRoleManager.findByUserId(ptUser.getId());
-        companyVO.setRoleName(ptRoles.get(0).getName());
+        companyVO.setRoleName(ptRoleManager.findManagerRoleName(ptUser.getId()));
 
         companyVO.setVocation(ecVocationCodeManager.findNameByCode(ptCompany.getVocationTag()));
         

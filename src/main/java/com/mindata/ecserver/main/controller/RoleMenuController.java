@@ -31,7 +31,7 @@ public class RoleMenuController {
             return ResultGenerator.genFailResult("roleId不能为空");
         }
 
-        return ResultGenerator.genSuccessResult(ptRoleMenuManager.add(roleMenuDto));
+        return ResultGenerator.genSuccessResult(ptRoleMenuManager.updateAll(roleMenuDto));
     }
 
     /**

@@ -15,6 +15,7 @@ import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.event.OrderChangeEvent;
 import com.mindata.ecserver.main.manager.*;
+import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
 import com.mindata.ecserver.main.model.secondary.PtRole;
@@ -66,6 +67,8 @@ public class CompanyService extends BaseService {
     private PtProductManager ptProductManager;
     @Resource
     private PtRoleManager ptRoleManager;
+    @Resource
+    private EcVocationCodeManager ecVocationCodeManager;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -275,6 +278,9 @@ public class CompanyService extends BaseService {
         companyVO.setAccount(ptUser.getAccount());
         List<PtRole> ptRoles = ptRoleManager.findByUserId(ptUser.getId());
         companyVO.setRoleName(ptRoles.get(0).getName());
+
+        companyVO.setVocation(ecVocationCodeManager.findNameByCode(ptCompany.getVocationTag()));
+        
         return companyVO;
     }
 
@@ -289,9 +295,12 @@ public class CompanyService extends BaseService {
 
         PtUser ptUser = userService.findManagerUser(companyBody.getId());
         if (StrUtil.isNotEmpty(companyBody.getAccount()) && !StrUtil.equals(ptUser.getAccount(), companyBody
-                .getAccount()
-        )) {
+                .getAccount())) {
             ptUser.setAccount(companyBody.getAccount());
+            ptUserManager.update(ptUser);
+        }
+        if (StrUtil.isNotEmpty(companyBody.getPassword())) {
+            ptUser.setPassword(CommonUtil.password(companyBody.getPassword()));
             ptUserManager.update(ptUser);
         }
         return ptCompany;

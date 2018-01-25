@@ -7,47 +7,6 @@ import java.util.Date;
  */
 public class CompanyDetailVO {
     /**
-     * 商品名称
-     */
-    private String productName;
-    /**
-     * 公司名称
-     */
-    private String name;
-    /**
-     * 联系人
-     */
-    private String contactPerson;
-    /**
-     * 账号
-     */
-    private String account;
-    /**
-     * 角色名称
-     */
-    private String roleName;
-    /**
-     * 状态
-     */
-    private Integer buyStatus;
-
-    private String address;
-    /**
-     * 需确认
-     */
-    private Integer vocationTag;
-
-    private String mobile;
-
-    private String phone;
-
-    private String email;
-
-    private String memo;
-
-    private Date createTime;
-
-    /**
      * appId
      */
     private String appId;
@@ -55,7 +14,29 @@ public class CompanyDetailVO {
      * APPSecret
      */
     private String appSecret;
-
+    private String city;
+    /**
+     * 联系人
+     */
+    private String contactPerson;
+    private String mobile;
+    /**
+     * 公司名称
+     */
+    private String name;
+    private String phone;
+    private String prefix;
+    private String province;
+    /**
+     * 需确认
+     */
+    private String vocation;
+    private Long corpId;
+    /**
+     * 默认推送数量阈值
+     */
+    private Integer threshold;
+    private String address;
     /**
      * 生效日期
      */
@@ -64,6 +45,30 @@ public class CompanyDetailVO {
      * 失效日期
      */
     private Date expiryDate;
+    /**
+     * 账号
+     */
+    private String account;
+    /**
+     * 商品名称
+     */
+    private String productName;
+    /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
+     * 状态
+     */
+    private Integer buyStatus;
+    private Integer status;
+
+    private String email;
+
+    private String memo;
+
+    private Date createTime;
+
 
     public String getProductName() {
         return productName;
@@ -71,6 +76,54 @@ public class CompanyDetailVO {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Integer getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(Integer threshold) {
+        this.threshold = threshold;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public Long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(Long corpId) {
+        this.corpId = corpId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getContactPerson() {
@@ -193,34 +246,40 @@ public class CompanyDetailVO {
         this.name = name;
     }
 
-    public Integer getVocationTag() {
-        return vocationTag;
+    public String getVocation() {
+        return vocation;
     }
 
-    public void setVocationTag(Integer vocationTag) {
-        this.vocationTag = vocationTag;
+    public void setVocation(String vocation) {
+        this.vocation = vocation;
     }
 
     @Override
     public String toString() {
         return "CompanyDetailVO{" +
-                "productName='" + productName + '\'' +
-                ", name='" + name + '\'' +
+                "appId='" + appId + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", city='" + city + '\'' +
                 ", contactPerson='" + contactPerson + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", province='" + province + '\'' +
+                ", vocation=" + vocation +
+                ", corpId=" + corpId +
+                ", threshold=" + threshold +
+                ", address='" + address + '\'' +
+                ", effectiveDate=" + effectiveDate +
+                ", expiryDate=" + expiryDate +
                 ", account='" + account + '\'' +
+                ", productName='" + productName + '\'' +
                 ", roleName='" + roleName + '\'' +
                 ", buyStatus=" + buyStatus +
-                ", address='" + address + '\'' +
-                ", vocationTag=" + vocationTag +
-                ", mobile='" + mobile + '\'' +
-                ", phone='" + phone + '\'' +
+                ", status=" + status +
                 ", email='" + email + '\'' +
                 ", memo='" + memo + '\'' +
                 ", createTime=" + createTime +
-                ", appId='" + appId + '\'' +
-                ", appSecret='" + appSecret + '\'' +
-                ", effectiveDate=" + effectiveDate +
-                ", expiryDate=" + expiryDate +
                 '}';
     }
 }

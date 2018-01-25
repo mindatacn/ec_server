@@ -62,6 +62,10 @@ public class CompanyBody {
      */
     private String appSecret;
     /**
+     * ec corpId
+     */
+    private Long corpId;
+    /**
      * 产品ID
      */
     private Long productId;
@@ -121,6 +125,14 @@ public class CompanyBody {
 
     public Integer getThreshold() {
         return threshold;
+    }
+
+    public Long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(Long corpId) {
+        this.corpId = corpId;
     }
 
     public void setThreshold(Integer threshold) {
@@ -281,6 +293,7 @@ public class CompanyBody {
                 ", memo='" + memo + '\'' +
                 ", appId='" + appId + '\'' +
                 ", appSecret='" + appSecret + '\'' +
+                ", corpId=" + corpId +
                 ", productId=" + productId +
                 ", money=" + money +
                 ", effectiveDate='" + effectiveDate + '\'' +

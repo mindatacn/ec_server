@@ -65,7 +65,6 @@ public class PushService extends BaseService {
      * @return 能否推送的结果
      */
     public Map<String, Object> pushCheck(PushBody pushBody) {
-
         PtUser ptUser = ShiroKit.getCurrentUser();
         //没传跟进人，默认为自己
         if (pushBody.getFollowUserId() == null) {
@@ -76,7 +75,7 @@ public class PushService extends BaseService {
         }
         List<Long> ids = pushBody.getIds();
         if (ids.size() > MAX_SIZE) {
-            return buildMap(ResultCode.PUSH_COUNT_TO_LARGE, "用户没绑定EC账号");
+            return buildMap(ResultCode.PUSH_COUNT_TO_LARGE, "一次最多推送50条");
         }
         //检查被推送的用户每日上限
         PtUserPushCount userCount = ptUserPushCountManager.findCountByUserId(pushBody.getFollowUserId(), null);

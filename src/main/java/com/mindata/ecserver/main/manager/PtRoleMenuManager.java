@@ -105,7 +105,9 @@ public class PtRoleMenuManager {
      */
     public void delete(Long menuId, Long roleId) {
         PtMenuRole ptMenuRole = ptMenuRoleRepository.findFirstByMenuIdAndRoleId(menuId, roleId);
-        ptMenuRoleRepository.delete(ptMenuRole);
+        if (ptMenuRole != null) {
+            ptMenuRoleRepository.delete(ptMenuRole);
+        }
     }
 
     /**

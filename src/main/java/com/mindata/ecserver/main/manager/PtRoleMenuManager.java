@@ -87,12 +87,16 @@ public class PtRoleMenuManager {
     @Transactional(rollbackFor = Exception.class)
     public List<PtMenuRole> updateAll(RoleMenuDto roleMenuDto) {
         //删除所有
-        delete(roleMenuDto);
+        deleteByRoleId(roleMenuDto.getRoleId());
         //添加所有
         List<PtMenuRole> ptMenuRoles = add(roleMenuDto);
 
         publishRoleEvent(CollectionUtil.newArrayList(roleMenuDto.getRoleId()));
         return ptMenuRoles;
+    }
+
+    private void deleteByRoleId(Long roleId) {
+        ptMenuRoleRepository.deleteByRoleId(roleId);
     }
 
     /**
@@ -110,15 +114,6 @@ public class PtRoleMenuManager {
         }
     }
 
-    /**
-     * 批量删除role和menu的对应关系
-     *
-     * @param roleMenuDto
-     *         dto
-     */
-    public void delete(RoleMenuDto roleMenuDto) {
-        roleMenuDto.getMenuIds().forEach(menuId -> delete(roleMenuDto.getRoleId(), menuId));
-    }
 
     public boolean checkExist(Long menuId, Long roleId) {
         return ptMenuRepository.exists(menuId) && ptRoleManager.exists(roleId);
@@ -153,7 +148,7 @@ public class PtRoleMenuManager {
     @EventListener
     public void deleteMenuRoleByRoleId(RoleDeleteEvent event) {
         Long roleId = (Long) event.getSource();
-        ptMenuRoleRepository.deleteByRoleId(roleId);
+        deleteByRoleId(roleId);
     }
 
     public List<PtMenu> findByRoleId(Long roleId) {

@@ -40,7 +40,8 @@
     <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
         <encoder class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
             <layout class="ch.qos.logback.classic.PatternLayout">
-                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+                <pattern>%msg%n</pattern>
             </layout>
         </encoder>
         <topic>topic_ec_server</topic>
@@ -56,7 +57,7 @@
         <producerConfig>bootstrap.servers=${kafka}</producerConfig>
 
         <!-- this is the fallback appender if kafka is not available. -->
-        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </appender>
 
     <!--<root level="INFO">

@@ -25,7 +25,7 @@
         </encoder>
     </appender>
 
-    <!-- Logstash日志 -->
+    <!-- Logstash日志.目前不用这个，用的是kafka -->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <!-- 远程Logstash的IP：PORT -->
         <!--<destination>47.92.107.76:10024</destination>-->
@@ -39,9 +39,9 @@
 
     <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
         <encoder class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+            <!--代表的输出的格式-->
             <layout class="ch.qos.logback.classic.PatternLayout">
-                <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-                <pattern>%msg%n</pattern>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             </layout>
         </encoder>
         <topic>topic_ec_server</topic>
@@ -57,7 +57,7 @@
         <producerConfig>bootstrap.servers=${kafka}</producerConfig>
 
         <!-- this is the fallback appender if kafka is not available. -->
-        <!--<appender-ref ref="CONSOLE"/>-->
+        <appender-ref ref="MY_FILE"/>
     </appender>
 
     <!--<root level="INFO">
@@ -66,18 +66,10 @@
         <appender-ref ref="MY_FILE"/>
     </root>-->
 
-    <springProfile name="dev,local">
-        <logger name="org.springframework.web" level="INFO">
-            <appender-ref ref="LOGSTASH"/>
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="MY_FILE"/>
-        </logger>
-    </springProfile>
     <springProfile name="prod">
-        <logger name="org.springframework.web" level="INFO">
+        <logger name="com.mindata.ecserver" level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="kafkaAppender"/>
-            <appender-ref ref="MY_FILE"/>
         </logger>
     </springProfile>
 </configuration>

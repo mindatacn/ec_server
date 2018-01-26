@@ -68,7 +68,7 @@
 
     <springProfile name="prod">
         <logger name="com.mindata.ecserver" level="INFO">
-            <appender-ref ref="CONSOLE"/>
+            <!--<appender-ref ref="CONSOLE"/>-->
             <appender-ref ref="kafkaAppender"/>
         </logger>
     </springProfile>

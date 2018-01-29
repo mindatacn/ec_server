@@ -30,7 +30,7 @@ public class CompanyDetailVO {
     /**
      * 需确认
      */
-    private String vocation;
+    private Integer vocationTag;
     private Long corpId;
     /**
      * 默认推送数量阈值
@@ -50,13 +50,13 @@ public class CompanyDetailVO {
      */
     private String account;
     /**
-     * 商品名称
+     * 产品ID
      */
-    private String productName;
+    private Long productId;
     /**
-     * 角色名称
+     * 角色ID
      */
-    private String roleName;
+    private Long roleId;
     /**
      * 状态
      */
@@ -69,14 +69,6 @@ public class CompanyDetailVO {
 
     private Date createTime;
 
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 
     public Integer getThreshold() {
         return threshold;
@@ -140,14 +132,6 @@ public class CompanyDetailVO {
 
     public void setAccount(String account) {
         this.account = account;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public Integer getBuyStatus() {
@@ -246,12 +230,28 @@ public class CompanyDetailVO {
         this.name = name;
     }
 
-    public String getVocation() {
-        return vocation;
+    public Integer getVocationTag() {
+        return vocationTag;
     }
 
-    public void setVocation(String vocation) {
-        this.vocation = vocation;
+    public void setVocationTag(Integer vocationTag) {
+        this.vocationTag = vocationTag;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     @Override
@@ -266,15 +266,15 @@ public class CompanyDetailVO {
                 ", phone='" + phone + '\'' +
                 ", prefix='" + prefix + '\'' +
                 ", province='" + province + '\'' +
-                ", vocation=" + vocation +
+                ", vocationTag=" + vocationTag +
                 ", corpId=" + corpId +
                 ", threshold=" + threshold +
                 ", address='" + address + '\'' +
                 ", effectiveDate=" + effectiveDate +
                 ", expiryDate=" + expiryDate +
                 ", account='" + account + '\'' +
-                ", productName='" + productName + '\'' +
-                ", roleName='" + roleName + '\'' +
+                ", productId=" + productId +
+                ", roleId=" + roleId +
                 ", buyStatus=" + buyStatus +
                 ", status=" + status +
                 ", email='" + email + '\'' +

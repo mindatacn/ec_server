@@ -81,7 +81,6 @@ public class CompanyBody {
      * 失效日期
      */
     private String expiryDate;
-
     /**
      * 角色ID
      */

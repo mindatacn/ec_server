@@ -48,6 +48,10 @@ public class PtRoleManager {
         return findByUserId(userId).get(0).getName();
     }
 
+    public Long findManagerRoleId(Long userId) {
+        return findByUserId(userId).get(0).getId();
+    }
+
     public PtRole findByRoleId(Long roleId) {
         return ptRoleRepository.findOne(roleId);
     }

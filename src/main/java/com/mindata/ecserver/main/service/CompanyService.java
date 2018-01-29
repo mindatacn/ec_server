@@ -267,18 +267,14 @@ public class CompanyService extends BaseService {
 
         BeanUtil.copyProperties(ptCompany, companyVO);
 
-        companyVO.setProductName(ptProductManager.findProductNameById(ptCompany.getProductId()));
-
         PtOrder ptOrder = ptOrderManager.findNewOrderByCompanyId(companyId);
         companyVO.setEffectiveDate(ptOrder.getEffectiveDate());
         companyVO.setExpiryDate(ptOrder.getExpiryDate());
 
         PtUser ptUser = userService.findManagerUser(ptCompany.getId());
         companyVO.setAccount(ptUser.getAccount());
-        companyVO.setRoleName(ptRoleManager.findManagerRoleName(ptUser.getId()));
+        companyVO.setRoleId(ptRoleManager.findManagerRoleId(ptUser.getId()));
 
-        companyVO.setVocation(ecVocationCodeManager.findNameByCode(ptCompany.getVocationTag()));
-        
         return companyVO;
     }
 

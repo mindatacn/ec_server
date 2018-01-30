@@ -29,6 +29,10 @@ public class CompanyVO {
      * 状态
      */
     private Integer buyStatus;
+    /**
+     * 产品ID
+     */
+    private Long productId;
 
     public Long getId() {
         return id;
@@ -36,6 +40,14 @@ public class CompanyVO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -96,6 +108,7 @@ public class CompanyVO {
                 ", account='" + account + '\'' +
                 ", roleName='" + roleName + '\'' +
                 ", buyStatus=" + buyStatus +
+                ", productId=" + productId +
                 '}';
     }
 }

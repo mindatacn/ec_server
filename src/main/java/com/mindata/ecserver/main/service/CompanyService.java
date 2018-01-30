@@ -247,6 +247,7 @@ public class CompanyService extends BaseService {
             companyVO.setId(ptCompany.getId());
             companyVO.setProductName(ptProductManager.findProductNameById(ptCompany.getProductId()));
             companyVO.setCompanyName(ptCompany.getName());
+            companyVO.setProductId(ptCompany.getProductId());
             companyVO.setContactPerson(ptCompany.getContactPerson());
             PtUser ptUser = userService.findManagerUser(ptCompany.getId());
             companyVO.setAccount(ptUser.getAccount());

@@ -2,6 +2,9 @@ package com.mindata.ecserver.main.repository.secondary;
 
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,5 +32,14 @@ public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Long> {
      */
     List<PtUserRole> findByRoleId(Long roleId);
 
-
+    /**
+     * 删除某个用户的role
+     *
+     * @param userId
+     *         userId
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query("delete from PtUserRole where userId = ?1")
+    void deleteByUserId(Long userId);
 }

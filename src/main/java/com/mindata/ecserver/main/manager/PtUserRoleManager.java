@@ -61,4 +61,25 @@ public class PtUserRoleManager {
     public void update(PtUserRole ptUserRole) {
         ptUserRoleRepository.save(ptUserRole);
     }
+
+    /**
+     * 根据userId删除
+     *
+     * @param userId
+     *         userId
+     */
+    public void deleteByUserId(Long userId) {
+        ptUserRoleRepository.deleteByUserId(userId);
+    }
+
+    /**
+     * 修改一个用户的role
+     *
+     * @param userId
+     *         userId
+     */
+    public void updateUserRole(Long userId, Long roleId) {
+        deleteByUserId(userId);
+        add(userId, roleId);
+    }
 }

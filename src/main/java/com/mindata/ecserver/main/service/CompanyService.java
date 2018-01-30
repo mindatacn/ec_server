@@ -15,7 +15,6 @@ import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.event.CompanySyncEvent;
 import com.mindata.ecserver.main.event.OrderChangeEvent;
 import com.mindata.ecserver.main.manager.*;
-import com.mindata.ecserver.main.manager.ec.EcVocationCodeManager;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.model.secondary.PtOrder;
 import com.mindata.ecserver.main.model.secondary.PtUser;
@@ -67,7 +66,7 @@ public class CompanyService extends BaseService {
     @Resource
     private PtRoleManager ptRoleManager;
     @Resource
-    private EcVocationCodeManager ecVocationCodeManager;
+    private PtUserRoleManager ptUserRoleManager;
 
     /**
      * 获取当前登录用户的公司CorpId
@@ -296,6 +295,9 @@ public class CompanyService extends BaseService {
         if (StrUtil.isNotEmpty(companyBody.getPassword())) {
             ptUser.setPassword(CommonUtil.password(companyBody.getPassword()));
             ptUserManager.update(ptUser);
+        }
+        if (companyBody.getRoleId() != null) {
+            ptUserRoleManager.updateUserRole(ptUser.getId(), companyBody.getRoleId());
         }
         return ptCompany;
     }

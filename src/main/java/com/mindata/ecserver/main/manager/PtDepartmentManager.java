@@ -94,8 +94,8 @@ public class PtDepartmentManager extends BaseService {
         return departmentRepository.save(ptDepartment);
     }
 
-    public PtDepartment addOrUpdate(PtDepartment ptDepartment) {
-        return departmentRepository.save(ptDepartment);
+    public void addOrUpdate(PtDepartment ptDepartment) {
+        departmentRepository.save(ptDepartment);
     }
 
     /**
@@ -104,7 +104,7 @@ public class PtDepartmentManager extends BaseService {
      * @param companyDeptBeans
      *         一批部门信息
      */
-    public List<PtDepartment> addDepts(List<CompanyDeptBean> companyDeptBeans, Long companyId, boolean force) {
+    public void addDepts(List<CompanyDeptBean> companyDeptBeans, Long companyId, boolean force) {
         List<PtDepartment> ptDepartments = companyDeptBeans.stream().map(companyDeptBean -> add(companyDeptBean,
                 companyId, force)).collect(Collectors
                 .toList());
@@ -127,8 +127,6 @@ public class PtDepartmentManager extends BaseService {
                 }
             }
         }
-
-        return ptDepartments;
     }
 
 }

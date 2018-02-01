@@ -55,15 +55,13 @@ public class PhoneHistoryController {
     @GetMapping("/company")
     public BaseData queryCompany(Long companyId, String begin, String end,
                                  @PageableDefault(direction =
-                                         Sort.Direction.DESC, sort = "startTime") Pageable pageable) throws
-            IOException {
+                                         Sort.Direction.DESC, sort = "startTime") Pageable pageable) {
         return ResultGenerator.genSuccessResult(phoneHistoryCompanyService.findHistoryByDate(companyId, begin, end));
     }
 
     /**
      * 查询部门的统计累计数据，只有一条
      */
-    //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept/{id}")
     public BaseData queryDept(@PathVariable Long id, String begin, String end,
                               @PageableDefault(direction =
@@ -75,7 +73,6 @@ public class PhoneHistoryController {
     /**
      * 查询所有部门的统计，按部门分开
      */
-    //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER}, logical = Logical.OR)
     @GetMapping("/dept")
     public BaseData queryUser(Long companyId, String begin, String end,
                               @PageableDefault(direction =
@@ -88,7 +85,6 @@ public class PhoneHistoryController {
     /**
      * 查询某部门所有人的统计，或者查询某公司所有人的统计
      */
-    //@RequiresRoles(value = {Constant.ROLE_MANAGER, Constant.ROLE_LEADER, Constant.ROLE_USER}, logical = Logical.OR)
     @GetMapping("/user")
     public BaseData query(Long deptId, String begin, String end) {
         return ResultGenerator.genSuccessResult(phoneHistoryUserService.findPersonalHistoryByDate(deptId,
@@ -101,11 +97,4 @@ public class PhoneHistoryController {
                 begin, end));
     }
 
-    /**
-     * 查询所有用户某段时间任务完成情况，for HR
-     */
-    @RequestMapping("/state")
-    public Object queryUserFinishState(String begin, String end) {
-        return phoneHistoryCompanyService.findHistoryStrByDate(begin, end);
-    }
 }

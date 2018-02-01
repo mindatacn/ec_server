@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wuweifeng wrote on 2017/10/26.
@@ -101,7 +102,7 @@ public class CompanyService extends BaseService {
      * @return Company
      */
     public PtCompany findNowCompany() {
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentCompanyId();
         return ptCompanyManager.findOne(companyId);
     }
 
@@ -113,11 +114,11 @@ public class CompanyService extends BaseService {
      *         异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public Object syncFromEc(Boolean force) throws IOException {
+    public Object syncFromEc(Boolean force) {
         if (force == null) {
             force = false;
         }
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentCompanyId();
         // 同步之前的最大id
         Long beforeUserId = ptUserManager.findCompanyMaxUserId(companyId);
         eventPublisher.publishEvent(new CompanySyncEvent(force));
@@ -141,7 +142,7 @@ public class CompanyService extends BaseService {
         //根据CompanyData往本地Company插值
         List<CompanyDeptBean> deptBeanList = companyData.getData().getDepts();
         List<CompanyUserBean> userBeanList = companyData.getData().getUsers();
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentCompanyId();
         ptDepartmentManager.addDepts(deptBeanList, companyId, force);
         ptUserManager.addUsers(userBeanList, companyId, force);
     }
@@ -190,30 +191,16 @@ public class CompanyService extends BaseService {
      * @return List
      */
     public List<CompanyThresholdVO> findThreshold(String name) {
-        List<CompanyThresholdVO> companyVOS = new ArrayList<>();
         List<PtCompany> companies = ptCompanyManager.findThreshold(name);
-        for (PtCompany ptCompany : companies) {
+        return companies.stream().map(ptCompany -> {
             CompanyThresholdVO companyVO = new CompanyThresholdVO();
             companyVO.setId(ptCompany.getId());
             companyVO.setName(ptCompany.getName());
             companyVO.setThreshold(ptCompany.getThreshold());
-            companyVOS.add(companyVO);
-        }
-        return companyVOS;
+            return companyVO;
+        }).collect(Collectors.toList());
     }
 
-    /**
-     * 根据id修改阈值
-     *
-     * @param id
-     *         id
-     * @param threshold
-     *         threshold
-     * @return PtCompany
-     */
-    public PtCompany updateThresholdById(Long id, Integer threshold) {
-        return ptCompanyManager.updateThresholdById(id, threshold);
-    }
 
     /**
      * 根据条件查询公司信息
@@ -238,8 +225,7 @@ public class CompanyService extends BaseService {
         if (companyRequestBody.getPage() != null) {
             page = companyRequestBody.getPage();
         }
-        String orderBy = "id";
-        Pageable pageable = new PageRequest(page, Constant.PAGE_SIZE, Sort.Direction.DESC, orderBy);
+        Pageable pageable = new PageRequest(page, Constant.PAGE_SIZE, Sort.Direction.DESC, "id");
         Page<PtCompany> ptCompanies = ptCompanyManager.findAll(criteria, pageable);
         List<CompanyVO> vos = new ArrayList<>(ptCompanies.getContent().size());
         for (PtCompany ptCompany : ptCompanies) {

@@ -1,5 +1,6 @@
 package com.mindata.ecserver.global.cache;
 
+import com.mindata.ecserver.global.cache.util.RedisBatchUtil;
 import com.mindata.ecserver.main.event.RoleMenuChangeEvent;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.xiaoleilu.hutool.json.JSONArray;

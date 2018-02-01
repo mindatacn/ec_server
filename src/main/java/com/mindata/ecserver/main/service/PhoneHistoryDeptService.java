@@ -28,7 +28,7 @@ public class PhoneHistoryDeptService {
     public PhoneHistoryDeptBeanVO findDeptHistoryByDateBetween(Long deptId, String begin, String end, Pageable
             pageable) {
         if (deptId == null) {
-            deptId = ShiroKit.getCurrentUser().getDepartmentId();
+            deptId = ShiroKit.getCurrentDeptId();
         }
         Date beginDate = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endDate = DateUtil.endOfDay(DateUtil.parseDate(end));
@@ -74,7 +74,7 @@ public class PhoneHistoryDeptService {
                                                                                   String end,
                                                                                   Pageable pageable) {
         if (companyId == null) {
-            companyId = ShiroKit.getCurrentUser().getCompanyId();
+            companyId = ShiroKit.getCurrentCompanyId();
         }
         //获取该公司所有部门这段时间内的累计数据，以部门为单位分页
         List<PtDepartment> departments = ptDepartmentManager.findByCompanyIdAndState(companyId, 0);

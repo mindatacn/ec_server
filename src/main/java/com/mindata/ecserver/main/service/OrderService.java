@@ -64,6 +64,13 @@ public class OrderService extends BaseService {
         return old;
     }
 
+    /**
+     * 查询某个公司的所有订单
+     *
+     * @param companyId
+     *         companyId
+     * @return 订单集合
+     */
     public List<OrderVO> findByCompanyId(Long companyId) {
         List<PtOrder> orders = ptOrderManager.findByCompanyId(companyId);
         List<OrderVO> vos = new ArrayList<>(orders.size());

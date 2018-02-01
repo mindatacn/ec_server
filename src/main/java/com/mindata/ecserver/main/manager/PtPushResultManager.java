@@ -117,11 +117,11 @@ public class PtPushResultManager {
             result.setCreateTime(CommonUtil.getNow());
             result.setUpdateTime(CommonUtil.getNow());
             result.setCity(contactEntity.getCity());
-            result.setCompanyId(ShiroKit.getCurrentUser().getCompanyId());
+            result.setCompanyId(ShiroKit.getCurrentCompanyId());
             result.setCompanyName(contactEntity.getCompany());
             result.setContactId(contactEntity.getId());
             result.setCrmId(value);
-            result.setDepartmentId(ShiroKit.getCurrentUser().getDepartmentId());
+            result.setDepartmentId(ShiroKit.getCurrentDeptId());
             result.setFollowUserId(followUserId);
             result.setMobile(contactEntity.getMobile());
             result.setOptUserId(optUserId);

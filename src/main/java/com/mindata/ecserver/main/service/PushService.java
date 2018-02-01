@@ -86,7 +86,7 @@ public class PushService extends BaseService {
                     + "】条");
         }
         // 检查已推送的数量是否大于公司规定的推送数量
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentCompanyId();
         Integer companyThreshold = ptCompanyManager.findOne(companyId).getThreshold();
         Integer pushedCount = ptUserPushCountManager.getPushedCountSum(companyId);
         if (ids.size() + pushedCount > companyThreshold) {
@@ -126,7 +126,7 @@ public class PushService extends BaseService {
         Long optUserId;
         if (pushBody.getOptUserId() == null) {
             //设置操作人id
-            optUserId = ShiroKit.getCurrentUser().getEcUserId();
+            optUserId = ShiroKit.getCurrentEcUserId();
         } else {
             optUserId = ptUserManager.findByUserId(pushBody.getOptUserId())
                     .getEcUserId();
@@ -136,7 +136,7 @@ public class PushService extends BaseService {
         //发布事件
         CustomerCreateDataBean bean = customerCreateData.getData();
         eventPublisher.publishEvent(new ContactPushResultEvent(new PushResultVO(bean,
-                pushBody, ShiroKit.getCurrentUser().getId()
+                pushBody, ShiroKit.getCurrentUserId()
         )));
 
         int totalCount = pushBody.getIds().size();

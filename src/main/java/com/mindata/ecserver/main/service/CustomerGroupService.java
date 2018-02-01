@@ -43,7 +43,7 @@ public class CustomerGroupService {
     public void syncFromEcToDb(CompanySyncEvent companySyncEvent) throws IOException {
         logger.info("从EC获取客户分组信息");
         Boolean force = (Boolean) companySyncEvent.getSource();
-        List<PtUser> userList = ptUserManager.findByCompanyIdAndState(ShiroKit.getCurrentUser().getCompanyId(),
+        List<PtUser> userList = ptUserManager.findByCompanyIdAndState(ShiroKit.getCurrentCompanyId(),
                 Constant.STATE_NORMAL);
         for (PtUser user : userList) {
             CustomerGroupRequest request = new CustomerGroupRequest();

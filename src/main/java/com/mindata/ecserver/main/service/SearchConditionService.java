@@ -24,7 +24,7 @@ public class SearchConditionService {
      * @return 插入成功记录
      */
     public PtSearchCondition add(ContactRequestBody contactRequestBody) {
-        Long userId = ShiroKit.getCurrentUser().getId();
+        Long userId = ShiroKit.getCurrentUserId();
         return ptSearchConditionManager.add(contactRequestBody, userId);
     }
 

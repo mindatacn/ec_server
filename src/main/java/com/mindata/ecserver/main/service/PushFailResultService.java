@@ -44,7 +44,7 @@ public class PushFailResultService {
     public SimplePage<PushFailResultVO> findByConditions(PushFailRequestBody pushFailRequestBody) {
         Criteria<PtPushFailureResult> criteria = new Criteria<>();
 
-        Long userId = ShiroKit.getCurrentUser().getId();
+        Long userId = ShiroKit.getCurrentUserId();
         criteria.add(Restrictions.eq("followUserId", userId, true));
         //公司名称模糊查询
         if (StrUtil.isNotEmpty(pushFailRequestBody.getCompanyName())) {

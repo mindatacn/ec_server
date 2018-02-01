@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.cache;
+package com.mindata.ecserver.global.cache.util;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;

@@ -1,14 +1,11 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.specify.Criteria;
-import com.mindata.ecserver.global.specify.Restrictions;
 import com.mindata.ecserver.main.model.secondary.PtSearchCondition;
 import com.mindata.ecserver.main.repository.secondary.PtSearchConditionRepository;
 import com.mindata.ecserver.main.requestbody.ContactRequestBody;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,12 +51,5 @@ public class PtSearchConditionManager {
         ptSearchCondition.setCreateTime(CommonUtil.getNow());
         ptSearchCondition.setUpdateTime(CommonUtil.getNow());
         return ptSearchConditionRepository.save(ptSearchCondition);
-    }
-
-    public Object find() {
-        Criteria<PtSearchCondition> criteria = new Criteria<>();
-        criteria.add(Restrictions.hasMembers("as.name", "abc"));
-        criteria.add(Restrictions.hasMembers("provinces", "110000", "120000"));
-        return ptSearchConditionRepository.findAll(criteria, new PageRequest(0, 10));
     }
 }

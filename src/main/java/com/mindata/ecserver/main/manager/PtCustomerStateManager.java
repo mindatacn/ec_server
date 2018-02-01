@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.repository.secondary.PtCustomerStateRepository;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,12 +22,12 @@ public class PtCustomerStateManager {
         if (sourceFrom == null || sourceFrom == 0) {
             sourceFromList = Arrays.asList(1, 2, 3);
         } else {
-            sourceFromList = Arrays.asList(sourceFrom);
+            sourceFromList = CollectionUtil.newArrayList(sourceFrom);
         }
         if (saleState == null) {
             saleStateList = Arrays.asList(0, 1, 2);
         } else {
-            saleStateList = Arrays.asList(saleState);
+            saleStateList = CollectionUtil.newArrayList(saleState);
         }
         if (operateType != null) {
             return ptCustomerStateRepository.countDistinctByOperateType(begin, end, sourceFromList, operateType);

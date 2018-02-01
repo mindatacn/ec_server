@@ -103,7 +103,7 @@ public class MenuService extends BaseService {
     public List<PtMenu> find(final Long parentId, String name) {
         long id = parentId == null ? 0 : parentId;
         String tempName = name == null ? "" : name;
-        Long userId = ShiroKit.getCurrentUser().getId();
+        Long userId = ShiroKit.getCurrentUserId();
         List<PtRole> ptRoleList = ptRoleManager.findByUserId(userId);
         boolean isAdmin = ptRoleManager.isAdmin(userId);
         //得到该用户所有菜单

@@ -228,7 +228,7 @@ public class UserService extends BaseService {
      * @return 类
      */
     public PtUserPushCount findPushCount() {
-        return ptUserPushCountManager.findCountByUserId(ShiroKit.getCurrentUser().getId()
+        return ptUserPushCountManager.findCountByUserId(ShiroKit.getCurrentUserId()
                 , null);
     }
 

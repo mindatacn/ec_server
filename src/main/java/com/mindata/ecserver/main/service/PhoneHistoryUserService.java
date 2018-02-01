@@ -5,12 +5,9 @@ import com.mindata.ecserver.main.manager.PtDepartmentManager;
 import com.mindata.ecserver.main.manager.PtPhoneHistoryUserManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.model.secondary.PtDepartment;
-import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryUser;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.vo.PhoneHistoryUserBeanVO;
 import com.xiaoleilu.hutool.date.DateUtil;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -77,10 +74,5 @@ public class PhoneHistoryUserService {
                     (ptDepartment.getId(), begin, end));
         }
         return vos;
-    }
-
-    private Page<PtPhoneHistoryUser> findByUserIdAndDate(Long userId, Date begin, Date end, Pageable pageable) {
-        //分页查询这段时间内的分页数据
-        return ptPhoneHistoryUserManager.findByUserId(userId, begin, end, pageable);
     }
 }

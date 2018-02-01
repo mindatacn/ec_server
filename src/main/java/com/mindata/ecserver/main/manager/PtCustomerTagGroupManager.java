@@ -66,7 +66,7 @@ public class PtCustomerTagGroupManager {
      * @return 结果
      */
     public List<PtCustomerTagGroup> addAll(List<CustomerTagDataBean> customerTagDataBeans, boolean force) {
-        Long companyId = ShiroKit.getCurrentUser().getCompanyId();
+        Long companyId = ShiroKit.getCurrentCompanyId();
         return customerTagDataBeans.stream().map(customerTagDataBean -> add(customerTagDataBean, companyId, force))
                 .collect
                 (Collectors.toList());

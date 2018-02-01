@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
 import com.mindata.ecserver.main.requestbody.CompanyRequestBody;
@@ -12,7 +13,6 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 import static com.mindata.ecserver.global.constant.Constant.ROLE_ADMIN;
 
@@ -24,6 +24,8 @@ import static com.mindata.ecserver.global.constant.Constant.ROLE_ADMIN;
 public class CompanyController {
     @Resource
     private CompanyService companyService;
+    @Resource
+    private PtCompanyManager ptCompanyManager;
 
     /**
      * 添加一家新的公司
@@ -45,7 +47,7 @@ public class CompanyController {
      */
     @GetMapping("/sync")
     @CheckEcAnnotation
-    public BaseData sync(Boolean force) throws IOException {
+    public BaseData sync(Boolean force) {
         return ResultGenerator.genSuccessResult(companyService.syncFromEc(force));
     }
 
@@ -76,7 +78,7 @@ public class CompanyController {
         if (id == null) {
             return ResultGenerator.genFailResult("公司id不能为空");
         }
-        return ResultGenerator.genSuccessResult(companyService.updateThresholdById(id, threshold));
+        return ResultGenerator.genSuccessResult(ptCompanyManager.updateThresholdById(id, threshold));
     }
 
     @PutMapping("")

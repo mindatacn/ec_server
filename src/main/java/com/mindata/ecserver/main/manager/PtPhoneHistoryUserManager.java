@@ -98,7 +98,7 @@ public class PtPhoneHistoryUserManager {
         if (CollectionUtil.isEmpty(list) || force) {
             //去PhoneHistory总表去查询某天该用户的通话历史
             List<Object[]> ptPhoneHistoryList = ptPhoneHistoryManager.findTotalByUserIdAndOneDay(userId,
-                    tempBegin, tempEnd, force);
+                    tempBegin, tempEnd);
             PtPhoneHistoryUser historyUser;
             if (CollectionUtil.isEmpty(list)) {
                 historyUser = new PtPhoneHistoryUser();

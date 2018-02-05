@@ -9,7 +9,6 @@ import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.cache.EcTokenCache;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.service.CompanyService;
-import com.xiaoleilu.hutool.util.StrUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,11 +35,11 @@ public class CheckEcAspect {
 
     @Around("@annotation(checkEcAnnotation)")
     public Object around(ProceedingJoinPoint pjp, CheckEcAnnotation checkEcAnnotation) throws Throwable {
-        String corpId = companyService.getCorpId() + "";
         //如果该公司还未设置CorpId，直接return就好了
-        if (StrUtil.isEmpty(corpId)) {
+        if (companyService.getCorpId() == null) {
             return null;
         }
+        String corpId = companyService.getCorpId() + "";
         //开始判断ec的token
         String ecToken = ecTokenCache.getTokenByCorpId(corpId);
         //没token

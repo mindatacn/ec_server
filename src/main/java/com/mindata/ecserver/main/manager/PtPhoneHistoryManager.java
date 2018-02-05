@@ -38,7 +38,7 @@ public class PtPhoneHistoryManager {
     @Resource
     private PtUserManager ptUserManager;
 
-    public static final Integer ARRAY_SIZE = 9;
+    private static final Integer ARRAY_SIZE = 9;
 
     private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
     private int nowPageNo;
@@ -96,13 +96,13 @@ public class PtPhoneHistoryManager {
      *         userId
      * @return 统计信息
      */
-    public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd, boolean force) throws
+    public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd) throws
             IOException {
-        Long ecUserId = ptUserManager.findByUserId(userId).getEcUserId();
+        Long ecUserId = ptUserManager.findEcUserId(userId);
         //没绑定ec
         if (ecUserId == null) {
             //返回全为0
-            return generEmptyList();
+            return buildEmptyList();
         }
 
         List<PtPhoneHistory> histories = ptPhoneHistoryRepository.findByEcUserIdAndRealRecodeFalseAndStartTimeBetween
@@ -110,7 +110,7 @@ public class PtPhoneHistoryManager {
         //如果该天的是假数据，就直接返回回去
         if (histories.size() > 0) {
             //返回全为0
-            return generEmptyList();
+            return buildEmptyList();
         }
 
         List<Object[]> list = ptPhoneHistoryRepository.findCount(ecUserId, tempBegin, tempEnd);
@@ -142,7 +142,7 @@ public class PtPhoneHistoryManager {
 
                 logger.info("ecUserId为" + ecUserId + "的通话历史数据为空");
                 //返回全为0
-                return generEmptyList();
+                return buildEmptyList();
             }
 
             //将从EC取得的数据导入数据库
@@ -313,7 +313,7 @@ public class PtPhoneHistoryManager {
         getFarFromEc(ecUserId, oneDay);
     }
 
-    private List<Object[]> generEmptyList() {
+    private List<Object[]> buildEmptyList() {
         List<Object[]> list = new ArrayList<>();
         Object[] objects = new Integer[ARRAY_SIZE];
         list.add(objects);

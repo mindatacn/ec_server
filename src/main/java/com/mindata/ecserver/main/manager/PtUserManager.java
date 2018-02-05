@@ -129,6 +129,10 @@ public class PtUserManager {
         return userRepository.findByEcUserId(ecUserId);
     }
 
+    public Long findEcUserId(Long id) {
+        return findByUserId(id).getEcUserId();
+    }
+
     public PtUser update(PtUser ptUser) {
         return userRepository.save(ptUser);
     }

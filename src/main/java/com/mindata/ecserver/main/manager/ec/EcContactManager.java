@@ -94,6 +94,10 @@ public class EcContactManager {
         return contactRepository.findOne(id);
     }
 
+    public String findCompanyName(Long contactId) {
+        return findOne(contactId).getCompany();
+    }
+
     public EcContactEntity update(EcContactEntity ecContactEntity) {
         return contactRepository.save(ecContactEntity);
     }

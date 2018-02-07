@@ -40,9 +40,9 @@ public class PtPhoneHistoryManager {
 
     private static final Integer ARRAY_SIZE = 9;
 
-    private List<PhoneHistoryDataBean> historyDataBeans = new ArrayList<>();
-    private int nowPageNo;
-    private int maxPageNo;
+    private ThreadLocal<List<PhoneHistoryDataBean>> historyDataBeans = new ThreadLocal<>();
+    private ThreadLocal<Integer> nowPageNo = new ThreadLocal<>();
+    private ThreadLocal<Integer> maxPageNo = new ThreadLocal<>();
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -98,6 +98,10 @@ public class PtPhoneHistoryManager {
      */
     public List<Object[]> findTotalByUserIdAndOneDay(Long userId, Date tempBegin, Date tempEnd) throws
             IOException {
+        nowPageNo.set(0);
+        maxPageNo.set(0);
+        historyDataBeans.set(new ArrayList<>());
+
         Long ecUserId = ptUserManager.findEcUserId(userId);
         //没绑定ec
         if (ecUserId == null) {
@@ -117,9 +121,9 @@ public class PtPhoneHistoryManager {
         //如果该天数据缺失
         if (list.get(0)[0].equals(0L)) {
             //说明该天该用户缺失，就从EC获取一次
-            historyDataBeans.clear();
-            nowPageNo = 1;
-            maxPageNo = 10000;
+            historyDataBeans.get().clear();
+            nowPageNo.set(1);
+            maxPageNo.set(10000);
             //此处判断日期是否大于当前超过1个月，选择不同的方法请求数据
             long days = (CommonUtil.getNow().getTime() - tempBegin.getTime()) / (1000 * 3600 * 24);
             if (days > 30) {
@@ -131,7 +135,7 @@ public class PtPhoneHistoryManager {
             logger.info("从EC获取到的ecUserId为" + ecUserId + "的通话历史数据为" + historyDataBeans.toString());
 
             //如果EC也没该用户的数据，我们就造一条
-            if (CollectionUtil.isEmpty(historyDataBeans)) {
+            if (CollectionUtil.isEmpty(historyDataBeans.get())) {
                 PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
                 ptPhoneHistory.setEcUserId(ecUserId);
                 ptPhoneHistory.setStartTime(tempBegin);
@@ -189,6 +193,11 @@ public class PtPhoneHistoryManager {
 
         list.clear();
         list.add(objects);
+
+        nowPageNo.remove();
+        maxPageNo.remove();
+        historyDataBeans.remove();
+
         return list;
     }
 
@@ -198,7 +207,7 @@ public class PtPhoneHistoryManager {
     private List<Object[]> intoDB() {
         List<Object[]> list = new ArrayList<>();
         Object[] objects = new Object[ARRAY_SIZE];
-        objects[0] = historyDataBeans.size();
+        objects[0] = historyDataBeans.get().size();
         //排除重复的总的联系人
         Set<String> customerSet = new HashSet<>();
         //排除重复的是我们推送的联系人
@@ -206,7 +215,7 @@ public class PtPhoneHistoryManager {
         int totalCallTime = 0;
         int pushCount = 0, validCount = 0, noPushCount = 0, pushCallTime = 0, pushValidCount = 0;
 
-        for (PhoneHistoryDataBean bean : historyDataBeans) {
+        for (PhoneHistoryDataBean bean : historyDataBeans.get()) {
             PtPhoneHistory ptPhoneHistory = new PtPhoneHistory();
             ptPhoneHistory.setCallTime(Integer.valueOf(bean.getCalltime()));
             ptPhoneHistory.setCallToNo(bean.getCalltono());
@@ -257,7 +266,7 @@ public class PtPhoneHistoryManager {
     }
 
     private void getFromEc(Long ecUserId, Date oneDay) throws IOException {
-        if (nowPageNo > maxPageNo) {
+        if (nowPageNo.get() > maxPageNo.get()) {
             return;
         }
 
@@ -266,7 +275,7 @@ public class PtPhoneHistoryManager {
         request.setStartDate(date);
         request.setEndDate(date);
         request.setUserIds(ecUserId + "");
-        request.setPageNo(nowPageNo);
+        request.setPageNo(nowPageNo.get());
         PhoneHistory phoneHistory = (PhoneHistory) callManager.execute(serviceBuilder.getPhoneHistoryService().history
                 (request));
         PhoneHistoryData data = phoneHistory.getData();
@@ -274,10 +283,10 @@ public class PtPhoneHistoryManager {
             return;
         }
 
-        historyDataBeans.addAll(data.getResult());
+        historyDataBeans.get().addAll(data.getResult());
 
-        maxPageNo = data.getMaxPageNo();
-        nowPageNo++;
+        maxPageNo.set(data.getMaxPageNo());
+        nowPageNo.set(nowPageNo.get() + 1);
         getFromEc(ecUserId, oneDay);
     }
 
@@ -285,7 +294,7 @@ public class PtPhoneHistoryManager {
      * 获取更早期的历史数据
      */
     private void getFarFromEc(Long ecUserId, Date oneDay) throws IOException {
-        if (nowPageNo > maxPageNo) {
+        if (nowPageNo.get() > maxPageNo.get()) {
             return;
         }
 
@@ -298,7 +307,7 @@ public class PtPhoneHistoryManager {
         request.setStartDayOfMonth(Integer.valueOf(array[2]));
         request.setEndDayOfMonth(Integer.valueOf(array[2]));
         request.setUserIds(ecUserId + "");
-        request.setPageNo(nowPageNo);
+        request.setPageNo(nowPageNo.get());
         PhoneHistory phoneHistory = (PhoneHistory) callManager.execute(serviceBuilder.getPhoneHistoryService()
                 .farHistory(request));
         PhoneHistoryData data = phoneHistory.getData();
@@ -306,10 +315,10 @@ public class PtPhoneHistoryManager {
             return;
         }
 
-        historyDataBeans.addAll(data.getResult());
+        historyDataBeans.get().addAll(data.getResult());
 
-        maxPageNo = data.getMaxPageNo();
-        nowPageNo++;
+        maxPageNo.set(data.getMaxPageNo());
+        nowPageNo.set(nowPageNo.get() + 1);
         getFarFromEc(ecUserId, oneDay);
     }
 

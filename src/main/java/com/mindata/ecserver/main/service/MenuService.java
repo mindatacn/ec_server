@@ -10,11 +10,13 @@ import com.mindata.ecserver.main.manager.PtRoleMenuManager;
 import com.mindata.ecserver.main.model.secondary.PtMenu;
 import com.mindata.ecserver.main.model.secondary.PtRole;
 import com.mindata.ecserver.main.service.base.BaseService;
+import com.mindata.ecserver.main.vo.MenuVO;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.BeanUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +102,7 @@ public class MenuService extends BaseService {
      * @param parentId
      *         父菜单id
      */
-    public List<PtMenu> find(final Long parentId, String name) {
+    public List<MenuVO> find(final Long parentId, String name) {
         long id = parentId == null ? 0 : parentId;
         String tempName = name == null ? "" : name;
         Long userId = ShiroKit.getCurrentUserId();
@@ -108,22 +110,36 @@ public class MenuService extends BaseService {
         boolean isAdmin = ptRoleManager.isAdmin(userId);
         //得到该用户所有菜单
         List<PtMenu> menuList = ptRoleMenuManager.findAllMenuByRoles(ptRoleList);
+
         //超管显示已隐藏的菜单
         if (isAdmin) {
-            return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu.getName()
+            return parseMenu(menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu
+                    .getName()
                     .contains(tempName))
                     .sorted()
                     .collect
                             (Collectors
-                                    .toList());
+                                    .toList()));
         }
         //其他人不显示已隐藏的菜单
-        return menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu.getName()
+        return parseMenu(menuList.stream().filter(ptMenu -> ptMenu.getParentId() == id).filter(ptMenu -> ptMenu
+                .getName()
                 .contains(tempName))
                 .filter(ptMenu -> !ptMenu.isHide())
                 .sorted()
                 .collect
                         (Collectors
-                                .toList());
+                                .toList()));
+    }
+
+    private List<MenuVO> parseMenu(List<PtMenu> ptMenus) {
+        List<MenuVO> menuVOS = new ArrayList<>(ptMenus.size());
+        for (PtMenu ptMenu : ptMenus) {
+            MenuVO menuVO = new MenuVO();
+            BeanUtil.copyProperties(ptMenu, menuVO, BeanUtil.CopyOptions.create().setIgnoreNullValue(true));
+            menuVO.setHasChild(ptMenuManager.hasChild(ptMenu.getId()));
+            menuVOS.add(menuVO);
+        }
+        return menuVOS;
     }
 }

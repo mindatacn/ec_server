@@ -30,4 +30,8 @@ public class PtMenuManager {
     public PtMenu findOne(Long id) {
         return ptMenuRepository.findOne(id);
     }
+
+    public boolean hasChild(Long id) {
+        return ptMenuRepository.countByParentIdAndHideIsFalse(id) > 0;
+    }
 }

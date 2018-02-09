@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
+import com.mindata.ecserver.global.annotation.LockSlowDealAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.main.service.PhoneHistoryCompanyService;
@@ -35,6 +36,7 @@ public class PhoneHistoryController {
      * 获取所有历史数据，由定时器定时调用该接口
      */
     @CheckEcAnnotation
+    @LockSlowDealAnnotation(moduleName = "fetchCompanyData")
     @GetMapping("/fetch")
     public BaseData fetchCompanyData(Long companyId, String begin, String end, Boolean force,
                                      @PageableDefault(direction =

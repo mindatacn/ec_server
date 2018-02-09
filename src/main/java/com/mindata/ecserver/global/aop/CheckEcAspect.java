@@ -6,6 +6,7 @@ import com.mindata.ecserver.ec.retrofit.ServiceBuilder;
 import com.mindata.ecserver.ec.service.AuthService;
 import com.mindata.ecserver.ec.util.CallManager;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
+import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.cache.EcTokenCache;
 import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.service.CompanyService;
@@ -37,7 +38,7 @@ public class CheckEcAspect {
     public Object around(ProceedingJoinPoint pjp, CheckEcAnnotation checkEcAnnotation) throws Throwable {
         //如果该公司还未设置CorpId，直接return就好了
         if (companyService.getCorpId() == null) {
-            return null;
+            return ResultGenerator.genFailResult("公司未开通EC账号");
         }
         String corpId = companyService.getCorpId() + "";
         //开始判断ec的token

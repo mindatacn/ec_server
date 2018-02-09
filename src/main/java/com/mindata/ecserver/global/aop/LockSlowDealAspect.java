@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wuweifeng wrote on 2018/2/9.
@@ -30,6 +31,7 @@ public class LockSlowDealAspect {
         //不存在则set为1，如果成功了则取到锁
         boolean lock = redisTemplate.opsForValue().setIfAbsent(key, "1");
         if (lock) {
+            redisTemplate.opsForValue().set(key, "1", 5, TimeUnit.MINUTES);
             Object object = pjp.proceed();
             redisTemplate.delete(key);
             return object;

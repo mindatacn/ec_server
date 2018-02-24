@@ -53,8 +53,12 @@ public class MenuController {
     @DeleteMapping("/{id}")
     @RequiresRoles(Constant.ROLE_ADMIN)
     public BaseData delete(@PathVariable Long id) {
-        menuService.delete(id);
-        return ResultGenerator.genSuccessResult("删除成功");
+        boolean success = menuService.delete(id);
+        if (success) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        } else {
+            return ResultGenerator.genFailResult("该菜单还有子菜单未删除");
+        }
     }
 
 }

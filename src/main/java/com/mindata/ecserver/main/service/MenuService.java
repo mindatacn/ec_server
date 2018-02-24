@@ -74,11 +74,16 @@ public class MenuService extends BaseService {
      * @param id
      *         菜单id
      */
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        //先判断是否是目录，如果是目录的话，子菜单还有值的话就不让删
+        if (ptMenuManager.hasChild(id)) {
+            return false;
+        }
         ptMenuManager.delete(id);
         notifyMenuChangeEvent(id);
         //删除MenuRole中关于该menu的记录
         eventPublisher.publishEvent(new MenuDeleteEvent(id));
+        return true;
     }
 
     /**

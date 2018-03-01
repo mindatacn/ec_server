@@ -28,6 +28,22 @@ public class DepartmentService {
     @Resource
     private PtUserManager ptUserManager;
 
+    public boolean isManager() {
+        return ptUserManager.isManager(ShiroKit.getCurrentUserId());
+    }
+
+    /**
+     * 判断部门是否为空，如果部门里还有未删除的员工则不为空
+     *
+     * @param deptId
+     *         deptId
+     * @return 是否空
+     */
+    public boolean isDeptEmpty(Long deptId) {
+        List<PtUser> ptUsers = ptUserManager.findByDeptIdAndState(deptId, STATE_NORMAL);
+        return ptUsers.size() == 0;
+    }
+
     /**
      * 根据部门名查询集合
      */
@@ -57,4 +73,6 @@ public class DepartmentService {
         }
         return new SimplePage<>(departmentPage.getTotalPages(), departmentPage.getTotalElements(), vos);
     }
+
+
 }

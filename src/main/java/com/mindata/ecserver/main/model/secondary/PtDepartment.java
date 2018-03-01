@@ -52,7 +52,7 @@ public class PtDepartment extends BaseEntity {
      */
     private String memo;
     /**
-     * 状态，（0正常，1被删除）
+     * 状态，（0正常，-1被删除）
      */
     private Integer state;
 

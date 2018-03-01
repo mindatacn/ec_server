@@ -1,10 +1,13 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CompanyDeptBean;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.model.secondary.PtDepartment;
 import com.mindata.ecserver.main.repository.secondary.PtDepartmentRepository;
+import com.mindata.ecserver.main.requestbody.DepartmentBody;
 import com.mindata.ecserver.main.service.base.BaseService;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.BeanUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_DELETE;
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
@@ -81,7 +85,7 @@ public class PtDepartmentManager extends BaseService {
             ptDepartment = new PtDepartment();
             ptDepartment.setState(STATE_NORMAL);
             ptDepartment.setMemo("");
-            ptDepartment.setThreshold(companyManager.findOne(companyId).getThreshold());
+            ptDepartment.setThreshold(companyManager.findThreshold(companyId));
             ptDepartment.setCompanyId(companyId);
         }
         ptDepartment.setEcDeptId(companyDeptBean.getDeptId());
@@ -94,7 +98,44 @@ public class PtDepartmentManager extends BaseService {
         return departmentRepository.save(ptDepartment);
     }
 
-    public void addOrUpdate(PtDepartment ptDepartment) {
+    /**
+     * 添加部门
+     *
+     * @param departmentBody
+     *         departmentBody
+     * @return PtDepartment
+     */
+    public PtDepartment add(DepartmentBody departmentBody) {
+        PtDepartment ptDepartment = new PtDepartment();
+        BeanUtil.copyProperties(departmentBody, ptDepartment);
+        Long companyId = ShiroKit.getCurrentCompanyId();
+        ptDepartment.setCompanyId(companyId);
+        ptDepartment.setState(STATE_NORMAL);
+        ptDepartment.setCreateTime(CommonUtil.getNow());
+        ptDepartment.setUpdateTime(CommonUtil.getNow());
+        if (departmentBody.getThreshold() == null) {
+            ptDepartment.setThreshold(companyManager.findThreshold(companyId));
+        }
+
+        return departmentRepository.save(ptDepartment);
+    }
+
+    public PtDepartment update(DepartmentBody departmentBody) {
+        PtDepartment ptDepartment = findByDeptId(departmentBody.getId());
+        BeanUtil.copyProperties(departmentBody, ptDepartment, BeanUtil.CopyOptions.create().setIgnoreNullValue(true));
+        ptDepartment.setUpdateTime(CommonUtil.getNow());
+        return departmentRepository.save(ptDepartment);
+    }
+
+    public void delete(Long deptId) {
+        PtDepartment ptDepartment = findByDeptId(deptId);
+        //被删除
+        ptDepartment.setState(STATE_DELETE);
+        ptDepartment.setUpdateTime(CommonUtil.getNow());
+        departmentRepository.save(ptDepartment);
+    }
+
+    private void addOrUpdate(PtDepartment ptDepartment) {
         departmentRepository.save(ptDepartment);
     }
 

@@ -11,6 +11,7 @@ public interface Constant {
      * 正常态
      */
     int STATE_NORMAL = 0;
+    int STATE_DELETE = -1;
 
     int STATE_FAIL = 2;
 

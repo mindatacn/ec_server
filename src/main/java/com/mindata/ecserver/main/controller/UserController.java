@@ -3,6 +3,9 @@ package com.mindata.ecserver.main.controller;
 import com.mindata.ecserver.global.annotation.CheckEcAnnotation;
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
+import com.mindata.ecserver.global.shiro.ShiroKit;
+import com.mindata.ecserver.main.manager.PtUserManager;
+import com.mindata.ecserver.main.requestbody.UserBody;
 import com.mindata.ecserver.main.service.UserService;
 import com.mindata.ecserver.util.CommonUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -21,6 +24,8 @@ import static com.mindata.ecserver.global.bean.ResultCode.PARAMETER_ERROR;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private PtUserManager ptUserManager;
 
     @PutMapping("/modifyPassword")
     public BaseData modifyPass(String oldPassword, String newPassword) {
@@ -54,9 +59,9 @@ public class UserController {
     }
 
     /**
-     * 修改个人信息
+     * 修改自己的个人信息
      */
-    @PutMapping
+    @PutMapping("/self")
     public BaseData modifyInfo(String name, String mobile, String email) {
         return ResultGenerator.genSuccessResult(userService.modifyInfo(name, mobile, email));
     }
@@ -78,6 +83,37 @@ public class UserController {
     @GetMapping("")
     public BaseData findUserByNameLike(String name) {
         return ResultGenerator.genSuccessResult(userService.findByNameLike(name));
+    }
+
+    /**
+     * 管理员添加用户
+     */
+    @PostMapping("")
+    public BaseData addUser(@ModelAttribute UserBody userBody) {
+        if (!ptUserManager.isManager(ShiroKit.getCurrentUserId())) {
+            return ResultGenerator.genFailResult("只有公司管理员有权限操作");
+        }
+        return ResultGenerator.genSuccessResult(ptUserManager.add(userBody));
+    }
+
+    /**
+     * 管理员修改用户
+     */
+    @PutMapping("")
+    public BaseData update(@ModelAttribute UserBody userBody) {
+        if (!ptUserManager.isManager(ShiroKit.getCurrentUserId())) {
+            return ResultGenerator.genFailResult("只有公司管理员有权限操作");
+        }
+        return ResultGenerator.genSuccessResult(ptUserManager.update(userBody));
+    }
+
+    @DeleteMapping("/{id}")
+    public BaseData delete(@PathVariable Long id) {
+        if (!ptUserManager.isManager(ShiroKit.getCurrentUserId())) {
+            return ResultGenerator.genFailResult("只有公司管理员有权限操作");
+        }
+        ptUserManager.delete(id);
+        return ResultGenerator.genSuccessResult("删除成功");
     }
 
     /**

@@ -110,6 +110,10 @@ public class PtCompanyManager {
         return companyRepository.findByNameLike("%" + name + "%");
     }
 
+    public Integer findThreshold(Long companyId) {
+        return findOne(companyId).getThreshold();
+    }
+
     /**
      * 根据id修改阈值
      *

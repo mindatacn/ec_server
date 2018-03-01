@@ -1,11 +1,14 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.ec.model.response.CompanyUserBean;
+import com.mindata.ecserver.global.shiro.ShiroKit;
 import com.mindata.ecserver.main.event.CompanyAddEvent;
 import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import com.mindata.ecserver.main.requestbody.CompanyBody;
+import com.mindata.ecserver.main.requestbody.UserBody;
 import com.mindata.ecserver.util.CommonUtil;
+import com.xiaoleilu.hutool.util.BeanUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mindata.ecserver.global.constant.Constant.STATE_DELETE;
 import static com.mindata.ecserver.global.constant.Constant.STATE_NORMAL;
 
 /**
@@ -49,6 +53,58 @@ public class PtUserManager {
         ptUser = userRepository.save(ptUser);
         //添加role信息
         userRoleManager.add(ptUser.getId(), roleId);
+    }
+
+    /**
+     * 添加一个成员
+     *
+     * @return ptUser
+     */
+    public PtUser add(UserBody userBody) {
+        Date now = CommonUtil.getNow();
+        PtUser ptUser = new PtUser();
+        BeanUtil.copyProperties(userBody, ptUser);
+        ptUser.setCreateTime(now);
+        ptUser.setUpdateTime(now);
+        ptUser.setState(STATE_NORMAL);
+        ptUser.setPassword(CommonUtil.password(userBody.getPassword()));
+        Long companyId = ShiroKit.getCurrentCompanyId();
+        ptUser.setCompanyId(companyId);
+        if (userBody.getThreshold() == null) {
+            ptUser.setThreshold(companyManager.findThreshold(companyId));
+        }
+
+        ptUser = userRepository.save(ptUser);
+        for (Long roleId : userBody.getRoles()) {
+            //添加role信息
+            userRoleManager.add(ptUser.getId(), roleId);
+        }
+        return ptUser;
+    }
+
+
+    public PtUser update(UserBody userBody) {
+        Date now = CommonUtil.getNow();
+        PtUser ptUser = userRepository.findOne(userBody.getId());
+        BeanUtil.copyProperties(userBody, ptUser, BeanUtil.CopyOptions.create().setIgnoreNullValue(true));
+        ptUser.setUpdateTime(now);
+        ptUser.setPassword(CommonUtil.password(userBody.getPassword()));
+        ptUser = userRepository.save(ptUser);
+        //删除role对应关系
+        userRoleManager.deleteByUserId(userBody.getId());
+        for (Long roleId : userBody.getRoles()) {
+            //添加role信息
+            userRoleManager.add(ptUser.getId(), roleId);
+        }
+        return ptUser;
+    }
+
+    public void delete(Long id) {
+        PtUser ptUser = userRepository.findOne(id);
+        //被删除
+        ptUser.setState(STATE_DELETE);
+        ptUser.setUpdateTime(CommonUtil.getNow());
+        userRepository.save(ptUser);
     }
 
     /**
@@ -262,5 +318,16 @@ public class PtUserManager {
      */
     public PtUser findManagerByCompanyId(Long companyId) {
         return userRepository.findFirstByCompanyIdOrderByCreateTime(companyId);
+    }
+
+    /**
+     * 判断是否是管理员
+     *
+     * @param userId
+     *         userId
+     * @return 结果
+     */
+    public boolean isManager(Long userId) {
+        return userId.equals(findManagerByCompanyId(ShiroKit.getCurrentCompanyId()).getId());
     }
 }

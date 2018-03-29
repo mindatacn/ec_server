@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import static com.mindata.ecserver.global.constant.Constant.ROLE_ADMIN;
 
 /**
- * @author hanliqiang wrote on 2018/1/23
+ * @author hanliqiang  wrote on 2018/1/23
  */
 @RestController
 @RequestMapping("/order")

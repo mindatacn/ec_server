@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author wuweifeng wrote on 2017/10/23.
@@ -47,6 +49,7 @@ public class LogAspect {
         logger.info("token为：" + request.getHeader(Constant.AUTHORIZATION));
         logger.info("userId为：" + userTokenCache.getUserIdByToken(request.getHeader(Constant.AUTHORIZATION)));
         timer = DateUtil.timer();
+        List list = new LinkedList();
         // 记录下请求内容
         logger.info("URL : " + request.getRequestURL().toString());
         logger.info("HTTP_METHOD : " + request.getMethod());

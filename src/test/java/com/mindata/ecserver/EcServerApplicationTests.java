@@ -20,7 +20,7 @@ public class EcServerApplicationTests {
     @Test
     public void contextLoads() {
         //System.out.println(codeAreaManager.findCitiesByProvince("110000"));
-        System.out.println(codeAreaRepository.findAll());
+        //System.out.println(codeAreaRepository.findAll());
     }
 
 }
